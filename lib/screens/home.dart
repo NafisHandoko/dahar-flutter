@@ -15,9 +15,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Aplikasi Dahar'),
-        ),
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(100), child: DaharAppBar()),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +37,49 @@ class DaharAppBar extends StatefulWidget {
 class _DaharAppBarState extends State<DaharAppBar> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        // padding: const EdgeInsets.only(top: 50, right: 30, left: 30, bottom: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        // color: Colors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              // padding: const EdgeInsets.all(0),
+              // constraints: const BoxConstraints(),
+              alignment: Alignment.centerRight,
+              icon: const Icon(
+                Icons.receipt_outlined,
+              ),
+              color: color1,
+              onPressed: () {},
+            ),
+            Text(
+              "Dahar",
+              style: TextStyle(
+                  color: color1, fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            // Icon(
+            //   Icons.search_rounded,
+            //   color: color1,
+            // )
+            IconButton(
+              // padding: const EdgeInsets.all(0),
+              // constraints: const BoxConstraints(),
+              alignment: Alignment.centerRight,
+              icon: const Icon(
+                Icons.search_rounded,
+              ),
+              color: color1,
+              onPressed: () {},
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
