@@ -48,7 +48,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
           children: [
             IconButton(
               // constraints: const BoxConstraints(),
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               icon: const Icon(
                 Icons.receipt_outlined,
               ),
@@ -62,7 +62,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
             ),
             IconButton(
               // constraints: const BoxConstraints(),
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               icon: const Icon(
                 Icons.search_rounded,
               ),
@@ -86,6 +86,54 @@ class DaharNavBar extends StatefulWidget {
 class _DaharNavBarState extends State<DaharNavBar> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+            offset: const Offset(0, 20),
+            blurRadius: 90,
+            spreadRadius: 0,
+            color: Colors.black.withOpacity(0.25))
+      ]),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      // color: Colors.blue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            alignment: Alignment.center,
+            icon: const Icon(
+              Icons.home_filled,
+            ),
+            color: color1,
+            onPressed: () {},
+          ),
+          IconButton(
+            alignment: Alignment.center,
+            icon: const Icon(
+              Icons.favorite_border,
+            ),
+            color: color1,
+            onPressed: () {},
+          ),
+          IconButton(
+            alignment: Alignment.center,
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+            ),
+            color: color1,
+            onPressed: () {},
+          ),
+          IconButton(
+            alignment: Alignment.center,
+            icon: const Icon(
+              Icons.perm_identity_outlined,
+            ),
+            color: color1,
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
   }
 }
