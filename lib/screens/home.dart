@@ -40,7 +40,6 @@ class _DaharAppBarState extends State<DaharAppBar> {
     return SafeArea(
       child: Container(
         color: Colors.white,
-        // padding: const EdgeInsets.only(top: 50, right: 30, left: 30, bottom: 20),
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         // color: Colors.blue,
         child: Row(
@@ -48,7 +47,6 @@ class _DaharAppBarState extends State<DaharAppBar> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              // padding: const EdgeInsets.all(0),
               // constraints: const BoxConstraints(),
               alignment: Alignment.centerRight,
               icon: const Icon(
@@ -62,12 +60,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
               style: TextStyle(
                   color: color1, fontSize: 32, fontWeight: FontWeight.bold),
             ),
-            // Icon(
-            //   Icons.search_rounded,
-            //   color: color1,
-            // )
             IconButton(
-              // padding: const EdgeInsets.all(0),
               // constraints: const BoxConstraints(),
               alignment: Alignment.centerRight,
               icon: const Icon(
