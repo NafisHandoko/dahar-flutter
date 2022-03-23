@@ -17,10 +17,11 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(100), child: DaharAppBar()),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [Text('Hello World')],
+        body: Container(
+          // padding: const EdgeInsets.only(right: 30, left: 30),
+          color: Colors.white,
+          child: ListView(
+            children: const [Popular()],
           ),
         ),
         bottomNavigationBar: const DaharNavBar());
@@ -134,6 +135,86 @@ class _DaharNavBarState extends State<DaharNavBar> {
           ),
         ],
       ),
+    );
+  }
+}
+
+Container _popularItem(String foodImage, String foodTitle, String foodSeller) {
+  return Container(
+    margin: const EdgeInsets.only(right: 15),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 165,
+          height: 145,
+          decoration: BoxDecoration(
+              borderRadius: borderRadius1,
+              image: DecorationImage(
+                  image: NetworkImage(foodImage), fit: BoxFit.cover)),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 5, bottom: 2),
+          child: Text(
+            foodTitle,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+        ),
+        Text(
+          foodSeller,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.w500, color: color1),
+        )
+      ],
+    ),
+  );
+}
+
+class Popular extends StatefulWidget {
+  const Popular({Key? key}) : super(key: key);
+
+  @override
+  State<Popular> createState() => _PopularState();
+}
+
+class _PopularState extends State<Popular> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 10, left: 25),
+          child: const Text(
+            'Popular',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+        ),
+        SizedBox(
+          height: 194,
+          child: ListView(
+            // padding: const EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            scrollDirection: Axis.horizontal,
+            children: [
+              // Image.network('https://picsum.photos/250?image=9'),
+              _popularItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Kari Spesial',
+                  'Warung Bu Supiah'),
+              _popularItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Kari Spesial',
+                  'Warung Bu Supiah'),
+              _popularItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Kari Spesial',
+                  'Warung Bu Supiah')
+            ],
+          ),
+        )
+      ],
     );
   }
 }
