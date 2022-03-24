@@ -218,7 +218,7 @@ class _PopularState extends State<Popular> {
           margin: const EdgeInsets.only(bottom: 10, left: 25),
           child: const Text(
             'Popular',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           ),
         ),
         SizedBox(
@@ -307,7 +307,7 @@ class _ClosestState extends State<Closest> {
             margin: const EdgeInsets.only(bottom: 10),
             child: const Text(
               'Closest',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
           ),
           Column(
