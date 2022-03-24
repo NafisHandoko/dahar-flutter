@@ -166,7 +166,7 @@ Container _popularItem(String foodImage, String foodTitle, String foodSeller) {
                 ),
                 child: const Text(
                   'Rp 20.000',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
               ),
             ),
