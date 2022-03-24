@@ -258,3 +258,41 @@ class _PopularState extends State<Popular> {
     );
   }
 }
+
+Container _closestItem(String foodImage) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 15),
+    height: 100,
+    decoration: BoxDecoration(
+        borderRadius: borderRadius1,
+        image:
+            DecorationImage(image: NetworkImage(foodImage), fit: BoxFit.cover)),
+    child: Stack(children: [
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius1,
+          color: Colors.black.withOpacity(0.4),
+        ),
+      ),
+      Positioned(
+        bottom: 20,
+        left: 20,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 2),
+            child: const Text('Soto Ayam',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white)),
+          ),
+          Text(
+            'Rp 20.000',
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.w600, color: color2),
+          )
+        ]),
+      )
+    ]),
+  );
+}
