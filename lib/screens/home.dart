@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
           // padding: const EdgeInsets.only(right: 30, left: 30),
           color: Colors.white,
           child: ListView(
-            children: const [Popular()],
+            children: const [Popular(), Closest()],
           ),
         ),
         bottomNavigationBar: const DaharNavBar());
@@ -259,7 +259,8 @@ class _PopularState extends State<Popular> {
   }
 }
 
-Container _closestItem(String foodImage) {
+Container _closestItem(
+    String foodImage, String foodSeller, String foodDistance) {
   return Container(
     margin: const EdgeInsets.only(bottom: 15),
     height: 100,
@@ -275,19 +276,19 @@ Container _closestItem(String foodImage) {
         ),
       ),
       Positioned(
-        bottom: 20,
-        left: 20,
+        bottom: 15,
+        left: 15,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             margin: const EdgeInsets.only(bottom: 2),
-            child: const Text('Soto Ayam',
-                style: TextStyle(
+            child: Text(foodSeller,
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.white)),
           ),
           Text(
-            'Rp 20.000',
+            foodDistance,
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w600, color: color2),
           )
@@ -295,4 +296,52 @@ Container _closestItem(String foodImage) {
       )
     ]),
   );
+}
+
+class Closest extends StatefulWidget {
+  const Closest({Key? key}) : super(key: key);
+
+  @override
+  State<Closest> createState() => _ClosestState();
+}
+
+class _ClosestState extends State<Closest> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: const Text(
+              'Closest',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+          Column(
+            children: [
+              _closestItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Warung Bu Supiah',
+                  '200 m'),
+              _closestItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Warung Bu Supiah',
+                  '200 m'),
+              _closestItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Warung Bu Supiah',
+                  '200 m'),
+              _closestItem(
+                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                  'Warung Bu Supiah',
+                  '200 m')
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
