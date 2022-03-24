@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 Color color1 = const Color.fromRGBO(238, 117, 73, 1);
 Color color2 = const Color.fromRGBO(255, 214, 200, 1);
+Color colorStar = const Color.fromRGBO(251, 188, 5, 1);
+
 BorderRadius borderRadius1 = BorderRadius.circular(20);
 BoxShadow boxshadow1 = BoxShadow(
     offset: const Offset(0, 4),
@@ -152,18 +154,56 @@ Container _popularItem(String foodImage, String foodTitle, String foodSeller) {
               borderRadius: borderRadius1,
               image: DecorationImage(
                   image: NetworkImage(foodImage), fit: BoxFit.cover)),
+          child: Stack(children: [
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius1,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                child: const Text(
+                  'Rp 20.000',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius1,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                child: Row(children: [
+                  Icon(
+                    Icons.star,
+                    color: colorStar,
+                  ),
+                  const Text(
+                    '4.2',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  ),
+                ]),
+              ),
+            )
+          ]),
         ),
         Container(
           margin: const EdgeInsets.only(top: 5, bottom: 2),
           child: Text(
             foodTitle,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
         Text(
           foodSeller,
           style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.w500, color: color1),
+              fontSize: 12, fontWeight: FontWeight.w500, color: color1),
         )
       ],
     ),
