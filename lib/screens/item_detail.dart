@@ -164,6 +164,7 @@ class _ItemDetailState extends State<ItemDetail> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                                 borderRadius: borderRadius1,
                                 color: color1,
@@ -188,35 +189,55 @@ class _ItemDetailState extends State<ItemDetail> {
                 ],
               ),
             )),
-        Positioned(
-            top: 290,
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: borderRadius1,
-                  color: color1,
-                  boxShadow: [boxshadow1]),
-              child: Row(
-                children: [
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        '-',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  const Text(
-                    '1',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        '+',
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
-              ),
-            ))
+        const Positioned(top: 290, child: CartButton())
       ]),
+    );
+  }
+}
+
+class CartButton extends StatefulWidget {
+  const CartButton({Key? key}) : super(key: key);
+
+  @override
+  State<CartButton> createState() => _CartButtonState();
+}
+
+class _CartButtonState extends State<CartButton> {
+  int _cartCount = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: borderRadius1, color: color1, boxShadow: [boxshadow1]),
+      child: Row(
+        children: [
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _cartCount -= 1;
+                });
+              },
+              child: const Text(
+                '-',
+                style: TextStyle(color: Colors.white),
+              )),
+          Text(
+            '$_cartCount',
+            style: TextStyle(color: Colors.white),
+          ),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _cartCount += 1;
+                });
+              },
+              child: const Text(
+                '+',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ),
     );
   }
 }
