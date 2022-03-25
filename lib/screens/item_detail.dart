@@ -56,13 +56,99 @@ class _ItemDetailState extends State<ItemDetail> {
             left: 0,
             right: 0,
             child: Container(
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 40),
               height: 450,
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
-              child: Text('tesaja'),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Kari Spesial',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 24),
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: colorStar,
+                          ),
+                          const Text(
+                            '4.2',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: const EdgeInsets.only(right: 15),
+                          decoration: BoxDecoration(
+                              borderRadius: borderRadius1, color: color1),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 3),
+                              child: const Text(
+                                'Warung Bu Supiah',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            const Text('200 m')
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 180,
+                    margin: const EdgeInsets.only(top: 20),
+                    child: ListView(padding: EdgeInsets.zero, children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: const Text(
+                          'Description',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      const Text(
+                        '''Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?''',
+                        softWrap: true,
+                      )
+                    ]),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: borderRadius1,
+                        color: color1,
+                        boxShadow: [boxshadow1]),
+                    child: TextButton(
+                      child: Text(
+                        'Add to Cart',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
+              ),
             )),
         Positioned(
             top: 300,
