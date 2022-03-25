@@ -56,8 +56,8 @@ class _ItemDetailState extends State<ItemDetail> {
             left: 0,
             right: 0,
             child: Container(
-              padding: const EdgeInsets.only(left: 25, right: 25, top: 40),
-              height: 450,
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 35),
+              height: 460,
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -88,7 +88,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 15),
                     child: Row(
                       children: [
                         Container(
@@ -117,10 +117,10 @@ class _ItemDetailState extends State<ItemDetail> {
                   ),
                   Container(
                     height: 180,
-                    margin: const EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 15),
                     child: ListView(padding: EdgeInsets.zero, children: [
                       Container(
-                        margin: const EdgeInsets.only(bottom: 20),
+                        margin: const EdgeInsets.only(bottom: 15),
                         child: const Text(
                           'Description',
                           style: TextStyle(
@@ -134,24 +134,57 @@ class _ItemDetailState extends State<ItemDetail> {
                     ]),
                   ),
                   Container(
+                    margin: const EdgeInsets.only(top: 10),
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: borderRadius1,
                         color: color1,
                         boxShadow: [boxshadow1]),
                     child: TextButton(
-                      child: Text(
+                      child: const Text(
                         'Add to Cart',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {},
                     ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: color1, width: 3),
+                      borderRadius: borderRadius1,
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: borderRadius1,
+                                color: color1,
+                                boxShadow: [boxshadow1]),
+                            child: TextButton(
+                              child: const Text(
+                                'Buy',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          Text(
+                            'Rp 20.000',
+                            style: TextStyle(
+                                color: color1,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ]),
                   )
                 ],
               ),
             )),
         Positioned(
-            top: 300,
+            top: 290,
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: borderRadius1,
