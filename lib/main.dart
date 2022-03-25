@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
+import 'package:dahar/screens/order_history.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,10 +18,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/item_detail',
+      initialRoute: '/order_history',
       routes: {
-        '/': (context) => const Home(),
-        '/item_detail': (context) => const ItemDetail()
+        '/home': (context) => const Home(),
+        '/item_detail': (context) => const ItemDetail(),
+        '/order_history': (context) => const OrderHistory()
       },
     );
   }
