@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
+import 'package:dahar/screens/item_detail.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +17,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
-      routes: {'/': (context) => const Home()},
+      initialRoute: '/item_detail',
+      routes: {
+        '/': (context) => const Home(),
+        '/item_detail': (context) => const ItemDetail()
+      },
     );
   }
 }
