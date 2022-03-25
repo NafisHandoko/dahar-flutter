@@ -96,7 +96,12 @@ class _ItemDetailState extends State<ItemDetail> {
                           height: 40,
                           margin: const EdgeInsets.only(right: 15),
                           decoration: BoxDecoration(
-                              borderRadius: borderRadius1, color: color1),
+                              image: const DecorationImage(
+                                  image: NetworkImage(
+                                      "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80"),
+                                  fit: BoxFit.cover),
+                              borderRadius: borderRadius1,
+                              color: color1),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
