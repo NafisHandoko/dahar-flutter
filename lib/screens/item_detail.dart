@@ -63,6 +63,34 @@ class _ItemDetailState extends State<ItemDetail> {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
               child: Text('tesaja'),
+            )),
+        Positioned(
+            top: 300,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius1,
+                  color: color1,
+                  boxShadow: [boxshadow1]),
+              child: Row(
+                children: [
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '-',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                  const Text(
+                    '1',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '+',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              ),
             ))
       ]),
     );
