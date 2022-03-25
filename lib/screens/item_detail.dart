@@ -25,31 +25,7 @@ class _ItemDetailState extends State<ItemDetail> {
                       image: NetworkImage(
                           'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'),
                       fit: BoxFit.cover)),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: borderRadius1,
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                          color: color1,
-                          onPressed: () {},
-                          icon: Icon(Icons.arrow_back_ios_rounded)),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: borderRadius1,
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                          color: color1,
-                          onPressed: () {},
-                          icon: Icon(Icons.favorite_border_rounded)),
-                    )
-                  ]),
+              child: const NavButton(),
             )),
         Positioned(
             bottom: 0,
@@ -239,5 +215,53 @@ class _CartButtonState extends State<CartButton> {
         ],
       ),
     );
+  }
+}
+
+class NavButton extends StatefulWidget {
+  const NavButton({Key? key}) : super(key: key);
+
+  @override
+  State<NavButton> createState() => _NavButtonState();
+}
+
+class _NavButtonState extends State<NavButton> {
+  bool _isFavorited = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius1,
+              color: Colors.white,
+            ),
+            child: IconButton(
+                color: color1,
+                onPressed: () {},
+                icon: Icon(Icons.arrow_back_ios_rounded)),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius1,
+              color: Colors.white,
+            ),
+            child: IconButton(
+              color: color1,
+              onPressed: () {
+                setState(() {
+                  _isFavorited = !_isFavorited;
+                });
+              },
+              // icon: Icon(Icons.favorite_border_rounded)
+              icon: (_isFavorited
+                  ? const Icon(Icons.favorite_rounded)
+                  : const Icon(Icons.favorite_border_rounded)),
+            ),
+          )
+        ]);
   }
 }
