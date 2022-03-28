@@ -33,54 +33,6 @@ class OrderHistory extends StatelessWidget {
   }
 }
 
-class HistoryAppBar extends StatelessWidget {
-  const HistoryAppBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        // color: Colors.blue,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              // constraints: const BoxConstraints(),
-              alignment: Alignment.center,
-              icon: const Icon(
-                Icons.arrow_back_ios_rounded,
-              ),
-              color: color1,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            const Text(
-              "Riwayat Pemesanan",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600),
-            ),
-            IconButton(
-              // constraints: const BoxConstraints(),
-              alignment: Alignment.center,
-              icon: const Icon(
-                Icons.search_rounded,
-              ),
-              color: Colors.white,
-              onPressed: () {},
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class HistoryItem extends StatefulWidget {
   final String foodImage, foodName, foodSeller;
   final int foodPrice, foodAmount, ratingLevel;
