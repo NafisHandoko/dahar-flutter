@@ -150,14 +150,18 @@ class _HistoryItemState extends State<HistoryItem> {
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                              color: colorYellowStatusCont,
+                              color: isConfirmed
+                                  ? colorGreenStatusCont
+                                  : colorYellowStatusCont,
                               borderRadius: borderRadius1),
                           child: Text(
                             (isConfirmed ? 'Selesai' : 'Belum dikonfirmasi'),
                             style: TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.w500,
-                                color: colorYellowStatusText),
+                                color: isConfirmed
+                                    ? colorGreenStatusText
+                                    : colorYellowStatusText),
                           ),
                         ),
                         Container(
