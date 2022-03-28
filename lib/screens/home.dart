@@ -47,7 +47,9 @@ class _DaharAppBarState extends State<DaharAppBar> {
                 Icons.receipt_outlined,
               ),
               color: color1,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/order_history');
+              },
             ),
             Text(
               "Dahar",

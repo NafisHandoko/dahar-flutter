@@ -26,7 +26,9 @@ class NavBar extends StatelessWidget {
               Icons.home_outlined,
             ),
             color: color1,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/home');
+            },
           ),
           IconButton(
             alignment: Alignment.center,

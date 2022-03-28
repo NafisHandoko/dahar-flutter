@@ -50,7 +50,9 @@ class HistoryAppBar extends StatelessWidget {
                 Icons.arrow_back_ios_rounded,
               ),
               color: color1,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             const Text(
               "Riwayat Pemesanan",
