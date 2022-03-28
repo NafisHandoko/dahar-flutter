@@ -180,10 +180,18 @@ class _HistoryItemState extends State<HistoryItem> {
                               (isConfirmed ? 'Beri Rating' : 'Konfirmasi'),
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                isConfirmed = true;
-                              });
+                            onPressed: () async {
+                              if (isConfirmed) {
+                                int stars = await showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (_) => RatingDialog());
+                                print('Selected rate stars: $stars');
+                              } else {
+                                setState(() {
+                                  isConfirmed = true;
+                                });
+                              }
                             },
                           ),
                         )
@@ -194,6 +202,89 @@ class _HistoryItemState extends State<HistoryItem> {
               ),
             )
           ]),
+    );
+  }
+}
+
+class RatingDialog extends StatefulWidget {
+  const RatingDialog({Key? key}) : super(key: key);
+
+  @override
+  State<RatingDialog> createState() => _RatingDialogState();
+}
+
+class _RatingDialogState extends State<RatingDialog> {
+  int _stars = 0;
+
+  Widget _buildStar(int starCount) {
+    return InkWell(
+      child: Icon(
+        Icons.star,
+        // size: 30.0,
+        color: _stars >= starCount ? Colors.orange : Colors.grey,
+      ),
+      onTap: () {
+        setState(() {
+          _stars = starCount;
+        });
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Center(
+        child: Column(
+          children: [
+            Text('Kari Spesial',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+            Text('Warung Bu Supiah',
+                style: TextStyle(
+                    fontSize: 12, fontWeight: FontWeight.w400, color: color1))
+          ],
+        ),
+      ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          _buildStar(1),
+          _buildStar(2),
+          _buildStar(3),
+          _buildStar(4),
+          _buildStar(5),
+        ],
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Center(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+                borderRadius: borderRadius1,
+                color: color1,
+                boxShadow: [boxshadow1]),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                // maximumSize: Size(10, 10),
+                // alignment: Alignment.centerLeft
+              ),
+              child: Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(_stars);
+              },
+            ),
+          ),
+        )
+      ],
     );
   }
 }
