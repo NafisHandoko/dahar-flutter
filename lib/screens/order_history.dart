@@ -15,6 +15,12 @@ class OrderHistory extends StatelessWidget {
         child: ListView(children: const [
           HistoryItem(
             isConfirmed: false,
+          ),
+          HistoryItem(
+            isConfirmed: false,
+          ),
+          HistoryItem(
+            isConfirmed: false,
           )
         ]),
       ),
@@ -70,7 +76,7 @@ class HistoryAppBar extends StatelessWidget {
 
 class HistoryItem extends StatefulWidget {
   final String foodImage, foodName, foodSeller;
-  final int foodPrice, foodAmount;
+  final int foodPrice, foodAmount, ratingLevel;
   final bool isConfirmed;
   const HistoryItem(
       {Key? key,
@@ -80,6 +86,7 @@ class HistoryItem extends StatefulWidget {
       this.foodSeller = 'Warung Bu Supiah',
       this.foodPrice = 20000,
       this.foodAmount = 3,
+      this.ratingLevel = -1,
       required this.isConfirmed})
       : super(key: key);
 
@@ -89,11 +96,28 @@ class HistoryItem extends StatefulWidget {
 
 class _HistoryItemState extends State<HistoryItem> {
   bool isConfirmed = false;
+  int ratingLevel = -1;
 
   @override
   void initState() {
     super.initState();
     isConfirmed = widget.isConfirmed;
+    ratingLevel = widget.ratingLevel;
+  }
+
+  Widget _buildStar(int starCount) {
+    return InkWell(
+      child: Icon(
+        Icons.star,
+        // size: 30.0,
+        color: ratingLevel >= starCount ? Colors.orange : Colors.grey,
+      ),
+      onTap: () {
+        setState(() {
+          ratingLevel = starCount;
+        });
+      },
+    );
   }
 
   @override
@@ -164,37 +188,54 @@ class _HistoryItemState extends State<HistoryItem> {
                                     : colorYellowStatusText),
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: borderRadius1,
-                              color: color1,
-                              boxShadow: [boxshadow1]),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              // maximumSize: Size(10, 10),
-                              // alignment: Alignment.centerLeft
-                            ),
-                            child: Text(
-                              (isConfirmed ? 'Beri Rating' : 'Konfirmasi'),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              if (isConfirmed) {
-                                int stars = await showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (_) => RatingDialog());
-                                print('Selected rate stars: $stars');
-                              } else {
-                                setState(() {
-                                  isConfirmed = true;
-                                });
-                              }
-                            },
-                          ),
-                        )
+                        (ratingLevel >= 0)
+                            ? Row(
+                                children: [
+                                  _buildStar(1),
+                                  _buildStar(2),
+                                  _buildStar(3),
+                                  _buildStar(4),
+                                  _buildStar(5),
+                                ],
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: borderRadius1,
+                                    color: color1,
+                                    boxShadow: [boxshadow1]),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    // maximumSize: Size(10, 10),
+                                    // alignment: Alignment.centerLeft
+                                  ),
+                                  child: Text(
+                                    (isConfirmed
+                                        ? 'Beri Rating'
+                                        : 'Konfirmasi'),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () async {
+                                    if (isConfirmed) {
+                                      int stars = await showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) => RatingDialog());
+                                      print('Selected rate stars: $stars');
+                                      setState(() {
+                                        ratingLevel = stars;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        isConfirmed = true;
+                                      });
+                                    }
+                                  },
+                                ),
+                              )
                       ],
                     ),
                   )
@@ -247,7 +288,7 @@ class _RatingDialogState extends State<RatingDialog> {
         ),
       ),
       content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _buildStar(1),
           _buildStar(2),
