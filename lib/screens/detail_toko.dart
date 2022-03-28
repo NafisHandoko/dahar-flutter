@@ -47,10 +47,42 @@ class DetailToko extends StatelessWidget {
                 ),
               ),
               Container(
+                margin: const EdgeInsets.only(bottom: 10),
                 child: Text(
                   'Jl Raden Patah no 30, Desa Kaliwungu, Bandung, Jawa Barat',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: color1, width: 2),
+                  borderRadius: borderRadius1,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        '200 m',
+                        style: TextStyle(color: color1),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: borderRadius1,
+                          color: color1,
+                          boxShadow: [boxshadow1]),
+                      child: TextButton(
+                        child: Text('Posisi Toko',
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () {},
+                      ),
+                    )
+                  ],
                 ),
               )
             ]),
