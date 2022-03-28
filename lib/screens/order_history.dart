@@ -234,6 +234,7 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
       title: Center(
         child: Column(
           children: [
