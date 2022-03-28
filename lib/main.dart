@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/order_history.dart';
+import 'package:dahar/screens/detail_toko.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/home',
+      initialRoute: '/detail_toko',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
-        '/order_history': (context) => const OrderHistory()
+        '/order_history': (context) => const OrderHistory(),
+        '/detail_toko': (context) => const DetailToko()
       },
     );
   }
