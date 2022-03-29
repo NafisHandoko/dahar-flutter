@@ -5,6 +5,34 @@ import 'package:dahar/components/back_appbar.dart';
 class DetailToko extends StatelessWidget {
   const DetailToko({Key? key}) : super(key: key);
 
+  Widget _foodItem(String foodImage, String foodName, String foodPrice) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 145,
+          height: 145,
+          decoration: BoxDecoration(
+              borderRadius: borderRadius1,
+              image: DecorationImage(
+                  image: NetworkImage(foodImage), fit: BoxFit.cover)),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 5, bottom: 2),
+          child: Text(
+            foodName,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+        ),
+        Text(
+          foodPrice,
+          style: TextStyle(
+              fontSize: 12, fontWeight: FontWeight.w500, color: color1),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +83,10 @@ class DetailToko extends StatelessWidget {
                 ),
               ),
               Container(
+                margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
                   border: Border.all(color: color1, width: 2),
-                  borderRadius: borderRadius1,
+                  borderRadius: borderRadius2,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +102,7 @@ class DetailToko extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
-                          borderRadius: borderRadius1,
+                          borderRadius: borderRadius2,
                           color: color1,
                           boxShadow: [boxshadow1]),
                       child: TextButton(
@@ -86,6 +115,32 @@ class DetailToko extends StatelessWidget {
                 ),
               )
             ]),
+            Wrap(
+              spacing: 20,
+              runSpacing: 20,
+              children: [
+                _foodItem(
+                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    'Kari Spesial',
+                    'Rp 20000'),
+                _foodItem(
+                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    'Kari Spesial',
+                    'Rp 20000'),
+                _foodItem(
+                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    'Kari Spesial',
+                    'Rp 20000'),
+                _foodItem(
+                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    'Kari Spesial',
+                    'Rp 20000'),
+                _foodItem(
+                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    'Kari Spesial',
+                    'Rp 20000')
+              ],
+            )
           ],
         ),
       ),
