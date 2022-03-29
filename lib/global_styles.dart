@@ -10,6 +10,7 @@ Color colorGreenStatusCont = const Color.fromRGBO(187, 255, 194, 1);
 Color colorGreenStatusText = const Color.fromRGBO(52, 168, 83, 1);
 
 BorderRadius borderRadius1 = BorderRadius.circular(20);
+BorderRadius borderRadius2 = BorderRadius.circular(50);
 BoxShadow boxshadow1 = BoxShadow(
     offset: const Offset(0, 4),
     blurRadius: 20,
