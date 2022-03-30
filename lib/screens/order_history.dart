@@ -136,7 +136,7 @@ class _HistoryItemState extends State<HistoryItem> {
                               color: isConfirmed
                                   ? colorGreenStatusCont
                                   : colorYellowStatusCont,
-                              borderRadius: borderRadius1),
+                              borderRadius: borderRadius2),
                           child: Text(
                             (isConfirmed ? 'Selesai' : 'Belum dikonfirmasi'),
                             style: TextStyle(
@@ -159,7 +159,7 @@ class _HistoryItemState extends State<HistoryItem> {
                               )
                             : Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: borderRadius1,
+                                    borderRadius: borderRadius2,
                                     color: color1,
                                     boxShadow: [boxshadow1]),
                                 child: TextButton(
@@ -265,7 +265,7 @@ class _RatingDialogState extends State<RatingDialog> {
           child: Container(
             margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-                borderRadius: borderRadius1,
+                borderRadius: borderRadius2,
                 color: color1,
                 boxShadow: [boxshadow1]),
             child: TextButton(

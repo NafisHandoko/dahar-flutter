@@ -76,7 +76,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                   image: NetworkImage(
                                       "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80"),
                                   fit: BoxFit.cover),
-                              borderRadius: borderRadius1,
+                              shape: BoxShape.circle,
                               color: color1),
                         ),
                         Column(
@@ -118,7 +118,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     margin: const EdgeInsets.only(top: 10),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: borderRadius1,
+                        borderRadius: borderRadius2,
                         color: color1,
                         boxShadow: [boxshadow1]),
                     child: TextButton(
@@ -134,7 +134,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(color: color1, width: 3),
-                      borderRadius: borderRadius1,
+                      borderRadius: borderRadius2,
                     ),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +142,7 @@ class _ItemDetailState extends State<ItemDetail> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
-                                borderRadius: borderRadius1,
+                                borderRadius: borderRadius2,
                                 color: color1,
                                 boxShadow: [boxshadow1]),
                             child: TextButton(
@@ -185,7 +185,7 @@ class _CartButtonState extends State<CartButton> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: borderRadius1, color: color1, boxShadow: [boxshadow1]),
+          borderRadius: borderRadius2, color: color1, boxShadow: [boxshadow1]),
       child: Row(
         children: [
           TextButton(
