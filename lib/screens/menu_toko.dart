@@ -87,19 +87,40 @@ class MenuToko extends StatelessWidget {
         child: ListView(children: [
           Column(
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                margin: const EdgeInsets.only(bottom: 10),
-                // margin: const EdgeInsets.only(right: 15),
-                decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1628258475456-0224b1e4225a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"),
-                        fit: BoxFit.cover),
-                    shape: BoxShape.circle,
-                    color: color1),
-              ),
+              Stack(children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  // margin: const EdgeInsets.only(right: 15),
+                  decoration: BoxDecoration(
+                      image: const DecorationImage(
+                          image: NetworkImage(
+                              "https://images.unsplash.com/photo-1628258475456-0224b1e4225a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"),
+                          fit: BoxFit.cover),
+                      shape: BoxShape.circle,
+                      color: color1),
+                ),
+                Positioned(
+                    bottom: 10,
+                    right: 0,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colorBlueEdit,
+                            boxShadow: [boxshadow2]),
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                      ),
+                    ))
+              ]),
               Container(
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
