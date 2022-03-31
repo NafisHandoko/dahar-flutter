@@ -18,13 +18,13 @@ class _TransactionDoneState extends State<TransactionDone> {
             children: [
               Icon(
                 Icons.check_circle,
-                size: 100,
+                size: 90,
                 color: Colors.green,
               ),
               Text(
                 'Order Success!',
                 style: TextStyle(
-                  fontSize: 35,
+                  fontSize: 30,
                 ),
               ),
               Row(
