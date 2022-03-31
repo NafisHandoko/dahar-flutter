@@ -21,7 +21,7 @@ class register extends StatelessWidget {
               Text('Sign Up For Free',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
               Container(
-                margin: const EdgeInsets.only(bottom: 15),
+                margin: const EdgeInsets.only(bottom: 15, top: 15),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
