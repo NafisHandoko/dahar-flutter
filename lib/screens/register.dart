@@ -120,7 +120,7 @@ class register extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
                 padding:
                     const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
                 //width: double.infinity,
@@ -136,6 +136,51 @@ class register extends StatelessWidget {
                   onPressed: () {},
                 ),
               ),
+              Text(
+                'or continue with',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                            borderRadius: borderRadius1,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(90, 108, 234, 0.07),
+                                blurRadius: 50,
+                                spreadRadius: 0,
+                                offset: Offset(12, 26),
+                              ),
+                            ]),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png',
+                              height: 25,
+                              width: 25,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Facebook',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                ],
+              )
             ],
           ),
         ),
