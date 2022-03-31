@@ -74,7 +74,7 @@ class register extends StatelessWidget {
                     hintText: 'example@mail.com',
                     labelText: 'Email',
                     prefixIcon: Icon(
-                      Icons.person,
+                      Icons.email,
                       color: color1,
                     ),
                     border: OutlineInputBorder(
@@ -106,13 +106,34 @@ class register extends StatelessWidget {
                     hintText: 'password123',
                     labelText: 'Password',
                     prefixIcon: Icon(
-                      Icons.person,
+                      Icons.lock,
                       color: color1,
+                    ),
+                    suffixIcon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+                //width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: borderRadius1,
+                    color: color1,
+                    boxShadow: [boxshadow1]),
+                child: TextButton(
+                  child: const Text(
+                    'Create Account',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {},
                 ),
               ),
             ],
