@@ -37,7 +37,7 @@ class _TransactionDoneState extends State<TransactionDone> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'Date 23-02-2022',
+                        'Date',
                         style: TextStyle(
                             fontSize: 18, wordSpacing: 180, height: 7),
                       ),

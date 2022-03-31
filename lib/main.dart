@@ -4,6 +4,7 @@ import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/order_history.dart';
 import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/menu_toko.dart';
+import 'package:dahar/screens/register.dart';
 import 'package:dahar/screens/transaction_done.dart';
 
 void main() {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         '/order_history': (context) => const OrderHistory(),
         '/detail_toko': (context) => const DetailToko(),
         '/menu_toko': (context) => const MenuToko(),
-        '/transaction_done': (context) => const TransactionDone(),
+        '/register': (context) => const register(),
+        'transaction_done': (context) => const TransactionDone(),
       },
     );
   }
