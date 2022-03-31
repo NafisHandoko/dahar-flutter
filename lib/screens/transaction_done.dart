@@ -28,36 +28,42 @@ class _TransactionDoneState extends State<TransactionDone> {
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Date 23-02-2022',
-                    style: TextStyle(fontSize: 18, wordSpacing: 140),
+                    style: TextStyle(fontSize: 18, wordSpacing: 180),
                   ),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Time 12.35.45',
-                    style: TextStyle(fontSize: 18, wordSpacing: 155),
+                    style: TextStyle(fontSize: 18, wordSpacing: 195),
                   ),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Expense Rp.78.000,-',
-                    style: TextStyle(fontSize: 18, wordSpacing: 110),
+                    style: TextStyle(fontSize: 18, wordSpacing: 150),
                   ),
                 ],
               ),
               TextButton(
                 style: TextButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(238, 117, 73, 1)),
+                  backgroundColor: Color.fromRGBO(238, 117, 73, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 onPressed: () {},
                 child: Text(
                   'Back To Home',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ],
