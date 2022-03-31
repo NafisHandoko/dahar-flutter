@@ -163,12 +163,31 @@ class Login extends StatelessWidget {
                             height: 25,
                             width: 25,
                           ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              'Google',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          )
                         ],
                       ),
                     ),
                   ),
                 ],
-              )
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'create account',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: color1,
+                        fontWeight: FontWeight.w400),
+                  ))
             ],
           ),
         ),
