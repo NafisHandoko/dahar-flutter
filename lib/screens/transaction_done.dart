@@ -1,3 +1,4 @@
+import 'package:dahar/global_styles.dart';
 import 'package:flutter/material.dart';
 
 class TransactionDone extends StatefulWidget {
@@ -14,56 +15,68 @@ class _TransactionDoneState extends State<TransactionDone> {
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 100),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                Icons.check_circle,
-                size: 90,
-                color: Colors.green,
-              ),
-              Text(
-                'Order Success!',
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
                 children: [
+                  Icon(
+                    Icons.check_circle,
+                    size: 90,
+                    color: Colors.green,
+                  ),
                   Text(
-                    'Date 23-02-2022',
-                    style: TextStyle(fontSize: 18, wordSpacing: 180),
+                    'Order Success!',
+                    style: TextStyle(
+                      fontSize: 30,
+                      height: 2,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Date 23-02-2022',
+                        style: TextStyle(
+                            fontSize: 18, wordSpacing: 180, height: 7),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Time 12.35.45',
+                        style: TextStyle(
+                            fontSize: 18, wordSpacing: 195, height: 3),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Expense Rp.78.000,-',
+                        style: TextStyle(
+                            fontSize: 18, wordSpacing: 150, height: 3),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Time 12.35.45',
-                    style: TextStyle(fontSize: 18, wordSpacing: 195),
+              Container(
+                margin: const EdgeInsets.only(bottom: 15),
+                decoration: BoxDecoration(
+                    borderRadius: borderRadius1,
+                    color: color1,
+                    boxShadow: [boxshadow1]),
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Back To Home',
+                    style: TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Expense Rp.78.000,-',
-                    style: TextStyle(fontSize: 18, wordSpacing: 150),
-                  ),
-                ],
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(238, 117, 73, 1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                onPressed: () {},
-                child: Text(
-                  'Back To Home',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ],
