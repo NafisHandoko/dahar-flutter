@@ -18,7 +18,7 @@ class register extends StatelessWidget {
                 'REGISTER',
                 style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
               ),
-              Text('sing up for free',
+              Text('Sign Up For Free',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
               Container(
                 margin: const EdgeInsets.only(bottom: 15),
