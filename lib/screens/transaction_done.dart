@@ -30,48 +30,35 @@ class _TransactionDoneState extends State<TransactionDone> {
               Row(
                 children: [
                   Text(
-                    'Date',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    'Date 23-02-2022',
+                    style: TextStyle(fontSize: 18, wordSpacing: 140),
                   ),
-                  Text(
-                    '23-02-2022',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  )
                 ],
               ),
               Row(
                 children: [
                   Text(
-                    'Time',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    'Time 12.35.45',
+                    style: TextStyle(fontSize: 18, wordSpacing: 155),
                   ),
-                  Text(
-                    '12.35.45',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  )
                 ],
               ),
               Row(
                 children: [
                   Text(
-                    'Total Expense',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    'Expense Rp.78.000,-',
+                    style: TextStyle(fontSize: 18, wordSpacing: 110),
                   ),
-                  Text(
-                    'Rp. 78.000,-',
-                    style: TextStyle(fontSize: 18),
-                  )
                 ],
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(238, 117, 73, 1)),
+                onPressed: () {},
+                child: Text(
+                  'Back To Home',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
