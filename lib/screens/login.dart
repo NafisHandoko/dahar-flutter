@@ -164,7 +164,7 @@ class Login extends StatelessWidget {
                             width: 25,
                           ),
                           Container(
-                            margin: const EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(left: 10),
                             child: Text(
                               'Google',
                               style: TextStyle(
