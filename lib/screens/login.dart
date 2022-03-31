@@ -137,7 +137,27 @@ class Login extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: borderRadius1,
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(90, 108, 234, 0.07),
+                            blurRadius: 50,
+                            spreadRadius: 0,
+                            offset: Offset(12, 26),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],
