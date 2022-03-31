@@ -33,40 +33,51 @@ class _TransactionDoneState extends State<TransactionDone> {
                       height: 2,
                     ),
                   ),
+                  Padding(padding: EdgeInsets.only(top: 50)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Date',
-                        style: TextStyle(
-                            fontSize: 18, wordSpacing: 180, height: 7),
+                        style: TextStyle(fontSize: 18, height: 3),
                       ),
+                      Text(
+                        '23-02-2022',
+                        style: TextStyle(fontSize: 18, height: 3),
+                      )
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Time 12.35.45',
-                        style: TextStyle(
-                            fontSize: 18, wordSpacing: 195, height: 3),
+                        'Time',
+                        style: TextStyle(fontSize: 18, height: 3),
                       ),
+                      Text(
+                        '12.35.45',
+                        style: TextStyle(fontSize: 18, height: 3),
+                      )
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Expense Rp.78.000,-',
-                        style: TextStyle(
-                            fontSize: 18, wordSpacing: 150, height: 3),
+                        'Total Expense',
+                        style: TextStyle(fontSize: 18, height: 3),
                       ),
+                      Text(
+                        'Rp.78.000,-',
+                        style: TextStyle(fontSize: 18, height: 3),
+                      )
                     ],
                   ),
                 ],
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 15),
+                width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: borderRadius1,
                     color: color1,
