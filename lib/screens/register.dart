@@ -12,6 +12,7 @@ class register extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'REGISTER',
@@ -141,6 +142,7 @@ class register extends StatelessWidget {
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
                     onTap: () {},
@@ -179,8 +181,54 @@ class register extends StatelessWidget {
                           ],
                         )),
                   ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                            borderRadius: borderRadius1,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(90, 108, 234, 0.07),
+                                blurRadius: 50,
+                                spreadRadius: 0,
+                                offset: Offset(12, 26),
+                              ),
+                            ]),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png",
+                              height: 25,
+                              width: 25,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Google',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
                 ],
-              )
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Already have an account?',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: color1),
+                  )),
             ],
           ),
         ),
