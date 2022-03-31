@@ -98,7 +98,39 @@ class Login extends StatelessWidget {
                 'or continue with',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
-              Row()
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      decoration: BoxDecoration(
+                          borderRadius: borderRadius1,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 50,
+                                color: Color.fromRGBO(90, 108, 234, 0.07),
+                                spreadRadius: 0,
+                                offset: Offset(12, 26))
+                          ]),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png',
+                            height: 25,
+                            width: 25,
+                          ),
+                          Container()
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
