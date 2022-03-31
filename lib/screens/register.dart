@@ -71,8 +71,8 @@ class register extends StatelessWidget {
                     ),
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: 'username123',
-                    labelText: 'Username',
+                    hintText: 'example@mail.com',
+                    labelText: 'Email',
                     prefixIcon: Icon(
                       Icons.person,
                       color: color1,
@@ -103,8 +103,8 @@ class register extends StatelessWidget {
                     ),
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: 'username123',
-                    labelText: 'Username',
+                    hintText: 'password123',
+                    labelText: 'Password',
                     prefixIcon: Icon(
                       Icons.person,
                       color: color1,
