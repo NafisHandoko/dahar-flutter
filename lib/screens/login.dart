@@ -124,7 +124,16 @@ class Login extends StatelessWidget {
                             height: 25,
                             width: 25,
                           ),
-                          Container()
+                          Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              'Facebook',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          )
                         ],
                       ),
                     ),
