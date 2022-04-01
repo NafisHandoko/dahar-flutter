@@ -221,7 +221,9 @@ class MenuToko extends StatelessWidget {
         ]),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/add_product');
+        },
         backgroundColor: color1,
         child: Icon(Icons.add),
       ),
