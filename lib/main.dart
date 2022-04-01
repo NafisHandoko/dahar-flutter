@@ -1,3 +1,4 @@
+import 'package:dahar/screens/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/register',
+      initialRoute: '/add_product',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/detail_toko': (context) => const DetailToko(),
         '/menu_toko': (context) => const MenuToko(),
         '/register': (context) => const register(),
+        '/add_product': (context) => const AddProduct()
       },
     );
   }
