@@ -135,7 +135,9 @@ class register extends StatelessWidget {
                     'Create Account',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
                 ),
               ),
               Text(
@@ -222,7 +224,9 @@ class register extends StatelessWidget {
                 ],
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
                   child: Text(
                     'Already have an account?',
                     style: TextStyle(

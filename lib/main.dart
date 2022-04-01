@@ -6,6 +6,7 @@ import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/menu_toko.dart';
 import 'package:dahar/screens/register.dart';
 import 'package:dahar/screens/transaction_done.dart';
+import 'package:dahar/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/transaction_done',
+      initialRoute: '/login',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/menu_toko': (context) => const MenuToko(),
         '/register': (context) => const register(),
         '/transaction_done': (context) => const TransactionDone(),
+        '/login': (context) => const Login(),
       },
     );
   }
