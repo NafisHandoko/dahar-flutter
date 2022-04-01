@@ -1,3 +1,4 @@
+import 'package:dahar/screens/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/detail_toko': (context) => const DetailToko(),
         '/menu_toko': (context) => const MenuToko(),
         '/register': (context) => const register(),
+        '/add_product': (context) => const AddProduct()
         '/transaction_done': (context) => const TransactionDone(),
         '/login': (context) => const Login(),
       },
