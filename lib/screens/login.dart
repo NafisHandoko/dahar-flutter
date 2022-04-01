@@ -92,7 +92,9 @@ class Login extends StatelessWidget {
                       'Login',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/home');
+                    }),
               ),
               Text(
                 'or continue with',
@@ -180,7 +182,9 @@ class Login extends StatelessWidget {
                 ],
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
                   child: Text(
                     'create account',
                     style: TextStyle(
