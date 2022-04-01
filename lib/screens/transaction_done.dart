@@ -15,7 +15,7 @@ class _TransactionDoneState extends State<TransactionDone> {
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 100),
+          padding: EdgeInsets.only(left: 25, top: 100, right: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

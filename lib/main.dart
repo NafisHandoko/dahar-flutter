@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         '/detail_toko': (context) => const DetailToko(),
         '/menu_toko': (context) => const MenuToko(),
         '/register': (context) => const register(),
-        'transaction_done': (context) => const TransactionDone(),
+        '/transaction_done': (context) => const TransactionDone(),
       },
     );
   }
