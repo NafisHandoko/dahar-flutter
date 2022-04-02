@@ -1,4 +1,5 @@
 import 'package:dahar/screens/checkout.dart';
+import 'package:dahar/screens/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
@@ -6,6 +7,8 @@ import 'package:dahar/screens/order_history.dart';
 import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/menu_toko.dart';
 import 'package:dahar/screens/register.dart';
+import 'package:dahar/screens/transaction_done.dart';
+import 'package:dahar/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/checkout',
+      initialRoute: '/login',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
@@ -30,6 +33,9 @@ class MyApp extends StatelessWidget {
         '/detail_toko': (context) => const DetailToko(),
         '/menu_toko': (context) => const MenuToko(),
         '/register': (context) => const register(),
+        '/add_product': (context) => const AddProduct(),
+        '/transaction_done': (context) => const TransactionDone(),
+        '/login': (context) => const Login(),
         '/checkout': (context) => const checkout(),
       },
     );
