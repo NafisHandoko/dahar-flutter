@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dahar/screens/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/components/navbar.dart';
+import 'package:camera/camera.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -11,6 +15,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  List<File> capturedImages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,12 +138,31 @@ class _AddProductState extends State<AddProduct> {
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      final cameras = await availableCameras();
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Camera(
+                                  cameras: cameras,
+                                )),
+                      );
+                      if (result != null) {
+                        setState(() {
+                          capturedImages = result;
+                        });
+                      }
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(top: 10),
                       height: 150,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                          image: capturedImages.isNotEmpty
+                              ? DecorationImage(
+                                  image: FileImage(capturedImages.last),
+                                  fit: BoxFit.cover)
+                              : null,
                           borderRadius: borderRadius1,
                           border: Border.all(color: color1, width: 1)),
                       child: Icon(

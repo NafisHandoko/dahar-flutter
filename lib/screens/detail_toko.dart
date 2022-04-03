@@ -45,6 +45,7 @@ class DetailToko extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 25),
         color: Colors.white,
         child: ListView(
+          shrinkWrap: true,
           children: [
             Column(children: [
               Container(
@@ -115,31 +116,33 @@ class DetailToko extends StatelessWidget {
                 ),
               )
             ]),
-            Wrap(
-              spacing: 20,
-              runSpacing: 20,
-              children: [
-                _foodItem(
-                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                    'Kari Spesial',
-                    'Rp 20000'),
-                _foodItem(
-                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                    'Kari Spesial',
-                    'Rp 20000'),
-                _foodItem(
-                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                    'Kari Spesial',
-                    'Rp 20000'),
-                _foodItem(
-                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                    'Kari Spesial',
-                    'Rp 20000'),
-                _foodItem(
-                    'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                    'Kari Spesial',
-                    'Rp 20000')
-              ],
+            Center(
+              child: Wrap(
+                spacing: 20,
+                runSpacing: 20,
+                children: [
+                  _foodItem(
+                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                      'Kari Spesial',
+                      'Rp 20000'),
+                  _foodItem(
+                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                      'Kari Spesial',
+                      'Rp 20000'),
+                  _foodItem(
+                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                      'Kari Spesial',
+                      'Rp 20000'),
+                  _foodItem(
+                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                      'Kari Spesial',
+                      'Rp 20000'),
+                  _foodItem(
+                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                      'Kari Spesial',
+                      'Rp 20000')
+                ],
+              ),
             )
           ],
         ),
