@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/add_product',
+      initialRoute: '/menu_toko',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
