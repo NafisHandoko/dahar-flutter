@@ -1,5 +1,6 @@
 import 'package:dahar/screens/checkout.dart';
 import 'package:dahar/screens/add_product.dart';
+// import 'package:dahar/screens/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
 import 'package:dahar/screens/item_detail.dart';
@@ -11,6 +12,7 @@ import 'package:dahar/screens/transaction_done.dart';
 import 'package:dahar/screens/login.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/home',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/transaction_done': (context) => const TransactionDone(),
         '/login': (context) => const Login(),
         '/checkout': (context) => const checkout(),
+        // '/camera': (context) => const Camera()
       },
     );
   }
