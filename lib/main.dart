@@ -1,5 +1,6 @@
 import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/screens/wrapper.dart';
+import 'package:dahar/screens/your_profile.dart';
 // import 'package:dahar/screens/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/screens/home.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           // '/register': (context) => const Register(),
           '/add_product': (context) => const AddProduct(),
           '/transaction_done': (context) => const TransactionDone(),
+          '/your_profile': (context) => YourProfile(),
           // '/login': (context) => const Login(),
           // '/camera': (context) => const Camera()
         },

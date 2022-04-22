@@ -52,7 +52,9 @@ class NavBar extends StatelessWidget {
               Icons.perm_identity_outlined,
             ),
             color: color1,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/your_profile');
+            },
           ),
         ],
       ),

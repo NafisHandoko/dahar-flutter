@@ -21,6 +21,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    // print("masuk register");
     return loading
         ? Loading()
         : Scaffold(
