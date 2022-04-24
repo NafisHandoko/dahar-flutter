@@ -1,3 +1,4 @@
+import 'package:dahar/screens/checkout.dart';
 import 'package:dahar/screens/add_product.dart';
 // import 'package:dahar/screens/camera.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/home',
+      initialRoute: '/checkout',
       routes: {
         '/home': (context) => const Home(),
         '/item_detail': (context) => const ItemDetail(),
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/add_product': (context) => const AddProduct(),
         '/transaction_done': (context) => const TransactionDone(),
         '/login': (context) => const Login(),
+        '/checkout': (context) => const checkout(),
         // '/camera': (context) => const Camera()
       },
     );
