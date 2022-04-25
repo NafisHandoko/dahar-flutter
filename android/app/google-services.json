@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "67304856943",
+    "project_id": "dahar-flutter",
+    "storage_bucket": "dahar-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67304856943:android:270c641638d75e58255c9a",
+        "android_client_info": {
+          "package_name": "com.example.dahar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67304856943-jj7er05k6su2m6faj0spqa1ssoshdhjb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqAV3Df0UCKk9s0UPfIWHKIUQzIqNQaZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67304856943-jj7er05k6su2m6faj0spqa1ssoshdhjb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
