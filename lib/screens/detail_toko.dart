@@ -1,9 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:math';
 
-class DetailToko extends StatelessWidget {
+class DetailToko extends StatefulWidget {
   const DetailToko({Key? key}) : super(key: key);
+
+  @override
+  State<DetailToko> createState() => _DetailTokoState();
+}
+
+class _DetailTokoState extends State<DetailToko> {
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+  String long = "", lat = "";
+  double distance = 0;
+  // late StreamSubscription<Position> positionStream;
+
+  @override
+  void initState() {
+    checkGps();
+    super.initState();
+  }
+
+  checkGps() async {
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    if (servicestatus) {
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permissions are denied');
+        } else if (permission == LocationPermission.deniedForever) {
+          print("'Location permissions are permanently denied");
+        } else {
+          haspermission = true;
+        }
+      } else {
+        haspermission = true;
+      }
+
+      if (haspermission) {
+        setState(() {
+          //refresh the UI
+        });
+
+        getLocation();
+      }
+    } else {
+      print("GPS Service is not enabled, turn on GPS location");
+    }
+
+    setState(() {
+      //refresh the UI
+    });
+  }
+
+  getLocation() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude); //Output: 80.24599079
+    print(position.latitude); //Output: 29.6593457
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
+
+    setState(() {
+      //refresh UI
+      distance = calculateDistance(
+          position.latitude, position.longitude, -7.551498, 112.230074);
+    });
+
+    // LocationSettings locationSettings = LocationSettings(
+    //   accuracy: LocationAccuracy.high, //accuracy of the location data
+    //   distanceFilter: 100, //minimum distance (measured in meters) a
+    //   //device must move horizontally before an update event is generated;
+    // );
+
+    // StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+    //       locationSettings: locationSettings).listen((Position position) {
+    //       print(position.longitude); //Output: 80.24599079
+    //       print(position.latitude); //Output: 29.6593457
+
+    //       long = position.longitude.toString();
+    //       lat = position.latitude.toString();
+
+    //       setState(() {
+    //         //refresh UI on update
+    //       });
+    // });
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
+  }
 
   Widget _foodItem(String foodImage, String foodName, String foodPrice) {
     return Column(
@@ -96,7 +194,7 @@ class DetailToko extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
-                        '200 m',
+                        '${distance.toStringAsFixed(1)} Km',
                         style: TextStyle(color: color1),
                       ),
                     ),
