@@ -160,6 +160,7 @@ class _PosisiTokoState extends State<PosisiToko> {
               bottom: 20,
               left: 15,
               child: Container(
+                width: 290,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     borderRadius: borderRadius1,
@@ -170,7 +171,8 @@ class _PosisiTokoState extends State<PosisiToko> {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 15),
-                      child: Text('Jl Raden Patah no 30, Bandung',
+                      child: Text(
+                          'Jl Raden Patah no 30, Desa Kaliwungu, Bandung, Jawa Barat',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600)),
                     ),
@@ -199,7 +201,10 @@ class _PosisiTokoState extends State<PosisiToko> {
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
                             ),
-                            const Text('200 m')
+                            Text(
+                              '200 m dari posisimu',
+                              style: TextStyle(color: color1),
+                            )
                           ],
                         )
                       ],
