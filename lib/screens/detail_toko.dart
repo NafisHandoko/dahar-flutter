@@ -4,6 +4,7 @@ import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:math';
+import 'package:dahar/screens/maps/networking.dart';
 
 class DetailToko extends StatefulWidget {
   const DetailToko({Key? key}) : super(key: key);
@@ -21,7 +22,8 @@ class _DetailTokoState extends State<DetailToko> {
   late double userLong, userLat;
   double tokoLong = 112.230074;
   double tokoLat = -7.551498;
-  double distance = 0;
+  double? distance = 0;
+  var data;
   // late StreamSubscription<Position> positionStream;
 
   @override
@@ -72,13 +74,13 @@ class _DetailTokoState extends State<DetailToko> {
 
     long = position.longitude.toString();
     lat = position.latitude.toString();
-
+    double? jarak = await streetDistance(
+        position.latitude, position.longitude, tokoLat, tokoLong);
     setState(() {
       //refresh UI
       userLong = position.longitude;
       userLat = position.latitude;
-      distance = calculateDistance(
-          position.latitude, position.longitude, tokoLat, tokoLong);
+      distance = (jarak! / 1000);
     });
 
     // LocationSettings locationSettings = LocationSettings(
@@ -101,12 +103,31 @@ class _DetailTokoState extends State<DetailToko> {
     // });
   }
 
-  double calculateDistance(lat1, lon1, lat2, lon2) {
+  double starightDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var a = 0.5 -
         cos((lat2 - lat1) * p) / 2 +
         cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
+  }
+
+  Future<double?> streetDistance(startLat, startLng, endLat, endLng) async {
+    NetworkHelper network = NetworkHelper(
+      startLat: startLat,
+      startLng: startLng,
+      endLat: endLat,
+      endLng: endLng,
+    );
+
+    try {
+      // getData() returns a json Decoded data
+      data = await network.getData();
+
+      // get distance and print
+      return data['features'][0]['properties']['summary']['distance'];
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget _foodItem(String foodImage, String foodName, String foodPrice) {
@@ -200,7 +221,7 @@ class _DetailTokoState extends State<DetailToko> {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
-                        '${distance.toStringAsFixed(1)} Km',
+                        '${distance?.toStringAsFixed(1)} Km',
                         style: TextStyle(color: color1),
                       ),
                     ),
@@ -227,7 +248,13 @@ class _DetailTokoState extends State<DetailToko> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PosisiToko()),
+                                builder: (context) => PosisiToko(
+                                      startLat: userLat,
+                                      startLng: userLong,
+                                      endLat: tokoLat,
+                                      endLng: tokoLong,
+                                      distance: distance,
+                                    )),
                           );
                         },
                       ),

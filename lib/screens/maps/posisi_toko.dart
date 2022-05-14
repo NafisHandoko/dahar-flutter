@@ -4,7 +4,15 @@ import 'networking.dart';
 import 'package:dahar/global_styles.dart';
 
 class PosisiToko extends StatefulWidget {
-  const PosisiToko({Key? key}) : super(key: key);
+  final startLat, startLng, endLat, endLng, distance;
+  const PosisiToko(
+      {Key? key,
+      this.startLat,
+      this.startLng,
+      this.endLat,
+      this.endLng,
+      this.distance})
+      : super(key: key);
 
   @override
   _PosisiTokoState createState() => _PosisiTokoState();
@@ -19,15 +27,10 @@ class _PosisiTokoState extends State<PosisiToko> {
   var data;
 
   // Dummy Start and Destination Points
-  // double startLat = 23.551904;
-  // double startLng = 90.532171;
-  // double endLat = 23.560625;
-  // double endLng = 90.531813;
-
-  double startLat = -7.5397754;
-  double startLng = 112.2408845;
-  double endLat = -7.551498;
-  double endLng = 112.230074;
+  // double startLat = -7.5397754;
+  // double startLng = 112.2408845;
+  // double endLat = -7.551498;
+  // double endLng = 112.230074;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -38,7 +41,7 @@ class _PosisiTokoState extends State<PosisiToko> {
     markers.add(
       Marker(
         markerId: MarkerId("Home"),
-        position: LatLng(startLat, startLng),
+        position: LatLng(widget.startLat, widget.startLng),
         infoWindow: InfoWindow(
           title: "Your Location",
           snippet: "Your current location",
@@ -48,7 +51,7 @@ class _PosisiTokoState extends State<PosisiToko> {
 
     markers.add(Marker(
       markerId: MarkerId("Destination"),
-      position: LatLng(endLat, endLng),
+      position: LatLng(widget.endLat, widget.endLng),
       infoWindow: InfoWindow(
         title: "Warung Bu Supiah",
         snippet: "Jl Raden Patah no 30, Bandung",
@@ -62,10 +65,10 @@ class _PosisiTokoState extends State<PosisiToko> {
     // for requesting data to the server and receiving response as JSON format
 
     NetworkHelper network = NetworkHelper(
-      startLat: startLat,
-      startLng: startLng,
-      endLat: endLat,
-      endLng: endLng,
+      startLat: widget.startLat,
+      startLng: widget.startLng,
+      endLat: widget.endLat,
+      endLng: widget.endLng,
     );
 
     try {
@@ -105,26 +108,6 @@ class _PosisiTokoState extends State<PosisiToko> {
     getJsonData();
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Polyline Demo'),
-//         backgroundColor: Colors.green[700],
-//       ),
-//       body: GoogleMap(
-//         onMapCreated: _onMapCreated,
-//         initialCameraPosition: CameraPosition(
-//           target: LatLng(endLat, endLng),
-//           zoom: 15,
-//         ),
-//         markers: markers,
-//         polylines: polyLines,
-//       ),
-//     );
-//   }
-// }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +117,7 @@ class _PosisiTokoState extends State<PosisiToko> {
           GoogleMap(
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
-              target: LatLng(endLat, endLng),
+              target: LatLng(widget.endLat, widget.endLng),
               zoom: 15,
             ),
             markers: markers,
@@ -157,7 +140,7 @@ class _PosisiTokoState extends State<PosisiToko> {
             ),
           ),
           Positioned(
-              bottom: 20,
+              bottom: 30,
               left: 15,
               child: Container(
                 width: 290,
@@ -202,7 +185,7 @@ class _PosisiTokoState extends State<PosisiToko> {
                               ),
                             ),
                             Text(
-                              '200 m dari posisimu',
+                              '${widget.distance.toStringAsFixed(1)} Km dari posisimu',
                               style: TextStyle(color: color1),
                             )
                           ],
