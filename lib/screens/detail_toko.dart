@@ -1,3 +1,4 @@
+import 'package:dahar/screens/maps/posisi_toko.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
@@ -17,6 +18,9 @@ class _DetailTokoState extends State<DetailToko> {
   late LocationPermission permission;
   late Position position;
   String long = "", lat = "";
+  late double userLong, userLat;
+  double tokoLong = 112.230074;
+  double tokoLat = -7.551498;
   double distance = 0;
   // late StreamSubscription<Position> positionStream;
 
@@ -71,8 +75,10 @@ class _DetailTokoState extends State<DetailToko> {
 
     setState(() {
       //refresh UI
+      userLong = position.longitude;
+      userLat = position.latitude;
       distance = calculateDistance(
-          position.latitude, position.longitude, -7.551498, 112.230074);
+          position.latitude, position.longitude, tokoLat, tokoLong);
     });
 
     // LocationSettings locationSettings = LocationSettings(
@@ -207,7 +213,23 @@ class _DetailTokoState extends State<DetailToko> {
                       child: TextButton(
                         child: Text('Posisi Toko',
                             style: TextStyle(color: Colors.white)),
-                        onPressed: () {},
+                        onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => PosisiToko(
+                          //             tokoLong: tokoLong,
+                          //             tokoLat: tokoLat,
+                          //             userLong: userLong,
+                          //             userLat: userLat,
+                          //           )),
+                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PosisiToko()),
+                          );
+                        },
                       ),
                     )
                   ],
