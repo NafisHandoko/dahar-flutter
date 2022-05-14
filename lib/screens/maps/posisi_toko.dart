@@ -162,10 +162,9 @@ class _PosisiTokoState extends State<PosisiToko> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  borderRadius: borderRadius1,
-                  color: Colors.white,
-                  // boxShadow: [boxshadow1]
-                ),
+                    borderRadius: borderRadius1,
+                    color: Colors.white,
+                    boxShadow: [boxshadow2]),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
