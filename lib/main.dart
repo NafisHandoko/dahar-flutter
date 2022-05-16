@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/detail_toko',
+        initialRoute: '/home',
         routes: {
           '/': (context) => const Wrapper(),
           '/home': (context) => const Home(),

@@ -190,42 +190,48 @@ class _PopularState extends State<Popular> {
   }
 }
 
-Container _closestItem(
-    String foodImage, String foodSeller, String foodDistance) {
-  return Container(
-    margin: const EdgeInsets.only(bottom: 15),
-    height: 100,
-    decoration: BoxDecoration(
-        borderRadius: borderRadius1,
-        image:
-            DecorationImage(image: NetworkImage(foodImage), fit: BoxFit.cover)),
-    child: Stack(children: [
-      Container(
-        decoration: BoxDecoration(
+GestureDetector _closestItem(
+    context, String foodImage, String foodSeller, String foodDistance) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, '/detail_toko');
+    },
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      height: 100,
+      decoration: BoxDecoration(
           borderRadius: borderRadius1,
-          color: Colors.black.withOpacity(0.4),
-        ),
-      ),
-      Positioned(
-        bottom: 15,
-        left: 15,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 2),
-            child: Text(foodSeller,
-                style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white)),
+          image: DecorationImage(
+              image: NetworkImage(foodImage), fit: BoxFit.cover)),
+      child: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: borderRadius1,
+            color: Colors.black.withOpacity(0.4),
           ),
-          Text(
-            foodDistance,
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600, color: color2),
-          )
-        ]),
-      )
-    ]),
+        ),
+        Positioned(
+          bottom: 15,
+          left: 15,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 2),
+              child: Text(foodSeller,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white)),
+            ),
+            Text(
+              foodDistance,
+              style: TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w600, color: color2),
+            )
+          ]),
+        )
+      ]),
+    ),
   );
 }
 
@@ -254,18 +260,22 @@ class _ClosestState extends State<Closest> {
           Column(
             children: [
               _closestItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Warung Bu Supiah',
                   '200 m'),
               _closestItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Warung Bu Supiah',
                   '200 m'),
               _closestItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Warung Bu Supiah',
                   '200 m'),
               _closestItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Warung Bu Supiah',
                   '200 m')
