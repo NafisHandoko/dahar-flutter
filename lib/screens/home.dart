@@ -72,71 +72,78 @@ class _DaharAppBarState extends State<DaharAppBar> {
   }
 }
 
-Container _popularItem(String foodImage, String foodTitle, String foodSeller) {
-  return Container(
-    margin: const EdgeInsets.only(right: 15),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 165,
-          height: 145,
-          decoration: BoxDecoration(
-              borderRadius: borderRadius1,
-              image: DecorationImage(
-                  image: NetworkImage(foodImage), fit: BoxFit.cover)),
-          child: Stack(children: [
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius1,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-                child: const Text(
-                  'Rp 20.000',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+GestureDetector _popularItem(
+    context, String foodImage, String foodTitle, String foodSeller) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, '/item_detail');
+    },
+    child: Container(
+      margin: const EdgeInsets.only(right: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 165,
+            height: 145,
+            decoration: BoxDecoration(
+                borderRadius: borderRadius1,
+                image: DecorationImage(
+                    image: NetworkImage(foodImage), fit: BoxFit.cover)),
+            child: Stack(children: [
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: Container(
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius1,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                  child: const Text(
+                    'Rp 20.000',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius1,
-                  color: Colors.white.withOpacity(0.8),
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius1,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                  child: Row(children: [
+                    Icon(
+                      Icons.star,
+                      color: colorStar,
+                    ),
+                    const Text(
+                      '4.2',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    ),
+                  ]),
                 ),
-                child: Row(children: [
-                  Icon(
-                    Icons.star,
-                    color: colorStar,
-                  ),
-                  const Text(
-                    '4.2',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                  ),
-                ]),
-              ),
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 5, bottom: 2),
-          child: Text(
-            foodTitle,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              )
+            ]),
           ),
-        ),
-        Text(
-          foodSeller,
-          style: TextStyle(
-              fontSize: 12, fontWeight: FontWeight.w500, color: color1),
-        )
-      ],
+          Container(
+            margin: const EdgeInsets.only(top: 5, bottom: 2),
+            child: Text(
+              foodTitle,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+          Text(
+            foodSeller,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w500, color: color1),
+          )
+        ],
+      ),
     ),
   );
 }
@@ -171,14 +178,17 @@ class _PopularState extends State<Popular> {
             children: [
               // Image.network('https://picsum.photos/250?image=9'),
               _popularItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Kari Spesial',
                   'Warung Bu Supiah'),
               _popularItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Kari Spesial',
                   'Warung Bu Supiah'),
               _popularItem(
+                  context,
                   'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
                   'Kari Spesial',
                   'Warung Bu Supiah')

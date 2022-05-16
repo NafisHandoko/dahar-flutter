@@ -241,7 +241,9 @@ class _NavButtonState extends State<NavButton> {
             ),
             child: IconButton(
                 color: color1,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 icon: Icon(Icons.arrow_back_ios_rounded)),
           ),
           Container(
