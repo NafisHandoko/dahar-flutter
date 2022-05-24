@@ -1,23 +1,33 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
+import 'package:dahar/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(100), child: DaharAppBar()),
-        body: Container(
-          // padding: const EdgeInsets.only(right: 30, left: 30),
-          color: Colors.white,
-          child: ListView(
-            children: const [Popular(), Closest()],
+    return StreamProvider<QuerySnapshot?>.value(
+      initialData: null,
+      value: DatabaseService().produk,
+      child: Scaffold(
+          appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100), child: DaharAppBar()),
+          body: Container(
+            // padding: const EdgeInsets.only(right: 30, left: 30),
+            color: Colors.white,
+            child: ListView(
+              children: const [Popular(), Closest()],
+            ),
           ),
-        ),
-        bottomNavigationBar: const NavBar());
+          bottomNavigationBar: const NavBar()),
+    );
   }
 }
 
@@ -158,6 +168,12 @@ class Popular extends StatefulWidget {
 class _PopularState extends State<Popular> {
   @override
   Widget build(BuildContext context) {
+    final produk = Provider.of<QuerySnapshot?>(context);
+    // log('${produk!.docs}');
+    List produkData = produk?.docs ?? [];
+    for (var item in produkData) {
+      log('${item.data()}');
+    }
     return Column(
       // mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -49,8 +49,14 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      // await DatabaseService(uid: user!.uid)
-      //     .updateUserData('0', 'new crew member', 100);
+      await DatabaseService(uid: user!.uid)
+          .updateToko('Belum diset', 'belum diset');
+      await DatabaseService(uid: user.uid).addProduk(
+          'Sate Kambing',
+          7000,
+          'sate enak',
+          'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+          4.0);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

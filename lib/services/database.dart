@@ -4,16 +4,38 @@ class DatabaseService {
   final String? uid;
   DatabaseService({this.uid});
 
-  final CollectionReference brewCollection =
-      FirebaseFirestore.instance.collection('brews');
+  final CollectionReference produkCollection =
+      FirebaseFirestore.instance.collection('produk');
 
-  Future<void> updateUserData(String sugars, String name, int strength) async {
-    return await brewCollection
-        .doc(uid)
-        .set({'sugars': sugars, 'name': name, 'strength': strength});
+  final CollectionReference tokoCollection =
+      FirebaseFirestore.instance.collection('toko');
+
+  // Future<void> updateUserData(String sugars, String name, int strength) async {
+  //   return await produkCollection
+  //       .doc(uid)
+  //       .set({'sugars': sugars, 'name': name, 'strength': strength});
+  // }
+
+  Future<void> updateToko(String nama, String alamat) async {
+    return await tokoCollection.doc(uid).set({
+      'nama': nama,
+      'alamat': alamat,
+    });
   }
 
-  Stream<QuerySnapshot?> get brews {
-    return brewCollection.snapshots();
+  Future<void> addProduk(String nama, int harga, String deskripsi,
+      String gambar, double rating) async {
+    await produkCollection.add({
+      'nama': nama,
+      'harga': harga,
+      'deskripsi': deskripsi,
+      'gambar': gambar,
+      'rating': rating,
+      'id_toko': FirebaseFirestore.instance.doc('toko/' + uid!)
+    });
+  }
+
+  Stream<QuerySnapshot?> get produk {
+    return produkCollection.snapshots();
   }
 }
