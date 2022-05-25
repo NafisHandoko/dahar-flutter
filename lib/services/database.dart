@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/produk.dart';
 
 class DatabaseService {
   final String? uid;
@@ -35,7 +36,23 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot?> get produk {
-    return produkCollection.snapshots();
+  List<Produk> _produkListFromSnapshot(QuerySnapshot? snapshot) {
+    return snapshot!.docs.map((doc) {
+      return Produk(
+          nama: doc.get('nama') ?? '',
+          harga: doc.get('harga') ?? 0,
+          deskripsi: doc.get('deskripsi') ?? '',
+          gambar: doc.get('gambar') ?? '',
+          rating: doc.get('rating') ?? 0,
+          id_toko: doc.get('id_toko'));
+    }).toList();
+  }
+
+  Stream<List<Produk>> get produk {
+    return produkCollection.snapshots().map(_produkListFromSnapshot);
+  }
+
+  Stream<QuerySnapshot?> get toko {
+    return tokoCollection.snapshots();
   }
 }

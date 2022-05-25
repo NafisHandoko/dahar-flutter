@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Produk {
-  final String? nama;
-  final int? harga;
-  final String? deskripsi;
-  final String? gambar;
-  final double? rating;
-  final String? id_toko;
+  final String nama;
+  final int harga;
+  final String deskripsi;
+  final String gambar;
+  final double rating;
+  final DocumentReference id_toko;
 
   Produk(
-      {this.nama,
-      this.harga,
-      this.deskripsi,
-      this.gambar,
-      this.rating,
-      this.id_toko});
+      {required this.nama,
+      required this.harga,
+      required this.deskripsi,
+      required this.gambar,
+      required this.rating,
+      required this.id_toko});
 }
