@@ -44,7 +44,9 @@ class DatabaseService {
           deskripsi: doc.get('deskripsi') ?? '',
           gambar: doc.get('gambar') ?? '',
           rating: doc.get('rating') ?? 0,
-          id_toko: doc.get('id_toko'));
+          id_toko: doc.get('id_toko')
+
+          );
     }).toList();
   }
 

@@ -80,7 +80,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
 }
 
 GestureDetector _popularItem(context, String foodImage, String foodTitle,
-    DocumentReference foodSeller, int foodPrice, double foodRating) {
+    String foodSeller, int foodPrice, double foodRating) {
   return GestureDetector(
     onTap: () {
       Navigator.pushNamed(context, '/item_detail');
@@ -145,7 +145,7 @@ GestureDetector _popularItem(context, String foodImage, String foodTitle,
             ),
           ),
           Text(
-            '$foodSeller',
+            '${foodSeller}',
             style: TextStyle(
                 fontSize: 12, fontWeight: FontWeight.w500, color: color1),
           )
@@ -196,22 +196,29 @@ class PopularBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final produk = Provider.of<List<Produk>>(context);
-    log('$produk');
-    produk.forEach((item) async {
-      log(item.deskripsi);
-      var x = await item.id_toko;
-      log("${(x)}");
-    });
+    // final produk = Provider.of<List<Produk>>(context);
+    // log('$produk');
+    // produk.forEach((item) async {
+    //   log(item.deskripsi);
+    //   var x = await item.id_toko.get();
+    //   var y =
+    //       await FirebaseFirestore.instance.doc('toko/' + item.id_toko.id).get();
+    //   log("${(x.get('nama'))}");
+    // });
 
-    return ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        scrollDirection: Axis.horizontal,
-        itemCount: produk.length,
-        itemBuilder: (context, index) {
-          return _popularItem(context, produk[index].gambar, produk[index].nama,
-              produk[index].id_toko, produk[index].harga, produk[index].rating);
-        });
+    // return ListView.builder(
+    //     padding: const EdgeInsets.symmetric(horizontal: 25),
+    //     scrollDirection: Axis.horizontal,
+    //     itemCount: produk.length,
+    //     itemBuilder: (context, index) {
+    //       return _popularItem(
+    //           context,
+    //           produk[index].gambar,
+    //           produk[index].nama,
+    //           produk[index].id_toko.get(),
+    //           produk[index].harga,
+    //           produk[index].rating);
+    //     });
 
     // log('${produk!.docs}');
     // List produkData = produk?.docs ?? [];
@@ -219,29 +226,35 @@ class PopularBuilder extends StatelessWidget {
     // for (var item in produkData) {
     //   log('${(item.get("harga"))}');
     // }
-    // return ListView(
-    //   // padding: const EdgeInsets.only(left: 25),
-    //   padding: const EdgeInsets.symmetric(horizontal: 25),
-    //   scrollDirection: Axis.horizontal,
-    //   children: [
-    //     // Image.network('https://picsum.photos/250?image=9'),
-    //     _popularItem(
-    //         context,
-    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-    //         'Kari Spesial',
-    //         'Warung Bu Supiah'),
-    //     _popularItem(
-    //         context,
-    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-    //         'Kari Spesial',
-    //         'Warung Bu Supiah'),
-    //     _popularItem(
-    //         context,
-    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-    //         'Kari Spesial',
-    //         'Warung Bu Supiah')
-    //   ],
-    // );
+    return ListView(
+      // padding: const EdgeInsets.only(left: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      scrollDirection: Axis.horizontal,
+      children: [
+        // Image.network('https://picsum.photos/250?image=9'),
+        _popularItem(
+            context,
+            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+            'Kari Spesial',
+            'Warung Bu Supiah',
+            20000,
+            4.2),
+        _popularItem(
+            context,
+            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+            'Kari Spesial',
+            'Warung Bu Supiah',
+            20000,
+            4.2),
+        _popularItem(
+            context,
+            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+            'Kari Spesial',
+            'Warung Bu Supiah',
+            20000,
+            4.2)
+      ],
+    );
   }
 }
 
