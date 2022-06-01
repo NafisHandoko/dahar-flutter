@@ -79,80 +79,117 @@ class _DaharAppBarState extends State<DaharAppBar> {
   }
 }
 
-GestureDetector _popularItem(context, String foodImage, String foodTitle,
-    String foodSeller, int foodPrice, double foodRating) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamed(context, '/item_detail');
-    },
-    child: Container(
-      margin: const EdgeInsets.only(right: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 165,
-            height: 145,
-            decoration: BoxDecoration(
-                borderRadius: borderRadius1,
-                image: DecorationImage(
-                    image: NetworkImage(foodImage), fit: BoxFit.cover)),
-            child: Stack(children: [
-              Positioned(
-                bottom: 10,
-                left: 10,
-                child: Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius1,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                  child: Text(
-                    'Rp $foodPrice',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 10,
-                right: 10,
-                child: Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius1,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                  child: Row(children: [
-                    Icon(
-                      Icons.star,
-                      color: colorStar,
+// GestureDetector _popularItem(context, String foodImage, String foodTitle,
+//     String foodSeller, int foodPrice, double foodRating) {
+//   return PopularItem();
+// }
+
+class PopularItem extends StatefulWidget {
+  final foodImage, foodTitle, foodPrice, foodRating;
+  final DocumentReference foodSellerId;
+  const PopularItem(
+      {Key? key,
+      this.foodImage,
+      this.foodTitle,
+      required this.foodSellerId,
+      this.foodPrice,
+      this.foodRating})
+      : super(key: key);
+
+  @override
+  State<PopularItem> createState() => _PopularItemState();
+}
+
+class _PopularItemState extends State<PopularItem> {
+  String foodSellerName = '';
+  @override
+  initState() {
+    super.initState();
+    widget.foodSellerId.get().then((value) {
+      setState(() {
+        foodSellerName = value.get('nama');
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/item_detail');
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 165,
+              height: 145,
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius1,
+                  image: DecorationImage(
+                      image: NetworkImage(widget.foodImage),
+                      fit: BoxFit.cover)),
+              child: Stack(children: [
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius1,
+                      color: Colors.white.withOpacity(0.8),
                     ),
-                    Text(
-                      '$foodRating',
+                    child: Text(
+                      'Rp ${widget.foodPrice}',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                     ),
-                  ]),
+                  ),
                 ),
-              )
-            ]),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 5, bottom: 2),
-            child: Text(
-              foodTitle,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius1,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    child: Row(children: [
+                      Icon(
+                        Icons.star,
+                        color: colorStar,
+                      ),
+                      Text(
+                        '${widget.foodRating}',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
+                    ]),
+                  ),
+                )
+              ]),
             ),
-          ),
-          Text(
-            '${foodSeller}',
-            style: TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w500, color: color1),
-          )
-        ],
+            Container(
+              margin: const EdgeInsets.only(top: 5, bottom: 2),
+              child: Text(
+                widget.foodTitle,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+            ),
+            Text(
+              '${foodSellerName}',
+              style: TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.w500, color: color1),
+            )
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class Popular extends StatefulWidget {
@@ -196,29 +233,29 @@ class PopularBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final produk = Provider.of<List<Produk>>(context);
-    // log('$produk');
-    // produk.forEach((item) async {
-    //   log(item.deskripsi);
-    //   var x = await item.id_toko.get();
-    //   var y =
-    //       await FirebaseFirestore.instance.doc('toko/' + item.id_toko.id).get();
-    //   log("${(x.get('nama'))}");
-    // });
+    final produk = Provider.of<List<Produk>>(context);
+    log('$produk');
+    produk.forEach((item) async {
+      log(item.deskripsi);
+      var x = await item.id_toko.get();
+      var y =
+          await FirebaseFirestore.instance.doc('toko/' + item.id_toko.id).get();
+      log("${(x.get('nama'))}");
+    });
 
-    // return ListView.builder(
-    //     padding: const EdgeInsets.symmetric(horizontal: 25),
-    //     scrollDirection: Axis.horizontal,
-    //     itemCount: produk.length,
-    //     itemBuilder: (context, index) {
-    //       return _popularItem(
-    //           context,
-    //           produk[index].gambar,
-    //           produk[index].nama,
-    //           produk[index].id_toko.get(),
-    //           produk[index].harga,
-    //           produk[index].rating);
-    //     });
+    return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        scrollDirection: Axis.horizontal,
+        itemCount: produk.length,
+        itemBuilder: (context, index) {
+          return PopularItem(
+              // context,
+              foodImage: produk[index].gambar,
+              foodTitle: produk[index].nama,
+              foodSellerId: produk[index].id_toko,
+              foodPrice: produk[index].harga,
+              foodRating: produk[index].rating);
+        });
 
     // log('${produk!.docs}');
     // List produkData = produk?.docs ?? [];
@@ -226,35 +263,35 @@ class PopularBuilder extends StatelessWidget {
     // for (var item in produkData) {
     //   log('${(item.get("harga"))}');
     // }
-    return ListView(
-      // padding: const EdgeInsets.only(left: 25),
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      scrollDirection: Axis.horizontal,
-      children: [
-        // Image.network('https://picsum.photos/250?image=9'),
-        _popularItem(
-            context,
-            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-            'Kari Spesial',
-            'Warung Bu Supiah',
-            20000,
-            4.2),
-        _popularItem(
-            context,
-            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-            'Kari Spesial',
-            'Warung Bu Supiah',
-            20000,
-            4.2),
-        _popularItem(
-            context,
-            'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-            'Kari Spesial',
-            'Warung Bu Supiah',
-            20000,
-            4.2)
-      ],
-    );
+    // return ListView(
+    //   // padding: const EdgeInsets.only(left: 25),
+    //   padding: const EdgeInsets.symmetric(horizontal: 25),
+    //   scrollDirection: Axis.horizontal,
+    //   children: [
+    //     // Image.network('https://picsum.photos/250?image=9'),
+    //     _popularItem(
+    //         context,
+    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    //         'Kari Spesial',
+    //         'Warung Bu Supiah',
+    //         20000,
+    //         4.2),
+    //     _popularItem(
+    //         context,
+    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    //         'Kari Spesial',
+    //         'Warung Bu Supiah',
+    //         20000,
+    //         4.2),
+    //     _popularItem(
+    //         context,
+    //         'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    //         'Kari Spesial',
+    //         'Warung Bu Supiah',
+    //         20000,
+    //         4.2)
+    //   ],
+    // );
   }
 }
 
