@@ -91,16 +91,17 @@ class _DaharAppBarState extends State<DaharAppBar> {
 // }
 
 class PopularItem extends StatefulWidget {
-  final foodImage, foodTitle, foodPrice, foodRating, foodDesc;
-  final DocumentReference foodSellerId;
-  const PopularItem(
-      {Key? key,
-      this.foodImage,
-      this.foodTitle,
-      required this.foodSellerId,
-      this.foodPrice,
-      this.foodRating,
-      this.foodDesc})
+  // final foodImage, foodTitle, foodPrice, foodRating, foodDesc;
+  // final DocumentReference foodSellerId;
+  final produk;
+  const PopularItem({Key? key, this.produk
+      // this.foodImage,
+      // this.foodTitle,
+      // required this.foodSellerId,
+      // this.foodPrice,
+      // this.foodRating,
+      // this.foodDesc
+      })
       : super(key: key);
 
   @override
@@ -109,10 +110,12 @@ class PopularItem extends StatefulWidget {
 
 class _PopularItemState extends State<PopularItem> {
   String? foodSellerName;
+  double? tokoLat;
+  double? tokoLong;
   @override
   initState() {
     super.initState();
-    widget.foodSellerId.get().then((value) {
+    widget.produk.id_toko.get().then((value) {
       setState(() {
         foodSellerName = value.get('nama');
       });
@@ -136,7 +139,7 @@ class _PopularItemState extends State<PopularItem> {
               decoration: BoxDecoration(
                   borderRadius: borderRadius1,
                   image: DecorationImage(
-                      image: NetworkImage(widget.foodImage),
+                      image: NetworkImage(widget.produk.gambar),
                       fit: BoxFit.cover)),
               child: Stack(children: [
                 Positioned(
@@ -149,7 +152,7 @@ class _PopularItemState extends State<PopularItem> {
                       color: Colors.white.withOpacity(0.8),
                     ),
                     child: Text(
-                      'Rp ${widget.foodPrice}',
+                      'Rp ${widget.produk.harga}',
                       style:
                           TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                     ),
@@ -170,7 +173,7 @@ class _PopularItemState extends State<PopularItem> {
                         color: colorStar,
                       ),
                       Text(
-                        '${widget.foodRating}',
+                        '${widget.produk.rating}',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w600),
                       ),
@@ -182,7 +185,7 @@ class _PopularItemState extends State<PopularItem> {
             Container(
               margin: const EdgeInsets.only(top: 5, bottom: 2),
               child: Text(
-                widget.foodTitle,
+                widget.produk.nama,
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
@@ -256,14 +259,14 @@ class PopularBuilder extends StatelessWidget {
         itemCount: produk.length,
         itemBuilder: (context, index) {
           return PopularItem(
-            // context,
-            foodImage: produk[index].gambar,
-            foodTitle: produk[index].nama,
-            foodSellerId: produk[index].id_toko,
-            foodPrice: produk[index].harga,
-            foodRating: produk[index].rating,
-            foodDesc: produk[index].deskripsi,
-          );
+              // context,
+              // foodImage: produk[index].gambar,
+              // foodTitle: produk[index].nama,
+              // foodSellerId: produk[index].id_toko,
+              // foodPrice: produk[index].harga,
+              // foodRating: produk[index].rating,
+              // foodDesc: produk[index].deskripsi,
+              produk: produk[index]);
         });
 
     // log('${produk!.docs}');
@@ -332,7 +335,6 @@ class _ClosestItemState extends State<ClosestItem> {
     var tokoDist =
         await TokoDistance(tokoLat: widget.tokoLat, tokoLong: widget.tokoLong)
             .checkGps();
-    log('$tokoDist');
     setState(() {
       distance = tokoDist;
     });
@@ -426,9 +428,9 @@ class ClosestBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final toko = Provider.of<List<Toko>>(context);
     // log('${toko.first.nama}');
-    toko.forEach((item) {
-      log('${item.nama}');
-    });
+    // toko.forEach((item) {
+    //   log('${item.nama}');
+    // });
     return Column(
       children: <Widget>[
         for (var item in toko)
