@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/toko.dart';
+import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/maps/networking.dart';
 import 'package:dahar/services/databases/ProdukDatabase.dart';
 import 'package:dahar/services/databases/TokoDatabase.dart';
@@ -109,15 +110,19 @@ class PopularItem extends StatefulWidget {
 }
 
 class _PopularItemState extends State<PopularItem> {
-  String? foodSellerName;
-  double? tokoLat;
-  double? tokoLong;
+  Toko? toko;
   @override
   initState() {
     super.initState();
     widget.produk.id_toko.get().then((value) {
       setState(() {
-        foodSellerName = value.get('nama');
+        // foodSellerName = value.get('nama');
+        toko = Toko(
+            nama: value.get('nama'),
+            alamat: value.get('alamat'),
+            lat: value.get('lat'),
+            long: value.get('long'),
+            foto: value.get('foto'));
       });
     });
   }
@@ -126,7 +131,15 @@ class _PopularItemState extends State<PopularItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/item_detail');
+        // Navigator.pushNamed(context, '/item_detail');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ItemDetail(
+                    produk: widget.produk,
+                    toko: toko,
+                  )),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(right: 15),
@@ -191,7 +204,7 @@ class _PopularItemState extends State<PopularItem> {
               ),
             ),
             Text(
-              '${foodSellerName}',
+              '${toko?.nama}',
               style: TextStyle(
                   fontSize: 12, fontWeight: FontWeight.w500, color: color1),
             )

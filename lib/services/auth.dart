@@ -80,7 +80,11 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       await TokoDatabase(uid: user!.uid).updateToko(
-          'Belum diset', 'belum diset', position.latitude, position.longitude);
+          'Belum diset',
+          'belum diset',
+          position.latitude,
+          position.longitude,
+          'https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80');
       // await DatabaseService(uid: user.uid).addProduk(
       //     'Sate Kambing',
       //     7000,
