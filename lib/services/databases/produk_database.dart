@@ -32,6 +32,7 @@ class ProdukDatabase {
       //   String namaToko = val.get('nama');
       // });
       return Produk(
+          id: doc.id,
           nama: doc.get('nama') ?? '',
           harga: doc.get('harga') ?? 0,
           deskripsi: doc.get('deskripsi') ?? '',

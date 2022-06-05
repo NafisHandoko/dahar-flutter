@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Produk {
+  final String id;
   final String nama;
   final int harga;
   final String deskripsi;
@@ -9,7 +10,8 @@ class Produk {
   final DocumentReference id_toko;
 
   Produk(
-      {required this.nama,
+      {required this.id,
+      required this.nama,
       required this.harga,
       required this.deskripsi,
       required this.gambar,

@@ -1,4 +1,4 @@
-import 'package:dahar/services/databases/TokoDatabase.dart';
+import 'package:dahar/services/databases/toko_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dahar/models/user.dart';
 import 'package:geolocator/geolocator.dart';

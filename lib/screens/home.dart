@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/toko.dart';
 import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/maps/networking.dart';
-import 'package:dahar/services/databases/ProdukDatabase.dart';
-import 'package:dahar/services/databases/TokoDatabase.dart';
+import 'package:dahar/services/databases/produk_database.dart';
+import 'package:dahar/services/databases/toko_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -95,15 +95,7 @@ class PopularItem extends StatefulWidget {
   // final foodImage, foodTitle, foodPrice, foodRating, foodDesc;
   // final DocumentReference foodSellerId;
   final produk;
-  const PopularItem({Key? key, this.produk
-      // this.foodImage,
-      // this.foodTitle,
-      // required this.foodSellerId,
-      // this.foodPrice,
-      // this.foodRating,
-      // this.foodDesc
-      })
-      : super(key: key);
+  const PopularItem({Key? key, this.produk}) : super(key: key);
 
   @override
   State<PopularItem> createState() => _PopularItemState();
@@ -271,15 +263,7 @@ class PopularBuilder extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: produk.length,
         itemBuilder: (context, index) {
-          return PopularItem(
-              // context,
-              // foodImage: produk[index].gambar,
-              // foodTitle: produk[index].nama,
-              // foodSellerId: produk[index].id_toko,
-              // foodPrice: produk[index].harga,
-              // foodRating: produk[index].rating,
-              // foodDesc: produk[index].deskripsi,
-              produk: produk[index]);
+          return PopularItem(produk: produk[index]);
         });
 
     // log('${produk!.docs}');

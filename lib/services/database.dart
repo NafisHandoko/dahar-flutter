@@ -39,14 +39,13 @@ class DatabaseService {
   List<Produk> _produkListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Produk(
+          id: doc.id,
           nama: doc.get('nama') ?? '',
           harga: doc.get('harga') ?? 0,
           deskripsi: doc.get('deskripsi') ?? '',
           gambar: doc.get('gambar') ?? '',
           rating: doc.get('rating') ?? 0,
-          id_toko: doc.get('id_toko')
-
-          );
+          id_toko: doc.get('id_toko'));
     }).toList();
   }
 
