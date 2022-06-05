@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/toko.dart';
+import 'package:dahar/screens/maps/networking.dart';
+import 'package:dahar/services/databases/ProdukDatabase.dart';
+import 'package:dahar/services/databases/TokoDatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
@@ -8,6 +12,7 @@ import 'package:dahar/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/produk.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -101,7 +106,7 @@ class PopularItem extends StatefulWidget {
 }
 
 class _PopularItemState extends State<PopularItem> {
-  String foodSellerName = '';
+  String? foodSellerName;
   @override
   initState() {
     super.initState();
@@ -204,7 +209,7 @@ class _PopularState extends State<Popular> {
   Widget build(BuildContext context) {
     return StreamProvider<List<Produk>>.value(
       initialData: [],
-      value: DatabaseService().produk,
+      value: ProdukDatabase().produk,
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,14 +239,14 @@ class PopularBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final produk = Provider.of<List<Produk>>(context);
-    log('$produk');
-    produk.forEach((item) async {
-      log(item.deskripsi);
-      var x = await item.id_toko.get();
-      var y =
-          await FirebaseFirestore.instance.doc('toko/' + item.id_toko.id).get();
-      log("${(x.get('nama'))}");
-    });
+    // log('$produk');
+    // produk.forEach((item) async {
+    //   log(item.deskripsi);
+    //   var x = await item.id_toko.get();
+    //   var y =
+    //       await FirebaseFirestore.instance.doc('toko/' + item.id_toko.id).get();
+    //   log("${(x.get('nama'))}");
+    // });
 
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -295,49 +300,174 @@ class PopularBuilder extends StatelessWidget {
   }
 }
 
-GestureDetector _closestItem(
-    context, String foodImage, String foodSeller, String foodDistance) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamed(context, '/detail_toko');
-    },
-    child: Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      height: 100,
-      decoration: BoxDecoration(
-          borderRadius: borderRadius1,
-          image: DecorationImage(
-              image: NetworkImage(foodImage), fit: BoxFit.cover)),
-      child: Stack(children: [
-        Container(
-          decoration: BoxDecoration(
+// GestureDetector _closestItem(
+//     context, String foodImage, String foodSeller, String foodDistance) {
+//   return ClosestItem();
+// }
+
+class ClosestItem extends StatefulWidget {
+  final tokoImage, tokoName, tokoLat, tokoLong;
+  const ClosestItem(
+      {Key? key, this.tokoImage, this.tokoName, this.tokoLat, this.tokoLong})
+      : super(key: key);
+
+  @override
+  State<ClosestItem> createState() => _ClosestItemState();
+}
+
+class _ClosestItemState extends State<ClosestItem> {
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+  String long = "", lat = "";
+  late double userLong, userLat;
+  // double tokoLong = 112.230074;
+  // double tokoLat = -7.551498;
+  double? distance;
+  var data;
+  // late StreamSubscription<Position> positionStream;
+
+  @override
+  void initState() {
+    checkGps();
+    super.initState();
+  }
+
+  checkGps() async {
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    if (servicestatus) {
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permissions are denied');
+        } else if (permission == LocationPermission.deniedForever) {
+          print("'Location permissions are permanently denied");
+        } else {
+          haspermission = true;
+        }
+      } else {
+        haspermission = true;
+      }
+
+      if (haspermission) {
+        setState(() {
+          //refresh the UI
+        });
+
+        getLocation();
+      }
+    } else {
+      print("GPS Service is not enabled, turn on GPS location");
+    }
+
+    setState(() {
+      //refresh the UI
+    });
+  }
+
+  getLocation() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude); //Output: 80.24599079
+    print(position.latitude); //Output: 29.6593457
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
+    double? jarak = await streetDistance(
+        position.latitude, position.longitude, widget.tokoLat, widget.tokoLong);
+    setState(() {
+      //refresh UI
+      userLong = position.longitude;
+      userLat = position.latitude;
+      distance = (jarak! / 1000);
+    });
+
+    // LocationSettings locationSettings = LocationSettings(
+    //   accuracy: LocationAccuracy.high, //accuracy of the location data
+    //   distanceFilter: 100, //minimum distance (measured in meters) a
+    //   //device must move horizontally before an update event is generated;
+    // );
+
+    // StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+    //       locationSettings: locationSettings).listen((Position position) {
+    //       print(position.longitude); //Output: 80.24599079
+    //       print(position.latitude); //Output: 29.6593457
+
+    //       long = position.longitude.toString();
+    //       lat = position.latitude.toString();
+
+    //       setState(() {
+    //         //refresh UI on update
+    //       });
+    // });
+  }
+
+  Future<double?> streetDistance(startLat, startLng, endLat, endLng) async {
+    NetworkHelper network = NetworkHelper(
+      startLat: startLat,
+      startLng: startLng,
+      endLat: endLat,
+      endLng: endLng,
+    );
+
+    try {
+      // getData() returns a json Decoded data
+      data = await network.getData();
+
+      // get distance and print
+      return data['features'][0]['properties']['summary']['distance'];
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/detail_toko');
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        height: 100,
+        decoration: BoxDecoration(
             borderRadius: borderRadius1,
-            color: Colors.black.withOpacity(0.4),
-          ),
-        ),
-        Positioned(
-          bottom: 15,
-          left: 15,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 2),
-              child: Text(foodSeller,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+            image: DecorationImage(
+                image: NetworkImage(widget.tokoImage), fit: BoxFit.cover)),
+        child: Stack(children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius1,
+              color: Colors.black.withOpacity(0.4),
             ),
-            Text(
-              foodDistance,
-              style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, color: color2),
-            )
-          ]),
-        )
-      ]),
-    ),
-  );
+          ),
+          Positioned(
+            bottom: 15,
+            left: 15,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 2),
+                child: Text(widget.tokoName,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white)),
+              ),
+              Text(
+                '${distance?.toStringAsFixed(1)} Km',
+                style: TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w600, color: color2),
+              )
+            ]),
+          )
+        ]),
+      ),
+    );
+  }
 }
 
 class Closest extends StatefulWidget {
@@ -350,44 +480,52 @@ class Closest extends StatefulWidget {
 class _ClosestState extends State<Closest> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: const Text(
-              'Closest',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+    return StreamProvider<List<Toko>>.value(
+      initialData: [],
+      value: TokoDatabase().toko,
+      child: Container(
+        margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: const Text(
+                'Closest',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-          Column(
-            children: [
-              _closestItem(
-                  context,
-                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                  'Warung Bu Supiah',
-                  '200 m'),
-              _closestItem(
-                  context,
-                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                  'Warung Bu Supiah',
-                  '200 m'),
-              _closestItem(
-                  context,
-                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                  'Warung Bu Supiah',
-                  '200 m'),
-              _closestItem(
-                  context,
-                  'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                  'Warung Bu Supiah',
-                  '200 m')
-            ],
-          )
-        ],
+            ClosestBuilder()
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class ClosestBuilder extends StatelessWidget {
+  const ClosestBuilder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final toko = Provider.of<List<Toko>>(context);
+    // log('${toko.first.nama}');
+    toko.forEach((item) {
+      log('${item.nama}');
+    });
+    return Column(
+      children: <Widget>[
+        for (var item in toko)
+          ClosestItem(
+            tokoImage:
+                'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+            tokoName: item.nama,
+            tokoLat: item.lat,
+            tokoLong: item.long,
+          )
+      ],
     );
   }
 }

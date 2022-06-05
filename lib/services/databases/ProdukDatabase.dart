@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/produk.dart';
 
@@ -22,6 +24,13 @@ class ProdukDatabase {
 
   List<Produk> _produkListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
+      // log('${doc.get('id_toko').id}');
+      // String namaToko;
+      // var tokoRef =
+      //     FirebaseFirestore.instance.doc('toko/' + doc.get('id_toko').id).get();
+      // tokoRef.then((val) {
+      //   String namaToko = val.get('nama');
+      // });
       return Produk(
           nama: doc.get('nama') ?? '',
           harga: doc.get('harga') ?? 0,
