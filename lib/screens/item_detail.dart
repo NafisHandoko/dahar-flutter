@@ -1,3 +1,4 @@
+import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 
@@ -10,6 +11,23 @@ class ItemDetail extends StatefulWidget {
 }
 
 class _ItemDetailState extends State<ItemDetail> {
+  double? distance;
+
+  @override
+  void initState() {
+    getDistance();
+    super.initState();
+  }
+
+  getDistance() async {
+    var tokoDist =
+        await TokoDistance(tokoLat: widget.toko.lat, tokoLong: widget.toko.long)
+            .checkGps();
+    setState(() {
+      distance = tokoDist;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +107,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                             ),
-                            const Text('200 m')
+                            Text('${distance?.toStringAsFixed(1)} Km')
                           ],
                         )
                       ],
