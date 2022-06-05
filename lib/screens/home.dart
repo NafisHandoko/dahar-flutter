@@ -5,6 +5,7 @@ import 'package:dahar/models/toko.dart';
 import 'package:dahar/screens/maps/networking.dart';
 import 'package:dahar/services/databases/ProdukDatabase.dart';
 import 'package:dahar/services/databases/TokoDatabase.dart';
+import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
@@ -90,7 +91,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
 // }
 
 class PopularItem extends StatefulWidget {
-  final foodImage, foodTitle, foodPrice, foodRating;
+  final foodImage, foodTitle, foodPrice, foodRating, foodDesc;
   final DocumentReference foodSellerId;
   const PopularItem(
       {Key? key,
@@ -98,7 +99,8 @@ class PopularItem extends StatefulWidget {
       this.foodTitle,
       required this.foodSellerId,
       this.foodPrice,
-      this.foodRating})
+      this.foodRating,
+      this.foodDesc})
       : super(key: key);
 
   @override
@@ -254,12 +256,14 @@ class PopularBuilder extends StatelessWidget {
         itemCount: produk.length,
         itemBuilder: (context, index) {
           return PopularItem(
-              // context,
-              foodImage: produk[index].gambar,
-              foodTitle: produk[index].nama,
-              foodSellerId: produk[index].id_toko,
-              foodPrice: produk[index].harga,
-              foodRating: produk[index].rating);
+            // context,
+            foodImage: produk[index].gambar,
+            foodTitle: produk[index].nama,
+            foodSellerId: produk[index].id_toko,
+            foodPrice: produk[index].harga,
+            foodRating: produk[index].rating,
+            foodDesc: produk[index].deskripsi,
+          );
         });
 
     // log('${produk!.docs}');
@@ -316,112 +320,22 @@ class ClosestItem extends StatefulWidget {
 }
 
 class _ClosestItemState extends State<ClosestItem> {
-  bool servicestatus = false;
-  bool haspermission = false;
-  late LocationPermission permission;
-  late Position position;
-  String long = "", lat = "";
-  late double userLong, userLat;
-  // double tokoLong = 112.230074;
-  // double tokoLat = -7.551498;
   double? distance;
-  var data;
-  // late StreamSubscription<Position> positionStream;
 
   @override
   void initState() {
-    checkGps();
+    getDistance();
     super.initState();
   }
 
-  checkGps() async {
-    servicestatus = await Geolocator.isLocationServiceEnabled();
-    if (servicestatus) {
-      permission = await Geolocator.checkPermission();
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          print('Location permissions are denied');
-        } else if (permission == LocationPermission.deniedForever) {
-          print("'Location permissions are permanently denied");
-        } else {
-          haspermission = true;
-        }
-      } else {
-        haspermission = true;
-      }
-
-      if (haspermission) {
-        setState(() {
-          //refresh the UI
-        });
-
-        getLocation();
-      }
-    } else {
-      print("GPS Service is not enabled, turn on GPS location");
-    }
-
+  getDistance() async {
+    var tokoDist =
+        await TokoDistance(tokoLat: widget.tokoLat, tokoLong: widget.tokoLong)
+            .checkGps();
+    log('$tokoDist');
     setState(() {
-      //refresh the UI
+      distance = tokoDist;
     });
-  }
-
-  getLocation() async {
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print(position.longitude); //Output: 80.24599079
-    print(position.latitude); //Output: 29.6593457
-
-    long = position.longitude.toString();
-    lat = position.latitude.toString();
-    double? jarak = await streetDistance(
-        position.latitude, position.longitude, widget.tokoLat, widget.tokoLong);
-    setState(() {
-      //refresh UI
-      userLong = position.longitude;
-      userLat = position.latitude;
-      distance = (jarak! / 1000);
-    });
-
-    // LocationSettings locationSettings = LocationSettings(
-    //   accuracy: LocationAccuracy.high, //accuracy of the location data
-    //   distanceFilter: 100, //minimum distance (measured in meters) a
-    //   //device must move horizontally before an update event is generated;
-    // );
-
-    // StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
-    //       locationSettings: locationSettings).listen((Position position) {
-    //       print(position.longitude); //Output: 80.24599079
-    //       print(position.latitude); //Output: 29.6593457
-
-    //       long = position.longitude.toString();
-    //       lat = position.latitude.toString();
-
-    //       setState(() {
-    //         //refresh UI on update
-    //       });
-    // });
-  }
-
-  Future<double?> streetDistance(startLat, startLng, endLat, endLng) async {
-    NetworkHelper network = NetworkHelper(
-      startLat: startLat,
-      startLng: startLng,
-      endLat: endLat,
-      endLng: endLng,
-    );
-
-    try {
-      // getData() returns a json Decoded data
-      data = await network.getData();
-
-      // get distance and print
-      return data['features'][0]['properties']['summary']['distance'];
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override
