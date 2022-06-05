@@ -8,19 +8,20 @@ class TokoDatabase {
   final CollectionReference tokoCollection =
       FirebaseFirestore.instance.collection('toko');
 
-  Future<void> updateToko(String nama, String alamat) async {
-    return await tokoCollection.doc(uid).set({
-      'nama': nama,
-      'alamat': alamat,
-    });
+  Future<void> updateToko(
+      String nama, String alamat, double lat, double long) async {
+    return await tokoCollection
+        .doc(uid)
+        .set({'nama': nama, 'alamat': alamat, 'lat': lat, 'long': long});
   }
 
   List<Toko> _tokoListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Toko(
-        nama: doc.get('nama') ?? '',
-        alamat: doc.get('alamat') ?? '',
-      );
+          nama: doc.get('nama') ?? '',
+          alamat: doc.get('alamat') ?? '',
+          lat: doc.get('lat') ?? 0,
+          long: doc.get('long') ?? 0);
     }).toList();
   }
 
