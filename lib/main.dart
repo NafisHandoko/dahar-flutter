@@ -1,3 +1,4 @@
+import 'package:dahar/screens/cart_screen.dart';
 import 'package:dahar/screens/checkout.dart';
 import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/screens/wrapper.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/checkout': (context) => const checkout(),
           // '/login': (context) => const Login(),
           // '/camera': (context) => const Camera()
+          '/cart_screen': (context) => const CartScreen(),
         },
       ),
     );

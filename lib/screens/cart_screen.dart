@@ -20,6 +20,8 @@ class CartScreen extends StatelessWidget {
         child: Column(
           children: [
             ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
               children: [CartItem()],
             ),
             Container()
@@ -77,13 +79,13 @@ class _CartItemState extends State<CartItem> {
                         color: color1),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 5),
+                    margin: const EdgeInsets.only(top: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Rp 20.000',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w700)),
+                                fontSize: 16, fontWeight: FontWeight.w700)),
                         Container(
                           // margin: const EdgeInsets.only(bottom: 20),
                           decoration: BoxDecoration(
@@ -101,43 +103,52 @@ class _CartItemState extends State<CartItem> {
                                       boxShadow: [boxshadow1]),
                                   child: Row(
                                     children: [
-                                      TextButton(
-                                          onPressed: () {
+                                      InkWell(
+                                          onTap: () {
                                             setState(() {
                                               _cartCount -= 1;
                                             });
                                           },
-                                          child: const Text(
-                                            '-',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 7),
+                                            child: const Text(
+                                              '-',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           )),
                                       Text(
                                         '$_cartCount',
                                         style: TextStyle(color: Colors.white),
                                       ),
-                                      TextButton(
-                                          onPressed: () {
+                                      InkWell(
+                                          onTap: () {
                                             setState(() {
                                               _cartCount += 1;
                                             });
                                           },
-                                          child: const Text(
-                                            '+',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            child: const Text(
+                                              '+',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ))
                                     ],
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(5.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
                                   child: InkWell(
                                     onTap: () {},
                                     child: Icon(
                                       Icons.delete,
-                                      color: Colors.white,
-                                      size: 15,
+                                      color: colorRedDelete,
+                                      size: 20,
                                     ),
                                   ),
                                 )
