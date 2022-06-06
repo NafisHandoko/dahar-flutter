@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/cart.dart';
-import 'package:dahar/models/user.dart';
+import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/services/databases/cart_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -15,7 +15,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DaharUser user = Provider.of<DaharUser>(context);
+    AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<Cart>>.value(
       initialData: [],
       value: CartDatabase(uid: user.uid).cart,

@@ -1,4 +1,4 @@
-import 'package:dahar/models/user.dart';
+import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/services/databases/cart_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
@@ -151,8 +151,8 @@ class _ItemDetailState extends State<ItemDetail> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        DaharUser user =
-                            Provider.of<DaharUser>(context, listen: false);
+                        AuthUser user =
+                            Provider.of<AuthUser>(context, listen: false);
                         await CartDatabase(uid: user.uid)
                             .addCart(_cartCount, widget.produk.id);
                       },

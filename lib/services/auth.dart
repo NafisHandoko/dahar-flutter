@@ -1,19 +1,19 @@
 import 'package:dahar/services/databases/toko_database.dart';
 import 'package:dahar/services/databases/user_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dahar/models/user.dart';
+import 'package:dahar/models/auth_user.dart';
 import 'package:geolocator/geolocator.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase User obj
-  DaharUser? _userFromFirebaseUser(User? user) {
-    return user != null ? DaharUser(uid: user.uid) : null;
+  AuthUser? _userFromFirebaseUser(User? user) {
+    return user != null ? AuthUser(uid: user.uid) : null;
   }
 
   // auth change user stream
-  Stream<DaharUser?> get user {
+  Stream<AuthUser?> get user {
     return _auth
         .authStateChanges()
         // .map((User? user) => _userFromFirebaseUser(user));
@@ -80,7 +80,8 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await UserDatabase(uid: user!.uid).updateUser(email.split('@')[0], email);
+      await UserDatabase(uid: user!.uid).updateUser(email.split('@')[0], email,
+          'https://images.unsplash.com/photo-1628258475456-0224b1e4225a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
       await TokoDatabase(uid: user.uid).updateToko(
           'Belum diset',
           'belum diset',
