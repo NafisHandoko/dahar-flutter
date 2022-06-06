@@ -14,46 +14,56 @@ class CartScreen extends StatelessWidget {
             child: BackAppBar(
               title: 'Cart',
             )),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: [CartItem(), CartItem()],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius2,
-                  color: color2,
-                ),
-                child: Column(children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text('Total'), Text('Rp 78.000')]),
-                  Container(
-                    // margin: const EdgeInsets.only(top: 10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: borderRadius2,
-                        color: color1,
-                        boxShadow: [boxshadow1]),
-                    child: TextButton(
-                      child: const Text(
-                        'Checkout',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {},
-                    ),
-                  )
-                ]),
-              )
-            ],
+        body: Stack(children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            color: Colors.white,
+            child: ListView(
+                // scrollDirection: Axis.vertical,
+                // shrinkWrap: true,
+                children: [CartItem(), CartItem()]),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.only(
+                  right: 25, left: 25, top: 30, bottom: 15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+                color: color2,
+              ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Total'),
+                          Text('Rp 78.000',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w700))
+                        ]),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: borderRadius2,
+                          color: color1,
+                          boxShadow: [boxshadow1]),
+                      child: TextButton(
+                        child: const Text(
+                          'Checkout',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {},
+                      ),
+                    )
+                  ]),
+            ),
+          )
+        ]),
         bottomNavigationBar: const NavBar());
   }
 }
