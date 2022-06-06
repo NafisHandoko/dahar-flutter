@@ -1,4 +1,5 @@
 import 'package:dahar/services/databases/toko_database.dart';
+import 'package:dahar/services/databases/user_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dahar/models/user.dart';
 import 'package:geolocator/geolocator.dart';
@@ -79,7 +80,8 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await TokoDatabase(uid: user!.uid).updateToko(
+      await UserDatabase(uid: user!.uid).updateUser(email.split('@')[0], email);
+      await TokoDatabase(uid: user.uid).updateToko(
           'Belum diset',
           'belum diset',
           position.latitude,
