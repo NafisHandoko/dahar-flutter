@@ -8,17 +8,22 @@ class CartDatabase {
   final CollectionReference cartCollection =
       FirebaseFirestore.instance.collection('cart');
 
-  Future<void> updateCart(int kuantitas) async {
-    return await cartCollection.doc(uid).set({
-      'id_produk': FirebaseFirestore.instance.doc('produk/' + uid!),
+  Future<void> updateCart(int kuantitas, String id_produk) async {
+    await cartCollection.add({
+      'id_produk': FirebaseFirestore.instance.doc('produk/' + id_produk),
       'kuantitas': kuantitas,
       'id_user': FirebaseFirestore.instance.doc('user/' + uid!),
     });
   }
 
+  Future<void> deleteCart(String id_cart) async {
+    await cartCollection.doc(id_cart).delete();
+  }
+
   List<Cart> _cartListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Cart(
+          id: doc.id,
           id_produk: doc.get('id_produk'),
           kuantitas: doc.get('kuantitas') ?? 0,
           id_user: doc.get('id_user'));

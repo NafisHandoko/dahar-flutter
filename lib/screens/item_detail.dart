@@ -1,6 +1,9 @@
+import 'package:dahar/models/user.dart';
+import 'package:dahar/services/databases/cart_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
+import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
   final produk, toko;
@@ -12,6 +15,7 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail> {
   double? distance;
+  int _cartCount = 1;
 
   @override
   void initState() {
@@ -146,7 +150,12 @@ class _ItemDetailState extends State<ItemDetail> {
                         'Add to Cart',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        DaharUser user =
+                            Provider.of<DaharUser>(context, listen: false);
+                        await CartDatabase(uid: user.uid)
+                            .updateCart(_cartCount, widget.produk.id);
+                      },
                     ),
                   ),
                   Container(
@@ -185,7 +194,42 @@ class _ItemDetailState extends State<ItemDetail> {
                 ],
               ),
             )),
-        const Positioned(top: 290, child: CartButton())
+        Positioned(
+            top: 290,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  boxShadow: [boxshadow1]),
+              child: Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _cartCount -= 1;
+                        });
+                      },
+                      child: const Text(
+                        '-',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                  Text(
+                    '$_cartCount',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _cartCount += 1;
+                        });
+                      },
+                      child: const Text(
+                        '+',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              ),
+            ))
       ]),
     );
   }

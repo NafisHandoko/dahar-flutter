@@ -235,7 +235,9 @@ class _CartItemState extends State<CartItem> {
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      CartDatabase().deleteCart(widget.cart.id);
+                                    },
                                     child: Icon(
                                       Icons.delete,
                                       color: colorRedDelete,
