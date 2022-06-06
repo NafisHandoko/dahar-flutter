@@ -8,7 +8,7 @@ class CartDatabase {
   final CollectionReference cartCollection =
       FirebaseFirestore.instance.collection('cart');
 
-  Future<void> updateCart(int kuantitas, String id_produk) async {
+  Future<void> addCart(int kuantitas, String id_produk) async {
     await cartCollection.add({
       'id_produk': FirebaseFirestore.instance.doc('produk/' + id_produk),
       'kuantitas': kuantitas,

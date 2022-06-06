@@ -154,7 +154,7 @@ class _ItemDetailState extends State<ItemDetail> {
                         DaharUser user =
                             Provider.of<DaharUser>(context, listen: false);
                         await CartDatabase(uid: user.uid)
-                            .updateCart(_cartCount, widget.produk.id);
+                            .addCart(_cartCount, widget.produk.id);
                       },
                     ),
                   ),
