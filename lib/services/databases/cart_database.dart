@@ -26,6 +26,10 @@ class CartDatabase {
   }
 
   Stream<List<Cart>> get cart {
-    return cartCollection.snapshots().map(_cartListFromSnapshot);
+    return cartCollection
+        .where('id_user',
+            isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!))
+        .snapshots()
+        .map(_cartListFromSnapshot);
   }
 }
