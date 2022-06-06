@@ -1,82 +1,137 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/cart.dart';
+import 'package:dahar/services/databases/cart_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: BackAppBar(
-              title: 'Cart',
-            )),
-        body: Stack(children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            color: Colors.white,
-            child: ListView(
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                children: [CartItem(), CartItem()]),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.only(
-                  right: 25, left: 25, top: 30, bottom: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
-                color: color2,
-              ),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Total'),
-                          Text('Rp 78.000',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700))
-                        ]),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      // width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: borderRadius2,
-                          color: color1,
-                          boxShadow: [boxshadow1]),
-                      child: TextButton(
-                        child: const Text(
-                          'Checkout',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {},
-                      ),
-                    )
-                  ]),
+    return StreamProvider<List<Cart>>.value(
+      initialData: [],
+      value: CartDatabase().cart,
+      child: Scaffold(
+          appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: BackAppBar(
+                title: 'Cart',
+              )),
+          body: Stack(children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              color: Colors.white,
+              child: CartBuilder(),
             ),
-          )
-        ]),
-        bottomNavigationBar: const NavBar());
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 25, left: 25, top: 30, bottom: 15),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(30.0)),
+                  color: color2,
+                ),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Total'),
+                            Text('Rp 78.000',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w700))
+                          ]),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        // width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: borderRadius2,
+                            color: color1,
+                            boxShadow: [boxshadow1]),
+                        child: TextButton(
+                          child: const Text(
+                            'Checkout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {},
+                        ),
+                      )
+                    ]),
+              ),
+            )
+          ]),
+          bottomNavigationBar: const NavBar()),
+    );
+  }
+}
+
+class CartBuilder extends StatelessWidget {
+  const CartBuilder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cart = Provider.of<List<Cart>>(context);
+    // return ListView(
+    //     // scrollDirection: Axis.vertical,
+    //     // shrinkWrap: true,
+    //     children: [CartItem(), CartItem()]);
+    return ListView.builder(
+        itemCount: cart.length,
+        itemBuilder: (context, index) {
+          return CartItem(cart: cart[index]);
+        });
   }
 }
 
 class CartItem extends StatefulWidget {
-  const CartItem({Key? key}) : super(key: key);
+  final cart;
+  const CartItem({Key? key, this.cart}) : super(key: key);
 
   @override
   State<CartItem> createState() => _CartItemState();
 }
 
 class _CartItemState extends State<CartItem> {
-  int _cartCount = 1;
+  late int _cartCount;
+  String? foodName;
+  int? foodPrice;
+  String? foodSeller;
+  String? foodImage;
+  @override
+  initState() {
+    super.initState();
+    widget.cart.id_produk.get().then((value) {
+      setState(() {
+        foodName = value.get('nama');
+        foodImage = value.get('gambar');
+        foodPrice = value.get('harga');
+      });
+      var tokoRef = FirebaseFirestore.instance
+          .doc('toko/' + value.get('id_toko').id)
+          .get();
+      tokoRef.then((val) {
+        setState(() {
+          foodSeller = val.get('nama');
+        });
+      });
+    });
+    setState(() {
+      _cartCount = widget.cart.kuantitas;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +147,7 @@ class _CartItemState extends State<CartItem> {
               decoration: BoxDecoration(
                   borderRadius: borderRadius1,
                   image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'),
-                      fit: BoxFit.cover)),
+                      image: NetworkImage('$foodImage'), fit: BoxFit.cover)),
             ),
             Expanded(
               // color: Colors.amberAccent,
@@ -104,11 +157,11 @@ class _CartItemState extends State<CartItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Sate Asli Madura',
+                    '$foodName',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    'Rumah Sate Pak Yen',
+                    '$foodSeller',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -119,7 +172,7 @@ class _CartItemState extends State<CartItem> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Rp 20.000',
+                        Text('Rp $foodPrice',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w700)),
                         Container(
