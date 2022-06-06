@@ -76,12 +76,14 @@ class _DetailTokoState extends State<DetailToko> {
     lat = position.latitude.toString();
     double? jarak = await streetDistance(
         position.latitude, position.longitude, tokoLat, tokoLong);
-    setState(() {
-      //refresh UI
-      userLong = position.longitude;
-      userLat = position.latitude;
-      distance = (jarak! / 1000);
-    });
+    if (mounted) {
+      setState(() {
+        //refresh UI
+        userLong = position.longitude;
+        userLat = position.latitude;
+        distance = (jarak! / 1000);
+      });
+    }
 
     // LocationSettings locationSettings = LocationSettings(
     //   accuracy: LocationAccuracy.high, //accuracy of the location data

@@ -23,9 +23,11 @@ class _ItemDetailState extends State<ItemDetail> {
     var tokoDist =
         await TokoDistance(tokoLat: widget.toko.lat, tokoLong: widget.toko.long)
             .checkGps();
-    setState(() {
-      distance = tokoDist;
-    });
+    if (mounted) {
+      setState(() {
+        distance = tokoDist;
+      });
+    }
   }
 
   @override
