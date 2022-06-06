@@ -9,26 +9,52 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(100),
-          child: BackAppBar(
-            title: 'Cart',
-          )),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        color: Colors.white,
-        child: Column(
-          children: [
-            ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: [CartItem()],
-            ),
-            Container()
-          ],
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(100),
+            child: BackAppBar(
+              title: 'Cart',
+            )),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [CartItem(), CartItem()],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color2,
+                ),
+                child: Column(children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text('Total'), Text('Rp 78.000')]),
+                  Container(
+                    // margin: const EdgeInsets.only(top: 10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: borderRadius2,
+                        color: color1,
+                        boxShadow: [boxshadow1]),
+                    child: TextButton(
+                      child: const Text(
+                        'Checkout',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    ),
+                  )
+                ]),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+        bottomNavigationBar: const NavBar());
   }
 }
 
