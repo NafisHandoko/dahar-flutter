@@ -54,7 +54,11 @@ class TokoDistance {
     //refresh UI
     userLong = position.longitude;
     userLat = position.latitude;
-    distance = (jarak! / 1000);
+    if (jarak != null) {
+      distance = (jarak / 1000);
+    } else {
+      distance = 0;
+    }
     return distance;
   }
 

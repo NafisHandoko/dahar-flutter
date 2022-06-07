@@ -83,7 +83,7 @@ class AuthService {
       await UserDatabase(uid: user!.uid).updateUser(email.split('@')[0], email,
           'https://images.unsplash.com/photo-1628258475456-0224b1e4225a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
       await TokoDatabase(uid: user.uid).updateToko(
-          'Belum diset',
+          email.split('@')[0],
           'belum diset',
           position.latitude,
           position.longitude,

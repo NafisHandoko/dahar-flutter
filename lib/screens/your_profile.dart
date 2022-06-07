@@ -22,10 +22,10 @@ class _YourProfileState extends State<YourProfile> {
 
   @override
   Widget build(BuildContext context) {
-    AuthUser user = Provider.of<AuthUser>(context);
-    return StreamProvider<List<DaharUser>>.value(
-      initialData: [],
-      value: UserDatabase(uid: user.uid).user,
+    AuthUser? user = Provider.of<AuthUser?>(context);
+    return StreamProvider<DaharUser>.value(
+      initialData: DaharUser(),
+      value: UserDatabase(uid: user?.uid).user2,
       child: Scaffold(
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(100),
@@ -50,9 +50,10 @@ class ProfileBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final daharuser = Provider.of<List<DaharUser>>(context);
+    final daharuser = Provider.of<DaharUser>(context);
     log('logging user in your_profile');
-    log("${daharuser.length > 0 ? daharuser.first.email : ''}");
+    // log("${daharuser.length > 0 ? daharuser.first.email : ''}");
+    log('${daharuser.email}');
     // return Container();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -69,8 +70,7 @@ class ProfileBuilder extends StatelessWidget {
                 // margin: const EdgeInsets.only(right: 15),
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "${daharuser.length > 0 ? daharuser.first.foto : ''}"),
+                        image: NetworkImage("${daharuser.foto}"),
                         fit: BoxFit.cover),
                     shape: BoxShape.circle,
                     color: color1),
@@ -100,7 +100,7 @@ class ProfileBuilder extends StatelessWidget {
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  "${daharuser.length > 0 ? daharuser.first.nama : ''}",
+                  "${daharuser.nama}",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
                 InkWell(
@@ -140,7 +140,7 @@ class ProfileBuilder extends StatelessWidget {
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  "${daharuser.length > 0 ? daharuser.first.email : ''}",
+                  "${daharuser.email}",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

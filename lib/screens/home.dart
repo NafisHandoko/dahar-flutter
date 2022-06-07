@@ -332,9 +332,11 @@ class _ClosestItemState extends State<ClosestItem> {
     var tokoDist =
         await TokoDistance(tokoLat: widget.tokoLat, tokoLong: widget.tokoLong)
             .checkGps();
-    setState(() {
-      distance = tokoDist;
-    });
+    if (mounted) {
+      setState(() {
+        distance = tokoDist;
+      });
+    }
   }
 
   @override

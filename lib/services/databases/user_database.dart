@@ -36,4 +36,13 @@ class UserDatabase {
     return userCollection.snapshots().map(_userListFromSnapshot);
     // return userCollection.doc(uid).snapshots().map(_userListFromSnapshot2);
   }
+
+  Stream<DaharUser> get user2 {
+    // return userCollection.snapshots().map(_userListFromSnapshot);
+    return userCollection.doc(uid).snapshots().map((event) => DaharUser(
+        id: event.id,
+        nama: event.get('nama'),
+        email: event.get('email'),
+        foto: event.get('foto')));
+  }
 }
