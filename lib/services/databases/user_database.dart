@@ -24,7 +24,16 @@ class UserDatabase {
     }).toList();
   }
 
+  // DaharUser _userListFromSnapshot2(DocumentSnapshot? doc) {
+  //   return DaharUser(
+  //       id: doc.id,
+  //       nama: doc.get('nama') ?? '',
+  //       email: doc.get('email') ?? '',
+  //       foto: doc.get('foto'));
+  // }
+
   Stream<List<DaharUser>> get user {
     return userCollection.snapshots().map(_userListFromSnapshot);
+    // return userCollection.doc(uid).snapshots().map(_userListFromSnapshot2);
   }
 }
