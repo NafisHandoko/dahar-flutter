@@ -93,7 +93,7 @@ class CartBuilder extends StatelessWidget {
     return ListView.builder(
         itemCount: cart.length,
         itemBuilder: (context, index) {
-          return CartItem(cart: cart[index]);
+          return CartItem(key: ValueKey(cart[index].id), cart: cart[index]);
         });
   }
 }
