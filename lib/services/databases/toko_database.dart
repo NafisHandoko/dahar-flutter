@@ -22,6 +22,7 @@ class TokoDatabase {
   List<Toko> _tokoListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Toko(
+          id: doc.id,
           nama: doc.get('nama') ?? '',
           alamat: doc.get('alamat') ?? '',
           lat: doc.get('lat') ?? 0,

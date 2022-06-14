@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/toko.dart';
+import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/maps/networking.dart';
 import 'package:dahar/services/databases/produk_database.dart';
@@ -310,10 +311,8 @@ class PopularBuilder extends StatelessWidget {
 // }
 
 class ClosestItem extends StatefulWidget {
-  final tokoImage, tokoName, tokoLat, tokoLong;
-  const ClosestItem(
-      {Key? key, this.tokoImage, this.tokoName, this.tokoLat, this.tokoLong})
-      : super(key: key);
+  final toko;
+  const ClosestItem({Key? key, this.toko}) : super(key: key);
 
   @override
   State<ClosestItem> createState() => _ClosestItemState();
@@ -330,7 +329,7 @@ class _ClosestItemState extends State<ClosestItem> {
 
   getDistance() async {
     var tokoDist =
-        await TokoDistance(tokoLat: widget.tokoLat, tokoLong: widget.tokoLong)
+        await TokoDistance(tokoLat: widget.toko.lat, tokoLong: widget.toko.long)
             .checkGps();
     if (mounted) {
       setState(() {
@@ -343,7 +342,14 @@ class _ClosestItemState extends State<ClosestItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/detail_toko');
+        // Navigator.pushNamed(context, '/detail_toko');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailToko(
+                    toko: widget.toko,
+                  )),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
@@ -351,7 +357,7 @@ class _ClosestItemState extends State<ClosestItem> {
         decoration: BoxDecoration(
             borderRadius: borderRadius1,
             image: DecorationImage(
-                image: NetworkImage(widget.tokoImage), fit: BoxFit.cover)),
+                image: NetworkImage(widget.toko.foto), fit: BoxFit.cover)),
         child: Stack(children: [
           Container(
             decoration: BoxDecoration(
@@ -366,7 +372,7 @@ class _ClosestItemState extends State<ClosestItem> {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 margin: const EdgeInsets.only(bottom: 2),
-                child: Text(widget.tokoName,
+                child: Text(widget.toko.nama,
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -431,16 +437,7 @@ class ClosestBuilder extends StatelessWidget {
     //   log('${item.nama}');
     // });
     return Column(
-      children: <Widget>[
-        for (var item in toko)
-          ClosestItem(
-            tokoImage:
-                'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-            tokoName: item.nama,
-            tokoLat: item.lat,
-            tokoLong: item.long,
-          )
-      ],
+      children: <Widget>[for (var item in toko) ClosestItem(toko: item)],
     );
   }
 }

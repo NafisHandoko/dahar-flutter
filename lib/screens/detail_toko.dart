@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/screens/maps/posisi_toko.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -7,7 +8,8 @@ import 'dart:math';
 import 'package:dahar/screens/maps/networking.dart';
 
 class DetailToko extends StatefulWidget {
-  const DetailToko({Key? key}) : super(key: key);
+  final toko;
+  const DetailToko({Key? key, this.toko}) : super(key: key);
 
   @override
   State<DetailToko> createState() => _DetailTokoState();
@@ -24,11 +26,19 @@ class _DetailTokoState extends State<DetailToko> {
   double tokoLat = -7.551498;
   double? distance = 0;
   var data;
+  String? sellerName;
   // late StreamSubscription<Position> positionStream;
 
   @override
   void initState() {
     checkGps();
+    var tokoRef =
+        FirebaseFirestore.instance.doc('user/' + widget.toko.id).get();
+    tokoRef.then((val) {
+      setState(() {
+        sellerName = val.get('nama');
+      });
+    });
     super.initState();
   }
 
@@ -74,8 +84,8 @@ class _DetailTokoState extends State<DetailToko> {
 
     long = position.longitude.toString();
     lat = position.latitude.toString();
-    double? jarak = await streetDistance(
-        position.latitude, position.longitude, tokoLat, tokoLong);
+    double? jarak = await streetDistance(position.latitude, position.longitude,
+        widget.toko.lat, widget.toko.long);
     if (mounted) {
       setState(() {
         //refresh UI
@@ -84,25 +94,6 @@ class _DetailTokoState extends State<DetailToko> {
         distance = (jarak! / 1000);
       });
     }
-
-    // LocationSettings locationSettings = LocationSettings(
-    //   accuracy: LocationAccuracy.high, //accuracy of the location data
-    //   distanceFilter: 100, //minimum distance (measured in meters) a
-    //   //device must move horizontally before an update event is generated;
-    // );
-
-    // StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
-    //       locationSettings: locationSettings).listen((Position position) {
-    //       print(position.longitude); //Output: 80.24599079
-    //       print(position.latitude); //Output: 29.6593457
-
-    //       long = position.longitude.toString();
-    //       lat = position.latitude.toString();
-
-    //       setState(() {
-    //         //refresh UI on update
-    //       });
-    // });
   }
 
   double starightDistance(lat1, lon1, lat2, lon2) {
@@ -181,9 +172,8 @@ class _DetailTokoState extends State<DetailToko> {
                 margin: const EdgeInsets.only(bottom: 10),
                 // margin: const EdgeInsets.only(right: 15),
                 decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80"),
+                    image: DecorationImage(
+                        image: NetworkImage('${widget.toko.foto}'),
                         fit: BoxFit.cover),
                     shape: BoxShape.circle,
                     color: color1),
@@ -191,21 +181,21 @@ class _DetailTokoState extends State<DetailToko> {
               Container(
                 margin: const EdgeInsets.only(bottom: 2),
                 child: Text(
-                  'Warung Bu Supiah',
+                  '${widget.toko.nama}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: Text(
-                  'Supiah Dwi Rijayanti',
+                  '${sellerName}',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                  'Jl Raden Patah no 30, Desa Kaliwungu, Bandung, Jawa Barat',
+                  '${widget.toko.alamat}',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   textAlign: TextAlign.center,
                 ),
@@ -253,8 +243,7 @@ class _DetailTokoState extends State<DetailToko> {
                                 builder: (context) => PosisiToko(
                                       startLat: userLat,
                                       startLng: userLong,
-                                      endLat: tokoLat,
-                                      endLng: tokoLong,
+                                      toko: widget.toko,
                                       distance: distance,
                                     )),
                           );
