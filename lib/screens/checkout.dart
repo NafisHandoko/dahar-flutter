@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/screens/transaction_done.dart';
+import 'package:dahar/services/databases/cart_database.dart';
 import 'package:dahar/services/databases/order_database.dart';
 import 'package:dahar/services/databases/ordercart_database.dart';
 import 'package:flutter/material.dart';
@@ -195,10 +196,13 @@ class _CheckoutState extends State<Checkout> {
                       // }
                       await OrderCartDatabase(uid: widget.uid)
                           .addOrderCart2(widget.orderCartList, id_order);
+                      await CartDatabase(uid: widget.uid).deleteAllCart();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TransactionDone()),
+                            builder: (context) => TransactionDone(
+                                  totalPrice: widget.totalPrice,
+                                )),
                       );
                     },
                   ),

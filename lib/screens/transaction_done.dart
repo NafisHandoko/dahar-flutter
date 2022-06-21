@@ -2,7 +2,8 @@ import 'package:dahar/global_styles.dart';
 import 'package:flutter/material.dart';
 
 class TransactionDone extends StatefulWidget {
-  const TransactionDone({Key? key}) : super(key: key);
+  final totalPrice;
+  const TransactionDone({Key? key, this.totalPrice}) : super(key: key);
 
   @override
   State<TransactionDone> createState() => _TransactionDoneState();
@@ -68,7 +69,7 @@ class _TransactionDoneState extends State<TransactionDone> {
                         style: TextStyle(fontSize: 18, height: 3),
                       ),
                       Text(
-                        'Rp.78.000,-',
+                        'Rp ${widget.totalPrice}',
                         style: TextStyle(fontSize: 18, height: 3),
                       )
                     ],
