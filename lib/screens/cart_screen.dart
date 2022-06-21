@@ -274,6 +274,8 @@ class _CartItemState extends State<CartItem> {
                                             setState(() {
                                               _cartCount -= 1;
                                             });
+                                            CartDatabase().updateCart(
+                                                widget.cart.id, _cartCount);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -293,6 +295,8 @@ class _CartItemState extends State<CartItem> {
                                             setState(() {
                                               _cartCount += 1;
                                             });
+                                            CartDatabase().updateCart(
+                                                widget.cart.id, _cartCount);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(

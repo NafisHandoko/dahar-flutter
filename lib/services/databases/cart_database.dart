@@ -16,6 +16,12 @@ class CartDatabase {
     });
   }
 
+  Future<void> updateCart(String id_cart, int kuantitas) async {
+    return await cartCollection.doc(id_cart).update({
+      'kuantitas': kuantitas,
+    });
+  }
+
   Future<void> deleteCart(String id_cart) async {
     await cartCollection.doc(id_cart).delete();
   }
