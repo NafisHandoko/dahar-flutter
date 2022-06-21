@@ -17,7 +17,9 @@ class Favorit extends StatelessWidget {
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           color: Colors.white,
-          child: ListView(),
+          child: ListView(
+            children: [FavoritItem(), FavoritItem(), FavoritItem()],
+          ),
         ),
         bottomNavigationBar: const NavBar());
   }
