@@ -132,7 +132,7 @@ class _CartBuilderState extends State<CartBuilder> {
           // mylist[index].id_seller = val.get('id_toko');
           // mylist[index].id_buyer = widget.uid;
           orderCartList[index] = {
-            'id_cart': cartItem.id,
+            // 'id_cart': cartItem.id,
             'id_produk': cartItem.id_produk,
             'kuantitas': cartItem.kuantitas,
             'total': val.get('harga') * cartItem.kuantitas,

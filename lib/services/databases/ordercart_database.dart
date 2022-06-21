@@ -38,7 +38,7 @@ class OrderCartDatabase {
       var docRef = orderCartCollection.doc(); //automatically generate unique id
       batch.set(docRef, {
         'id_order': id_order,
-        'id_cart': FirebaseFirestore.instance.doc('cart/' + doc['id_cart']),
+        // 'id_cart': FirebaseFirestore.instance.doc('cart/' + doc['id_cart']),
         'id_produk': doc['id_produk'],
         'kuantitas': doc['kuantitas'],
         'total': doc['total'],
