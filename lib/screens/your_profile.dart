@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/dahar_user.dart';
+import 'package:dahar/screens/menu_toko.dart';
 import 'package:dahar/services/databases/user_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -157,7 +158,14 @@ class ProfileBuilder extends StatelessWidget {
                   boxShadow: [boxshadow1]),
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/menu_toko');
+                  // Navigator.pushNamed(context, '/menu_toko');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MenuToko(
+                              id_toko: daharuser.id,
+                            )),
+                  );
                 },
                 child: Text(
                   'Menu Toko',

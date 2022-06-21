@@ -25,61 +25,14 @@ class CartScreen extends StatelessWidget {
               child: BackAppBar(
                 title: 'Cart',
               )),
-          body: Stack(children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              color: Colors.white,
-              child: CartBuilder(),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.only(
-                    right: 25, left: 25, top: 30, bottom: 15),
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(30.0)),
-                  color: color2,
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Total'),
-                            Text('Rp 78.000',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w700))
-                          ]),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        // width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: borderRadius2,
-                            color: color1,
-                            boxShadow: [boxshadow1]),
-                        child: TextButton(
-                          child: const Text(
-                            'Checkout',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {},
-                        ),
-                      )
-                    ]),
-              ),
-            )
-          ]),
+          body: CartProvider(),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
-class CartBuilder extends StatelessWidget {
-  const CartBuilder({
+class CartProvider extends StatelessWidget {
+  const CartProvider({
     Key? key,
   }) : super(key: key);
 
@@ -90,11 +43,122 @@ class CartBuilder extends StatelessWidget {
     //     // scrollDirection: Axis.vertical,
     //     // shrinkWrap: true,
     //     children: [CartItem(), CartItem()]);
-    return ListView.builder(
-        itemCount: cart.length,
-        itemBuilder: (context, index) {
-          return CartItem(key: ValueKey(cart[index].id), cart: cart[index]);
+    // var produk;
+    // for (var cartItem in cart) {
+    //   produk = cartItem.id_produk.get().then((value) {
+    //     // return value.get('harga');
+    //     log('data value: ${value.get('harga')}');
+    //     // total = value.get('harga');
+    //   });
+    //   // log('data total: $produk');
+    // }
+    // cart.asMap().forEach((index, val) {
+    //   log('$index ${val.kuantitas}');
+    // });
+
+    return CartBuilder(
+      cart: cart,
+    );
+  }
+}
+
+class CartBuilder extends StatefulWidget {
+  final cart;
+  const CartBuilder({Key? key, this.cart}) : super(key: key);
+
+  @override
+  State<CartBuilder> createState() => _CartBuilderState();
+}
+
+class _CartBuilderState extends State<CartBuilder> {
+  num totalCart = 0;
+  var mylist = [];
+
+  @override
+  void initState() {
+    super.initState();
+    log('data cart ${widget.cart}');
+    // widget.cart.forEach((cartItem) {
+    //   log('di foreach: $cartItem');
+    //   // cartItem.id_produk.get().then((val) {
+    //   //   setState(() {
+    //   //     totalCart = val.get('harga');
+    //   //   });
+    //   // });
+    //   // log("data x: ${x.get('harga')}");
+    // });
+    // getTotalCart();
+  }
+
+  getTotalCart() {
+    num sum = mylist.fold(0, (p, c) => p + c);
+    return sum;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setState(() {
+      mylist.length = widget.cart.length;
+    });
+    widget.cart.asMap().forEach((index, cartItem) {
+      // log('yukyuk $index ${cartItem.kuantitas}');
+      cartItem.id_produk.get().then((val) {
+        // log("harga: ${val.get('harga')}");
+        setState(() {
+          mylist[index] = val.get('harga') * cartItem.kuantitas;
         });
+      });
+    });
+    // log('data mylist $mylist');
+    return Stack(children: [
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        color: Colors.white,
+        child: ListView.builder(
+            itemCount: widget.cart.length,
+            itemBuilder: (context, index) {
+              return CartItem(
+                  key: ValueKey(widget.cart[index].id),
+                  cart: widget.cart[index]);
+            }),
+      ),
+      Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          padding:
+              const EdgeInsets.only(right: 25, left: 25, top: 30, bottom: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+            color: color2,
+          ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('Total'),
+              Text('Rp ${getTotalCart()}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))
+            ]),
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              // width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                child: const Text(
+                  'Checkout',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {},
+              ),
+            )
+          ]),
+        ),
+      )
+    ]);
   }
 }
 

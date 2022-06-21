@@ -4,7 +4,8 @@ import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/components/navbar.dart';
 
 class MenuToko extends StatelessWidget {
-  const MenuToko({Key? key}) : super(key: key);
+  final id_toko;
+  const MenuToko({Key? key, this.id_toko}) : super(key: key);
 
   Widget _menuItem(String foodImage, String foodName, String foodPrice) {
     return Column(
