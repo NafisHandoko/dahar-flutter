@@ -1,5 +1,5 @@
 import 'package:dahar/screens/cart_screen.dart';
-import 'package:dahar/screens/checkout.dart';
+import 'package:dahar/screens/checkout2.dart';
 import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/screens/wrapper.dart';
 import 'package:dahar/screens/your_profile.dart';

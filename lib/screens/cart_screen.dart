@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/cart.dart';
 import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/screens/checkout.dart';
+import 'package:dahar/screens/checkout2.dart';
 import 'package:dahar/services/databases/cart_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -185,7 +187,12 @@ class _CartBuilderState extends State<CartBuilder> {
                   'Checkout',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Checkout()),
+                  );
+                },
               ),
             )
           ]),
