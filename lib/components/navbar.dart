@@ -27,7 +27,11 @@ class NavBar extends StatelessWidget {
             ),
             color: color1,
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              // Navigator.pushNamed(context, '/home');
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName('/'),
+              );
             },
           ),
           IconButton(

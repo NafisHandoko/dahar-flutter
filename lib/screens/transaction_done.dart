@@ -83,7 +83,12 @@ class _TransactionDoneState extends State<TransactionDone> {
                     color: color1,
                     boxShadow: [boxshadow1]),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popUntil(
+                      context,
+                      ModalRoute.withName('/'),
+                    );
+                  },
                   child: Text(
                     'Back To Home',
                     style: TextStyle(color: Colors.white),
