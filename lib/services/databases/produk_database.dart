@@ -1,28 +1,14 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/produk.dart';
 
-class DatabaseService {
+class ProdukDatabase {
   final String? uid;
-  DatabaseService({this.uid});
+  ProdukDatabase({this.uid});
 
   final CollectionReference produkCollection =
       FirebaseFirestore.instance.collection('produk');
-
-  final CollectionReference tokoCollection =
-      FirebaseFirestore.instance.collection('toko');
-
-  // Future<void> updateUserData(String sugars, String name, int strength) async {
-  //   return await produkCollection
-  //       .doc(uid)
-  //       .set({'sugars': sugars, 'name': name, 'strength': strength});
-  // }
-
-  Future<void> updateToko(String nama, String alamat) async {
-    return await tokoCollection.doc(uid).set({
-      'nama': nama,
-      'alamat': alamat,
-    });
-  }
 
   Future<void> addProduk(String nama, int harga, String deskripsi,
       String gambar, double rating) async {
@@ -38,6 +24,13 @@ class DatabaseService {
 
   List<Produk> _produkListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
+      // log('${doc.get('id_toko').id}');
+      // String namaToko;
+      // var tokoRef =
+      //     FirebaseFirestore.instance.doc('toko/' + doc.get('id_toko').id).get();
+      // tokoRef.then((val) {
+      //   String namaToko = val.get('nama');
+      // });
       return Produk(
           id: doc.id,
           nama: doc.get('nama') ?? '',
@@ -51,9 +44,5 @@ class DatabaseService {
 
   Stream<List<Produk>> get produk {
     return produkCollection.snapshots().map(_produkListFromSnapshot);
-  }
-
-  Stream<QuerySnapshot?> get toko {
-    return tokoCollection.snapshots();
   }
 }

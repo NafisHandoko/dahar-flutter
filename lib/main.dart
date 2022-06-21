@@ -1,3 +1,4 @@
+import 'package:dahar/screens/cart_screen.dart';
 import 'package:dahar/screens/checkout.dart';
 import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/screens/wrapper.dart';
@@ -14,7 +15,7 @@ import 'package:dahar/screens/transaction_done.dart';
 // import 'package:dahar/screens/auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:dahar/models/user.dart';
+import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/services/auth.dart';
 
 void main() async {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<DaharUser?>.value(
+    return StreamProvider<AuthUser?>.value(
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/checkout': (context) => const checkout(),
           // '/login': (context) => const Login(),
           // '/camera': (context) => const Camera()
+          '/cart_screen': (context) => const CartScreen(),
         },
       ),
     );

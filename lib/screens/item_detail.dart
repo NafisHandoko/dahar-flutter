@@ -1,14 +1,39 @@
+import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/services/databases/cart_database.dart';
+import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
+import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
-  const ItemDetail({Key? key}) : super(key: key);
+  final produk, toko;
+  const ItemDetail({Key? key, this.produk, this.toko}) : super(key: key);
 
   @override
   State<ItemDetail> createState() => _ItemDetailState();
 }
 
 class _ItemDetailState extends State<ItemDetail> {
+  double? distance;
+  int _cartCount = 1;
+
+  @override
+  void initState() {
+    getDistance();
+    super.initState();
+  }
+
+  getDistance() async {
+    var tokoDist =
+        await TokoDistance(tokoLat: widget.toko.lat, tokoLong: widget.toko.long)
+            .checkGps();
+    if (mounted) {
+      setState(() {
+        distance = tokoDist;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +45,9 @@ class _ItemDetailState extends State<ItemDetail> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
               height: 420,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'),
+                      image: NetworkImage(widget.produk.gambar),
                       fit: BoxFit.cover)),
               child: const NavButton(),
             )),
@@ -44,8 +68,8 @@ class _ItemDetailState extends State<ItemDetail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Kari Spesial',
+                      Text(
+                        widget.produk.nama,
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 24),
                       ),
@@ -55,8 +79,8 @@ class _ItemDetailState extends State<ItemDetail> {
                             Icons.star,
                             color: colorStar,
                           ),
-                          const Text(
-                            '4.2',
+                          Text(
+                            '${widget.produk.rating}',
                             style: TextStyle(fontWeight: FontWeight.w600),
                           )
                         ],
@@ -72,9 +96,8 @@ class _ItemDetailState extends State<ItemDetail> {
                           height: 40,
                           margin: const EdgeInsets.only(right: 15),
                           decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80"),
+                              image: DecorationImage(
+                                  image: NetworkImage(widget.toko.foto),
                                   fit: BoxFit.cover),
                               shape: BoxShape.circle,
                               color: color1),
@@ -84,13 +107,13 @@ class _ItemDetailState extends State<ItemDetail> {
                           children: [
                             Container(
                               margin: const EdgeInsets.only(bottom: 3),
-                              child: const Text(
-                                'Warung Bu Supiah',
+                              child: Text(
+                                widget.toko.nama,
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                             ),
-                            const Text('200 m')
+                            Text('${distance?.toStringAsFixed(1)} Km')
                           ],
                         )
                       ],
@@ -108,8 +131,9 @@ class _ItemDetailState extends State<ItemDetail> {
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      const Text(
-                        '''Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?''',
+                      Text(
+                        // '''Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?''',
+                        widget.produk.deskripsi,
                         softWrap: true,
                       )
                     ]),
@@ -126,7 +150,12 @@ class _ItemDetailState extends State<ItemDetail> {
                         'Add to Cart',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        AuthUser user =
+                            Provider.of<AuthUser>(context, listen: false);
+                        await CartDatabase(uid: user.uid)
+                            .addCart(_cartCount, widget.produk.id);
+                      },
                     ),
                   ),
                   Container(
@@ -154,7 +183,7 @@ class _ItemDetailState extends State<ItemDetail> {
                             ),
                           ),
                           Text(
-                            'Rp 20.000',
+                            'Rp ${widget.produk.harga}',
                             style: TextStyle(
                                 color: color1,
                                 fontSize: 18,
@@ -165,7 +194,42 @@ class _ItemDetailState extends State<ItemDetail> {
                 ],
               ),
             )),
-        const Positioned(top: 290, child: CartButton())
+        Positioned(
+            top: 290,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  boxShadow: [boxshadow1]),
+              child: Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _cartCount -= 1;
+                        });
+                      },
+                      child: const Text(
+                        '-',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                  Text(
+                    '$_cartCount',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _cartCount += 1;
+                        });
+                      },
+                      child: const Text(
+                        '+',
+                        style: TextStyle(color: Colors.white),
+                      ))
+                ],
+              ),
+            ))
       ]),
     );
   }

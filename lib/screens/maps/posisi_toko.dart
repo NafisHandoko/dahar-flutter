@@ -4,14 +4,9 @@ import 'networking.dart';
 import 'package:dahar/global_styles.dart';
 
 class PosisiToko extends StatefulWidget {
-  final startLat, startLng, endLat, endLng, distance;
+  final startLat, startLng, distance, toko;
   const PosisiToko(
-      {Key? key,
-      this.startLat,
-      this.startLng,
-      this.endLat,
-      this.endLng,
-      this.distance})
+      {Key? key, this.startLat, this.startLng, this.distance, this.toko})
       : super(key: key);
 
   @override
@@ -51,10 +46,10 @@ class _PosisiTokoState extends State<PosisiToko> {
 
     markers.add(Marker(
       markerId: MarkerId("Destination"),
-      position: LatLng(widget.endLat, widget.endLng),
+      position: LatLng(widget.toko.lat, widget.toko.long),
       infoWindow: InfoWindow(
-        title: "Warung Bu Supiah",
-        snippet: "Jl Raden Patah no 30, Bandung",
+        title: "${widget.toko.nama}",
+        snippet: "${widget.toko.alamat}",
       ),
     ));
     setState(() {});
@@ -67,8 +62,8 @@ class _PosisiTokoState extends State<PosisiToko> {
     NetworkHelper network = NetworkHelper(
       startLat: widget.startLat,
       startLng: widget.startLng,
-      endLat: widget.endLat,
-      endLng: widget.endLng,
+      endLat: widget.toko.lat,
+      endLng: widget.toko.long,
     );
 
     try {
@@ -117,7 +112,7 @@ class _PosisiTokoState extends State<PosisiToko> {
           GoogleMap(
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
-              target: LatLng(widget.endLat, widget.endLng),
+              target: LatLng(widget.toko.lat, widget.toko.long),
               zoom: 15,
             ),
             markers: markers,
@@ -154,8 +149,7 @@ class _PosisiTokoState extends State<PosisiToko> {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 15),
-                      child: Text(
-                          'Jl Raden Patah no 30, Desa Kaliwungu, Bandung, Jawa Barat',
+                      child: Text('${widget.toko.alamat}',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600)),
                     ),
@@ -166,9 +160,8 @@ class _PosisiTokoState extends State<PosisiToko> {
                           height: 64,
                           margin: const EdgeInsets.only(right: 20),
                           decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      "https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80"),
+                              image: DecorationImage(
+                                  image: NetworkImage("${widget.toko.foto}"),
                                   fit: BoxFit.cover),
                               shape: BoxShape.circle,
                               color: color1),
@@ -178,8 +171,8 @@ class _PosisiTokoState extends State<PosisiToko> {
                           children: [
                             Container(
                               margin: const EdgeInsets.only(bottom: 3),
-                              child: const Text(
-                                'Warung Bu Supiah',
+                              child: Text(
+                                '${widget.toko.nama}',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
