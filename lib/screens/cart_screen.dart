@@ -25,16 +25,15 @@ class CartScreen extends StatelessWidget {
               child: BackAppBar(
                 title: 'Cart',
               )),
-          body: CartProvider(),
+          body: CartProvider(uid: user.uid),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
 class CartProvider extends StatelessWidget {
-  const CartProvider({
-    Key? key,
-  }) : super(key: key);
+  final uid;
+  const CartProvider({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +57,14 @@ class CartProvider extends StatelessWidget {
 
     return CartBuilder(
       cart: cart,
+      uid: uid,
     );
   }
 }
 
 class CartBuilder extends StatefulWidget {
-  final cart;
-  const CartBuilder({Key? key, this.cart}) : super(key: key);
+  final cart, uid;
+  const CartBuilder({Key? key, this.cart, this.uid}) : super(key: key);
 
   @override
   State<CartBuilder> createState() => _CartBuilderState();
@@ -74,21 +74,20 @@ class _CartBuilderState extends State<CartBuilder> {
   num totalCart = 0;
   var mylist = [];
 
-  @override
-  void initState() {
-    super.initState();
-    log('data cart ${widget.cart}');
-    // widget.cart.forEach((cartItem) {
-    //   log('di foreach: $cartItem');
-    //   // cartItem.id_produk.get().then((val) {
-    //   //   setState(() {
-    //   //     totalCart = val.get('harga');
-    //   //   });
-    //   // });
-    //   // log("data x: ${x.get('harga')}");
-    // });
-    // getTotalCart();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // widget.cart.forEach((cartItem) {
+  //   //   log('di foreach: $cartItem');
+  //   //   // cartItem.id_produk.get().then((val) {
+  //   //   //   setState(() {
+  //   //   //     totalCart = val.get('harga');
+  //   //   //   });
+  //   //   // });
+  //   //   // log("data x: ${x.get('harga')}");
+  //   // });
+  //   // getTotalCart();
+  // }
 
   getTotalCart() {
     setState(() {
@@ -96,12 +95,18 @@ class _CartBuilderState extends State<CartBuilder> {
     });
     // num sum = mylist.fold(0, (p, c) => p + c);
     // return sum;
-    for (var harga in mylist) {
-      if (harga != null) {
-        setState(() {
-          totalCart += harga;
-        });
-      }
+    // for (var harga in mylist) {
+    //   if (harga != null) {
+    //     setState(() {
+    //       totalCart += harga;
+    //     });
+    //   }
+    // }
+    for (var orderItem in mylist) {
+      // log('data orderItem: $orderItem');
+      setState(() {
+        totalCart += orderItem?['total'] ?? 0;
+      });
     }
   }
 
@@ -115,7 +120,24 @@ class _CartBuilderState extends State<CartBuilder> {
       cartItem.id_produk.get().then((val) {
         // log("harga: ${val.get('harga')}");
         setState(() {
-          mylist[index] = val.get('harga') * cartItem.kuantitas;
+          // mylist[index] = val.get('harga') * cartItem.kuantitas;
+
+          // mylist[index].id_cart = cartItem.id;
+          // mylist[index].id_produk = cartItem.id_produk;
+          // mylist[index].kuantitas = cartItem.kuantitas;
+          // mylist[index].total = val.get('harga') * cartItem.kuantitas;
+          // mylist[index].status = 0;
+          // mylist[index].id_seller = val.get('id_toko');
+          // mylist[index].id_buyer = widget.uid;
+          mylist[index] = {
+            'id_cart': cartItem.id,
+            'id_produk': cartItem.id_produk,
+            'kuantitas': cartItem.kuantitas,
+            'total': val.get('harga') * cartItem.kuantitas,
+            'status': 0,
+            'id_seller': val.get('id_toko'),
+            'id_buyer': widget.uid,
+          };
         });
       });
     });
