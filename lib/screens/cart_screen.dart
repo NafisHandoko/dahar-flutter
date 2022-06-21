@@ -91,8 +91,18 @@ class _CartBuilderState extends State<CartBuilder> {
   }
 
   getTotalCart() {
-    num sum = mylist.fold(0, (p, c) => p + c);
-    return sum;
+    setState(() {
+      totalCart = 0;
+    });
+    // num sum = mylist.fold(0, (p, c) => p + c);
+    // return sum;
+    for (var harga in mylist) {
+      if (harga != null) {
+        setState(() {
+          totalCart += harga;
+        });
+      }
+    }
   }
 
   @override
@@ -109,6 +119,7 @@ class _CartBuilderState extends State<CartBuilder> {
         });
       });
     });
+    getTotalCart();
     // log('data mylist $mylist');
     return Stack(children: [
       Container(
@@ -137,7 +148,7 @@ class _CartBuilderState extends State<CartBuilder> {
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Total'),
-              Text('Rp ${getTotalCart()}',
+              Text('Rp ${totalCart}',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))
             ]),
             Container(
