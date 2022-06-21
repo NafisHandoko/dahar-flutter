@@ -74,7 +74,7 @@ class CartBuilder extends StatefulWidget {
 
 class _CartBuilderState extends State<CartBuilder> {
   num totalCart = 0;
-  var mylist = [];
+  var orderCartList = [];
 
   // @override
   // void initState() {
@@ -104,7 +104,7 @@ class _CartBuilderState extends State<CartBuilder> {
     //     });
     //   }
     // }
-    for (var orderItem in mylist) {
+    for (var orderItem in orderCartList) {
       // log('data orderItem: $orderItem');
       setState(() {
         totalCart += orderItem?['total'] ?? 0;
@@ -115,7 +115,7 @@ class _CartBuilderState extends State<CartBuilder> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      mylist.length = widget.cart.length;
+      orderCartList.length = widget.cart.length;
     });
     widget.cart.asMap().forEach((index, cartItem) {
       // log('yukyuk $index ${cartItem.kuantitas}');
@@ -131,7 +131,7 @@ class _CartBuilderState extends State<CartBuilder> {
           // mylist[index].status = 0;
           // mylist[index].id_seller = val.get('id_toko');
           // mylist[index].id_buyer = widget.uid;
-          mylist[index] = {
+          orderCartList[index] = {
             'id_cart': cartItem.id,
             'id_produk': cartItem.id_produk,
             'kuantitas': cartItem.kuantitas,
@@ -190,7 +190,12 @@ class _CartBuilderState extends State<CartBuilder> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Checkout()),
+                    MaterialPageRoute(
+                        builder: (context) => Checkout(
+                              orderCartList: orderCartList,
+                              totalPrice: totalCart,
+                              uid: widget.uid,
+                            )),
                   );
                 },
               ),
