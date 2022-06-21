@@ -58,11 +58,11 @@ class _FavoritItemState extends State<FavoritItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    '$foodName',
+                    'sate madura',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    '$foodSeller',
+                    'diana',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -73,7 +73,7 @@ class _FavoritItemState extends State<FavoritItem> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Rp $foodPrice',
+                        Text('Rp 12.000,00',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w700)),
                         Container(
@@ -95,11 +95,11 @@ class _FavoritItemState extends State<FavoritItem> {
                                     children: [
                                       InkWell(
                                           onTap: () {
-                                            setState(() {
-                                              _cartCount -= 1;
-                                            });
-                                            CartDatabase().updateCart(
-                                                widget.cart.id, _cartCount);
+                                            // setState(() {
+                                            //   _cartCount -= 1;
+                                            // });
+                                            // CartDatabase().updateCart(
+                                            //     widget.cart.id, _cartCount);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -111,16 +111,16 @@ class _FavoritItemState extends State<FavoritItem> {
                                             ),
                                           )),
                                       Text(
-                                        '$_cartCount',
+                                        '2',
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       InkWell(
                                           onTap: () {
-                                            setState(() {
-                                              _cartCount += 1;
-                                            });
-                                            CartDatabase().updateCart(
-                                                widget.cart.id, _cartCount);
+                                            // setState(() {
+                                            //   _cartCount += 1;
+                                            // });
+                                            // CartDatabase().updateCart(
+                                            //     widget.cart.id, _cartCount);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -139,7 +139,7 @@ class _FavoritItemState extends State<FavoritItem> {
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: InkWell(
                                     onTap: () {
-                                      CartDatabase().deleteCart(widget.cart.id);
+                                      // CartDatabase().deleteCart(widget.cart.id);
                                     },
                                     child: Icon(
                                       Icons.delete,
