@@ -44,7 +44,9 @@ class NavBar extends StatelessWidget {
               Icons.shopping_cart_outlined,
             ),
             color: color1,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart_screen');
+            },
           ),
           IconButton(
             alignment: Alignment.center,
