@@ -7,6 +7,7 @@ class OrderCart {
   final int kuantitas;
   final int total;
   final int status;
+  final DocumentReference id_rating;
   final DocumentReference id_seller;
   final DocumentReference id_buyer;
 
@@ -17,6 +18,7 @@ class OrderCart {
       required this.kuantitas,
       required this.total,
       required this.status,
+      required this.id_rating,
       required this.id_seller,
       required this.id_buyer});
 }

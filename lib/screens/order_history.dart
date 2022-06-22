@@ -1,6 +1,7 @@
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/ordercart.dart';
 import 'package:dahar/services/databases/ordercart_database.dart';
+import 'package:dahar/services/databases/rating_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
@@ -120,11 +121,12 @@ class HistoryItem extends StatefulWidget {
 
 class _HistoryItemState extends State<HistoryItem> {
   bool isConfirmed = false;
-  int ratingLevel = -1;
+  // int ratingLevel = -1;
   String? foodName;
   int? foodPrice;
   String? foodSeller;
   String? foodImage;
+  int rating = -1;
 
   @override
   void initState() {
@@ -142,6 +144,11 @@ class _HistoryItemState extends State<HistoryItem> {
         foodSeller = value.get('nama');
       });
     });
+    widget.orderCart.id_rating.get().then((value) {
+      setState(() {
+        rating = value.get('rating');
+      });
+    });
   }
 
   Widget _buildStar(int starCount) {
@@ -149,11 +156,11 @@ class _HistoryItemState extends State<HistoryItem> {
       child: Icon(
         Icons.star,
         size: 20.0,
-        color: ratingLevel >= starCount ? Colors.orange : Colors.grey,
+        color: rating >= starCount ? Colors.orange : Colors.grey,
       ),
       onTap: () {
         setState(() {
-          ratingLevel = starCount;
+          rating = starCount;
         });
       },
     );
@@ -235,7 +242,7 @@ class _HistoryItemState extends State<HistoryItem> {
                                     : colorYellowStatusText),
                           ),
                         ),
-                        (ratingLevel >= 0)
+                        (rating >= 0)
                             ? Row(
                                 children: [
                                   _buildStar(1),
@@ -274,7 +281,10 @@ class _HistoryItemState extends State<HistoryItem> {
                                               builder: (_) => RatingDialog());
                                           print('Selected rate stars: $stars');
                                           setState(() {
-                                            ratingLevel = stars;
+                                            // rating = stars;
+                                            RatingDatabase().updateRating(
+                                                widget.orderCart.id_rating,
+                                                stars);
                                           });
                                         } else {
                                           setState(() {

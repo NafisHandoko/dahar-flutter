@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/ordercart.dart';
+import 'package:dahar/services/databases/rating_database.dart';
 
 class OrderCartDatabase {
   final String? uid;
@@ -35,7 +36,9 @@ class OrderCartDatabase {
       List orderCartList, DocumentReference id_order) async {
     var db = FirebaseFirestore.instance;
     var batch = db.batch();
-    orderCartList.forEach((doc) {
+    for (var doc in orderCartList) {
+      var id_rating = await RatingDatabase(uid: uid)
+          .addRating(-1, doc['id_produk'], doc['id_seller']);
       var docRef = orderCartCollection.doc(); //automatically generate unique id
       batch.set(docRef, {
         'id_order': id_order,
@@ -44,10 +47,11 @@ class OrderCartDatabase {
         'kuantitas': doc['kuantitas'],
         'total': doc['total'],
         'status': doc['status'],
+        'id_rating': id_rating,
         'id_seller': doc['id_seller'],
         'id_buyer': FirebaseFirestore.instance.doc('user/' + uid!),
       });
-    });
+    }
     return await batch.commit();
     // batch.commit().then((value) => value);
   }
@@ -61,6 +65,7 @@ class OrderCartDatabase {
           kuantitas: doc.get('kuantitas') ?? 0,
           total: doc.get('total') ?? 0,
           status: doc.get('status') ?? 0,
+          id_rating: doc.get('id_rating'),
           id_seller: doc.get('id_seller'),
           id_buyer: doc.get('id_buyer'));
     }).toList();
