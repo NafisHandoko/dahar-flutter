@@ -122,12 +122,13 @@ class OrderListItem extends StatefulWidget {
 
 class _OrderListItemState extends State<OrderListItem> {
   bool isConfirmed = false;
-  int ratingLevel = -1;
+  // int ratingLevel = -1;
   String? foodName;
   int? foodPrice;
   String? foodBuyer;
   String? foodImage;
   String? alamat;
+  int rating = -1;
 
   @override
   void initState() {
@@ -157,18 +158,23 @@ class _OrderListItemState extends State<OrderListItem> {
       child: Icon(
         Icons.star,
         size: 20.0,
-        color: ratingLevel >= starCount ? Colors.orange : Colors.grey,
+        color: rating >= starCount ? Colors.orange : Colors.grey,
       ),
-      onTap: () {
-        setState(() {
-          ratingLevel = starCount;
-        });
-      },
+      // onTap: () {
+      //   setState(() {
+      //     rating = starCount;
+      //   });
+      // },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    widget.orderCart.id_rating.get().then((value) {
+      setState(() {
+        rating = value.get('rating');
+      });
+    });
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(
@@ -243,7 +249,7 @@ class _OrderListItemState extends State<OrderListItem> {
                                     : colorYellowStatusText),
                           ),
                         ),
-                        (ratingLevel >= 0)
+                        (rating >= 0)
                             ? Row(
                                 children: [
                                   _buildStar(1),
