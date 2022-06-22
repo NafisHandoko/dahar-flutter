@@ -125,8 +125,9 @@ class _OrderListItemState extends State<OrderListItem> {
   int ratingLevel = -1;
   String? foodName;
   int? foodPrice;
-  String? foodSeller;
+  String? foodBuyer;
   String? foodImage;
+  String? alamat;
 
   @override
   void initState() {
@@ -139,9 +140,14 @@ class _OrderListItemState extends State<OrderListItem> {
         foodImage = value.get('gambar');
       });
     });
-    widget.orderCart.id_seller.get().then((value) {
+    widget.orderCart.id_buyer.get().then((value) {
       setState(() {
-        foodSeller = value.get('nama');
+        foodBuyer = value.get('nama');
+      });
+    });
+    widget.orderCart.id_order.get().then((value) {
+      setState(() {
+        alamat = value.get('alamat');
       });
     });
   }
@@ -185,18 +191,18 @@ class _OrderListItemState extends State<OrderListItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    '$foodName',
+                    '${widget.orderCart.kuantitas} porsi $foodName',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    '$foodSeller',
+                    '$foodBuyer',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: color1),
                   ),
                   Text(
-                    'Rp ${widget.orderCart.total / widget.orderCart.kuantitas} x ${widget.orderCart.kuantitas}',
+                    '$alamat',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
