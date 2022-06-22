@@ -22,29 +22,32 @@ class OrderList extends StatelessWidget {
               child: BackAppBar(
                 title: 'Daftar Pesanan',
               )),
-          body: OrderListProvider(),
+          body: OrderListProvider(
+            uid: user.uid,
+          ),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
 class OrderListProvider extends StatelessWidget {
-  const OrderListProvider({
-    Key? key,
-  }) : super(key: key);
+  final uid;
+  const OrderListProvider({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final orderCart = Provider.of<List<OrderCart>>(context);
     return OrderListBuilder(
       orderCart: orderCart,
+      uid: uid,
     );
   }
 }
 
 class OrderListBuilder extends StatelessWidget {
-  final orderCart;
-  const OrderListBuilder({Key? key, this.orderCart}) : super(key: key);
+  final orderCart, uid;
+  const OrderListBuilder({Key? key, this.orderCart, this.uid})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +87,9 @@ class OrderListBuilder extends StatelessWidget {
                   'Clear Successfull Order',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  OrderCartDatabase(uid: uid).deleteAllOrderCartSeller();
+                },
               ),
             ))
       ],

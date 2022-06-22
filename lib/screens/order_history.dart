@@ -22,29 +22,30 @@ class OrderHistory extends StatelessWidget {
               child: BackAppBar(
                 title: 'Riwayat Pemesanan',
               )),
-          body: OrderHistoryProvider(),
+          body: OrderHistoryProvider(uid: user.uid),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
 class OrderHistoryProvider extends StatelessWidget {
-  const OrderHistoryProvider({
-    Key? key,
-  }) : super(key: key);
+  final uid;
+  const OrderHistoryProvider({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final orderCart = Provider.of<List<OrderCart>>(context);
     return OrderHistoryBuilder(
       orderCart: orderCart,
+      uid: uid,
     );
   }
 }
 
 class OrderHistoryBuilder extends StatelessWidget {
-  final orderCart;
-  const OrderHistoryBuilder({Key? key, this.orderCart}) : super(key: key);
+  final orderCart, uid;
+  const OrderHistoryBuilder({Key? key, this.orderCart, this.uid})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,9 @@ class OrderHistoryBuilder extends StatelessWidget {
                   'Clear Successfull Order',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  OrderCartDatabase(uid: uid).deleteAllOrderCartBuyer();
+                },
               ),
             ))
       ],

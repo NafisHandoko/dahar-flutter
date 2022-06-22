@@ -87,4 +87,24 @@ class OrderCartDatabase {
       'status': status,
     });
   }
+
+  Future<void> deleteAllOrderCartBuyer() async {
+    var orderCartData = orderCartCollection.where('id_buyer',
+        isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!));
+    orderCartData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+  }
+
+  Future<void> deleteAllOrderCartSeller() async {
+    var orderCartData = orderCartCollection.where('id_seller',
+        isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!));
+    orderCartData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+  }
 }
