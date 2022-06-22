@@ -7,44 +7,44 @@ import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:provider/provider.dart';
 
-class OrderHistory extends StatelessWidget {
-  const OrderHistory({Key? key}) : super(key: key);
+class OrderList extends StatelessWidget {
+  const OrderList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<OrderCart>>.value(
       initialData: [],
-      value: OrderCartDatabase(uid: user.uid).orderCartBuyer,
+      value: OrderCartDatabase(uid: user.uid).orderCartSeller,
       child: Scaffold(
           appBar: const PreferredSize(
               preferredSize: Size.fromHeight(100),
               child: BackAppBar(
-                title: 'Riwayat Pemesanan',
+                title: 'Daftar Pesanan',
               )),
-          body: OrderHistoryProvider(),
+          body: OrderListProvider(),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
-class OrderHistoryProvider extends StatelessWidget {
-  const OrderHistoryProvider({
+class OrderListProvider extends StatelessWidget {
+  const OrderListProvider({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final orderCart = Provider.of<List<OrderCart>>(context);
-    return OrderHistoryBuilder(
+    return OrderListBuilder(
       orderCart: orderCart,
     );
   }
 }
 
-class OrderHistoryBuilder extends StatelessWidget {
+class OrderListBuilder extends StatelessWidget {
   final orderCart;
-  const OrderHistoryBuilder({Key? key, this.orderCart}) : super(key: key);
+  const OrderListBuilder({Key? key, this.orderCart}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +56,16 @@ class OrderHistoryBuilder extends StatelessWidget {
           child: ListView.builder(
               itemCount: orderCart.length,
               itemBuilder: (context, index) {
-                return HistoryItem(
+                return OrderListItem(
                     key: ValueKey(orderCart[index].id),
                     orderCart: orderCart[index]);
               }),
           // child: ListView(children: const [
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem()
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem()
           // ]),
         ),
         Positioned(
@@ -93,13 +93,13 @@ class OrderHistoryBuilder extends StatelessWidget {
     //   padding: const EdgeInsets.symmetric(horizontal: 25),
     //   color: Colors.white,
     //   child: ListView(children: const [
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     ),
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     ),
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     )
     //   ]),
@@ -107,15 +107,15 @@ class OrderHistoryBuilder extends StatelessWidget {
   }
 }
 
-class HistoryItem extends StatefulWidget {
+class OrderListItem extends StatefulWidget {
   final orderCart;
-  const HistoryItem({Key? key, this.orderCart}) : super(key: key);
+  const OrderListItem({Key? key, this.orderCart}) : super(key: key);
 
   @override
-  State<HistoryItem> createState() => _HistoryItemState();
+  State<OrderListItem> createState() => _OrderListItemState();
 }
 
-class _HistoryItemState extends State<HistoryItem> {
+class _OrderListItemState extends State<OrderListItem> {
   bool isConfirmed = false;
   int ratingLevel = -1;
   String? foodName;
@@ -242,7 +242,7 @@ class _HistoryItemState extends State<HistoryItem> {
                                   _buildStar(5),
                                 ],
                               )
-                            : (widget.orderCart.status >= 2)
+                            : (widget.orderCart.status < 2)
                                 ? Container(
                                     decoration: BoxDecoration(
                                         borderRadius: borderRadius2,
@@ -258,29 +258,17 @@ class _HistoryItemState extends State<HistoryItem> {
                                         // alignment: Alignment.centerLeft
                                       ),
                                       child: Text(
-                                        (widget.orderCart.status == 2)
-                                            ? 'Diterima'
-                                            : 'Beri Rating',
+                                        (widget.orderCart.status == 0)
+                                            ? 'Proses'
+                                            : (widget.orderCart.status == 1)
+                                                ? 'Kirim'
+                                                : '',
                                         style: TextStyle(color: Colors.white),
                                       ),
-                                      onPressed: () async {
-                                        if (widget.orderCart.status >= 3) {
-                                          int stars = await showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (_) => RatingDialog());
-                                          print('Selected rate stars: $stars');
-                                          setState(() {
-                                            ratingLevel = stars;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            // isConfirmed = true;
-                                            OrderCartDatabase().updateOrderCart(
-                                                widget.orderCart.id,
-                                                widget.orderCart.status + 1);
-                                          });
-                                        }
+                                      onPressed: () {
+                                        OrderCartDatabase().updateOrderCart(
+                                            widget.orderCart.id,
+                                            widget.orderCart.status + 1);
                                       },
                                     ),
                                   )

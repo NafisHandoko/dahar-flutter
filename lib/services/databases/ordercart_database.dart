@@ -66,11 +66,25 @@ class OrderCartDatabase {
     }).toList();
   }
 
-  Stream<List<OrderCart>> get orderCart {
+  Stream<List<OrderCart>> get orderCartBuyer {
     return orderCartCollection
         .where('id_buyer',
             isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!))
         .snapshots()
         .map(_orderCartListFromSnapshot);
+  }
+
+  Stream<List<OrderCart>> get orderCartSeller {
+    return orderCartCollection
+        .where('id_seller',
+            isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!))
+        .snapshots()
+        .map(_orderCartListFromSnapshot);
+  }
+
+  Future<void> updateOrderCart(String id_orderCart, int status) async {
+    return await orderCartCollection.doc(id_orderCart).update({
+      'status': status,
+    });
   }
 }

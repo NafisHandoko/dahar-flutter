@@ -181,7 +181,9 @@ class MenuToko extends StatelessWidget {
                     color: color1,
                     boxShadow: [boxshadow1]),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/order_list');
+                  },
                   child: Text(
                     'Daftar Pesanan',
                     style: TextStyle(color: Colors.white),
