@@ -89,8 +89,10 @@ class OrderCartDatabase {
   }
 
   Future<void> deleteAllOrderCartBuyer() async {
-    var orderCartData = orderCartCollection.where('id_buyer',
-        isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!));
+    var orderCartData = orderCartCollection
+        .where('id_buyer',
+            isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!))
+        .where('status', isEqualTo: 3);
     orderCartData.get().then((docs) {
       docs.docs.forEach((doc) {
         doc.reference.delete();
@@ -99,8 +101,10 @@ class OrderCartDatabase {
   }
 
   Future<void> deleteAllOrderCartSeller() async {
-    var orderCartData = orderCartCollection.where('id_seller',
-        isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!));
+    var orderCartData = orderCartCollection
+        .where('id_seller',
+            isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!))
+        .where('status', isEqualTo: 3);
     orderCartData.get().then((docs) {
       docs.docs.forEach((doc) {
         doc.reference.delete();
