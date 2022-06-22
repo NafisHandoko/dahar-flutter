@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/ordercart.dart';
 
 class OrderCartDatabase {
   final String? uid;
@@ -7,28 +8,28 @@ class OrderCartDatabase {
   final CollectionReference orderCartCollection =
       FirebaseFirestore.instance.collection('order_cart');
 
-  Future<void> addOrderCart(
-      DocumentReference id_order,
-      String id_cart,
-      DocumentReference id_produk,
-      int kuantitas,
-      int total,
-      int status,
-      DocumentReference id_seller) async {
-    await orderCartCollection.add({
-      // 'id_produk': FirebaseFirestore.instance.doc('produk/' + id_produk),
-      // 'kuantitas': kuantitas,
-      // 'id_user': FirebaseFirestore.instance.doc('user/' + uid!),
-      'id_order': id_order,
-      'id_cart': FirebaseFirestore.instance.doc('cart/' + id_cart),
-      'id_produk': id_produk,
-      'kuantitas': kuantitas,
-      'total': total,
-      'status': status,
-      'id_seller': id_seller,
-      'id_buyer': FirebaseFirestore.instance.doc('user/' + uid!),
-    });
-  }
+  // Future<void> addOrderCart(
+  //     DocumentReference id_order,
+  //     String id_cart,
+  //     DocumentReference id_produk,
+  //     int kuantitas,
+  //     int total,
+  //     int status,
+  //     DocumentReference id_seller) async {
+  //   await orderCartCollection.add({
+  //     // 'id_produk': FirebaseFirestore.instance.doc('produk/' + id_produk),
+  //     // 'kuantitas': kuantitas,
+  //     // 'id_user': FirebaseFirestore.instance.doc('user/' + uid!),
+  //     'id_order': id_order,
+  //     'id_cart': FirebaseFirestore.instance.doc('cart/' + id_cart),
+  //     'id_produk': id_produk,
+  //     'kuantitas': kuantitas,
+  //     'total': total,
+  //     'status': status,
+  //     'id_seller': id_seller,
+  //     'id_buyer': FirebaseFirestore.instance.doc('user/' + uid!),
+  //   });
+  // }
 
   Future<void> addOrderCart2(
       List orderCartList, DocumentReference id_order) async {
@@ -49,5 +50,27 @@ class OrderCartDatabase {
     });
     return await batch.commit();
     // batch.commit().then((value) => value);
+  }
+
+  List<OrderCart> _orderCartListFromSnapshot(QuerySnapshot? snapshot) {
+    return snapshot!.docs.map((doc) {
+      return OrderCart(
+          id: doc.id,
+          id_order: doc.get('id_order'),
+          id_produk: doc.get('id_produk'),
+          kuantitas: doc.get('kuantitas') ?? 0,
+          total: doc.get('total') ?? 0,
+          status: doc.get('status') ?? 0,
+          id_seller: doc.get('id_seller'),
+          id_buyer: doc.get('id_buyer'));
+    }).toList();
+  }
+
+  Stream<List<OrderCart>> get orderCart {
+    return orderCartCollection
+        .where('id_buyer',
+            isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!))
+        .snapshots()
+        .map(_orderCartListFromSnapshot);
   }
 }

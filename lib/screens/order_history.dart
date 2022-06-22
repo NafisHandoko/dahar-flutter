@@ -1,53 +1,115 @@
+import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/models/ordercart.dart';
+import 'package:dahar/services/databases/ordercart_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
+import 'package:provider/provider.dart';
 
 class OrderHistory extends StatelessWidget {
   const OrderHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: BackAppBar(
-              title: 'Riwayat Pemesanan',
-            )),
-        body: Container(
+    AuthUser user = Provider.of<AuthUser>(context);
+    return StreamProvider<List<OrderCart>>.value(
+      initialData: [],
+      value: OrderCartDatabase(uid: user.uid).orderCart,
+      child: Scaffold(
+          appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: BackAppBar(
+                title: 'Riwayat Pemesanan',
+              )),
+          body: OrderHistoryProvider(),
+          bottomNavigationBar: const NavBar()),
+    );
+  }
+}
+
+class OrderHistoryProvider extends StatelessWidget {
+  const OrderHistoryProvider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final orderCart = Provider.of<List<OrderCart>>(context);
+    return OrderHistoryBuilder(
+      orderCart: orderCart,
+    );
+  }
+}
+
+class OrderHistoryBuilder extends StatelessWidget {
+  final orderCart;
+  const OrderHistoryBuilder({Key? key, this.orderCart}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           color: Colors.white,
-          child: ListView(children: const [
-            HistoryItem(
-              isConfirmed: false,
-            ),
-            HistoryItem(
-              isConfirmed: false,
-            ),
-            HistoryItem(
-              isConfirmed: false,
-            )
-          ]),
+          child: ListView.builder(
+              itemCount: orderCart.length,
+              itemBuilder: (context, index) {
+                return HistoryItem(
+                    key: ValueKey(orderCart[index].id),
+                    orderCart: orderCart[index]);
+              }),
+          // child: ListView(children: const [
+          //   HistoryItem(),
+          //   HistoryItem(),
+          //   HistoryItem(),
+          //   HistoryItem(),
+          //   HistoryItem()
+          // ]),
         ),
-        bottomNavigationBar: const NavBar());
+        Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 15, left: 25, right: 25),
+              // width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                child: const Text(
+                  'Clear Successfull Order',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {},
+              ),
+            ))
+      ],
+    );
+    // return Container(
+    //   padding: const EdgeInsets.symmetric(horizontal: 25),
+    //   color: Colors.white,
+    //   child: ListView(children: const [
+    //     HistoryItem(
+    //       isConfirmed: false,
+    //     ),
+    //     HistoryItem(
+    //       isConfirmed: false,
+    //     ),
+    //     HistoryItem(
+    //       isConfirmed: false,
+    //     )
+    //   ]),
+    // );
   }
 }
 
 class HistoryItem extends StatefulWidget {
-  final String foodImage, foodName, foodSeller;
-  final int foodPrice, foodAmount, ratingLevel;
-  final bool isConfirmed;
-  const HistoryItem(
-      {Key? key,
-      this.foodImage =
-          'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-      this.foodName = 'Kari Spesial',
-      this.foodSeller = 'Warung Bu Supiah',
-      this.foodPrice = 20000,
-      this.foodAmount = 3,
-      this.ratingLevel = -1,
-      required this.isConfirmed})
-      : super(key: key);
+  final orderCart;
+  const HistoryItem({Key? key, this.orderCart}) : super(key: key);
 
   @override
   State<HistoryItem> createState() => _HistoryItemState();
@@ -56,19 +118,34 @@ class HistoryItem extends StatefulWidget {
 class _HistoryItemState extends State<HistoryItem> {
   bool isConfirmed = false;
   int ratingLevel = -1;
+  String? foodName;
+  int? foodPrice;
+  String? foodSeller;
+  String? foodImage;
 
   @override
   void initState() {
     super.initState();
-    isConfirmed = widget.isConfirmed;
-    ratingLevel = widget.ratingLevel;
+    // isConfirmed = widget.isConfirmed;
+    // ratingLevel = widget.ratingLevel;
+    widget.orderCart.id_produk.get().then((value) {
+      setState(() {
+        foodName = value.get('nama');
+        foodImage = value.get('gambar');
+      });
+    });
+    widget.orderCart.id_seller.get().then((value) {
+      setState(() {
+        foodSeller = value.get('nama');
+      });
+    });
   }
 
   Widget _buildStar(int starCount) {
     return InkWell(
       child: Icon(
         Icons.star,
-        // size: 30.0,
+        size: 20.0,
         color: ratingLevel >= starCount ? Colors.orange : Colors.grey,
       ),
       onTap: () {
@@ -93,8 +170,7 @@ class _HistoryItemState extends State<HistoryItem> {
               decoration: BoxDecoration(
                   borderRadius: borderRadius1,
                   image: DecorationImage(
-                      image: NetworkImage(widget.foodImage),
-                      fit: BoxFit.cover)),
+                      image: NetworkImage('$foodImage'), fit: BoxFit.cover)),
             ),
             Expanded(
               // color: Colors.amberAccent,
@@ -104,25 +180,25 @@ class _HistoryItemState extends State<HistoryItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    widget.foodName,
+                    '$foodName',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    widget.foodSeller,
+                    '$foodSeller',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: color1),
                   ),
                   Text(
-                    'Rp ${widget.foodPrice} x ${widget.foodAmount}',
+                    'Rp ${widget.orderCart.total / widget.orderCart.kuantitas} x ${widget.orderCart.kuantitas}',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: colorGrey),
                   ),
                   Text(
-                    'Total Pesanan : Rp ${widget.foodPrice * widget.foodAmount}',
+                    'Total Pesanan : Rp ${widget.orderCart.total}',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                   ),
                   Container(
@@ -138,7 +214,16 @@ class _HistoryItemState extends State<HistoryItem> {
                                   : colorYellowStatusCont,
                               borderRadius: borderRadius2),
                           child: Text(
-                            (isConfirmed ? 'Selesai' : 'Belum dikonfirmasi'),
+                            // (isConfirmed ? 'Selesai' : 'Belum dikonfirmasi'),
+                            (widget.orderCart.status == 0)
+                                ? 'Belum diproses'
+                                : (widget.orderCart.status == 1)
+                                    ? 'Diproses'
+                                    : (widget.orderCart.status == 2)
+                                        ? 'Dikirim'
+                                        : (widget.orderCart.status == 3)
+                                            ? 'Diterima'
+                                            : '',
                             style: TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.w500,
@@ -172,9 +257,15 @@ class _HistoryItemState extends State<HistoryItem> {
                                     // alignment: Alignment.centerLeft
                                   ),
                                   child: Text(
-                                    (isConfirmed
-                                        ? 'Beri Rating'
-                                        : 'Konfirmasi'),
+                                    (widget.orderCart.status == 0)
+                                        ? 'Proses'
+                                        : (widget.orderCart.status == 1)
+                                            ? 'Kirim'
+                                            : (widget.orderCart.status == 2)
+                                                ? 'Diterima'
+                                                : (widget.orderCart.status == 3)
+                                                    ? 'Diterima'
+                                                    : '',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   onPressed: () async {
