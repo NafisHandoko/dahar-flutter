@@ -144,11 +144,11 @@ class _HistoryItemState extends State<HistoryItem> {
         foodSeller = value.get('nama');
       });
     });
-    widget.orderCart.id_rating.get().then((value) {
-      setState(() {
-        rating = value.get('rating');
-      });
-    });
+    // widget.orderCart.id_rating.get().then((value) {
+    //   setState(() {
+    //     rating = value.get('rating');
+    //   });
+    // });
   }
 
   Widget _buildStar(int starCount) {
@@ -160,7 +160,8 @@ class _HistoryItemState extends State<HistoryItem> {
       ),
       onTap: () {
         setState(() {
-          rating = starCount;
+          // rating = starCount;
+          RatingDatabase().updateRating(widget.orderCart.id_rating, starCount);
         });
       },
     );
@@ -168,6 +169,11 @@ class _HistoryItemState extends State<HistoryItem> {
 
   @override
   Widget build(BuildContext context) {
+    widget.orderCart.id_rating.get().then((value) {
+      setState(() {
+        rating = value.get('rating');
+      });
+    });
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(
