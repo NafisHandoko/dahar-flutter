@@ -80,60 +80,22 @@ class _FavoritItemState extends State<FavoritItem> {
                                 fontSize: 16, fontWeight: FontWeight.w700)),
                         Container(
                           // margin: const EdgeInsets.only(bottom: 20),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: color1, width: 2),
-                            borderRadius: borderRadius2,
-                          ),
+                          // decoration: BoxDecoration(
+                          //   border: Border.all(color: color1, width: 2),
+                          //   borderRadius: borderRadius2,
+                          // ),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: borderRadius2,
-                                      color: color1,
-                                      boxShadow: [boxshadow1]),
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                          onTap: () {
-                                            // setState(() {
-                                            //   _cartCount -= 1;
-                                            // });
-                                            // CartDatabase().updateCart(
-                                            //     widget.cart.id, _cartCount);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 7),
-                                            child: const Text(
-                                              '-',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          )),
-                                      Text(
-                                        '2',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      InkWell(
-                                          onTap: () {
-                                            // setState(() {
-                                            //   _cartCount += 1;
-                                            // });
-                                            // CartDatabase().updateCart(
-                                            //     widget.cart.id, _cartCount);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: const Text(
-                                              '+',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ))
-                                    ],
+                                InkWell(
+                                  onTap: () {
+                                    // CartDatabase().deleteCart(widget.cart.id);
+                                  },
+                                  child: Icon(
+                                    Icons.shopping_cart,
+                                    color: color1,
+                                    size: 20,
                                   ),
                                 ),
                                 Padding(
