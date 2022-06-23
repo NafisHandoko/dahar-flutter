@@ -1,6 +1,7 @@
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/produk.dart';
 import 'package:dahar/models/toko.dart';
+import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/services/databases/produk_database.dart';
 import 'package:dahar/services/databases/toko_database.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,10 @@ class MenuToko extends StatelessWidget {
         body: MenuTokoProvider(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/add_product');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddProduct()),
+            );
           },
           backgroundColor: color1,
           child: Icon(Icons.add),
