@@ -6,6 +6,7 @@ import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/item_detail.dart';
 import 'package:dahar/screens/maps/networking.dart';
 import 'package:dahar/services/databases/produk_database.dart';
+import 'package:dahar/services/databases/rating_database.dart';
 import 'package:dahar/services/databases/toko_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,7 @@ class PopularItem extends StatefulWidget {
 }
 
 class _PopularItemState extends State<PopularItem> {
+  num rating = 0;
   Toko? toko;
   @override
   initState() {
@@ -120,8 +122,16 @@ class _PopularItemState extends State<PopularItem> {
     });
   }
 
+  getRating() async {
+    var ratingData = await RatingDatabase().getRatingProduk(widget.produk.id);
+    setState(() {
+      rating = ratingData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    getRating();
     return GestureDetector(
       onTap: () {
         // Navigator.pushNamed(context, '/item_detail');
@@ -179,7 +189,7 @@ class _PopularItemState extends State<PopularItem> {
                         color: colorStar,
                       ),
                       Text(
-                        '${widget.produk.rating}',
+                        '${rating}',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w600),
                       ),
