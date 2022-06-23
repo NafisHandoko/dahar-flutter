@@ -128,7 +128,7 @@ class _OrderListItemState extends State<OrderListItem> {
   String? foodBuyer;
   String? foodImage;
   String? alamat;
-  int rating = -1;
+  int rating = 0;
 
   @override
   void initState() {
@@ -249,7 +249,7 @@ class _OrderListItemState extends State<OrderListItem> {
                                     : colorYellowStatusText),
                           ),
                         ),
-                        (rating >= 0)
+                        (rating > 0)
                             ? Row(
                                 children: [
                                   _buildStar(1),

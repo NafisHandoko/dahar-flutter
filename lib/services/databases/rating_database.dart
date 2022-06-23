@@ -25,13 +25,17 @@ class RatingDatabase {
 
   Future<num> getRatingProduk(String id_produk) async {
     num allRating = 0;
+    num exclusion = 0;
     var ratingData = await ratingCollection
         .where('id_produk',
             isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk))
         .get();
     ratingData.docs.forEach((doc) {
       allRating += doc.get('rating');
+      if (doc.get('rating') == 0) {
+        exclusion += 1;
+      }
     });
-    return allRating / ratingData.docs.length;
+    return allRating / (ratingData.docs.length - exclusion);
   }
 }

@@ -38,7 +38,7 @@ class OrderCartDatabase {
     var batch = db.batch();
     for (var doc in orderCartList) {
       var id_rating = await RatingDatabase(uid: uid)
-          .addRating(-1, doc['id_produk'], doc['id_seller']);
+          .addRating(0, doc['id_produk'], doc['id_seller']);
       var docRef = orderCartCollection.doc(); //automatically generate unique id
       batch.set(docRef, {
         'id_order': id_order,

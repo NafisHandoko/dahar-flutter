@@ -126,7 +126,7 @@ class _HistoryItemState extends State<HistoryItem> {
   int? foodPrice;
   String? foodSeller;
   String? foodImage;
-  int rating = -1;
+  int rating = 0;
 
   @override
   void initState() {
@@ -248,7 +248,7 @@ class _HistoryItemState extends State<HistoryItem> {
                                     : colorYellowStatusText),
                           ),
                         ),
-                        (rating >= 0)
+                        (rating > 0)
                             ? Row(
                                 children: [
                                   _buildStar(1),
