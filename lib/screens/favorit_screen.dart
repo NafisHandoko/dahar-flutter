@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/favorit.dart';
 import 'package:dahar/models/produk.dart';
+import 'package:dahar/services/databases/cart_database.dart';
 import 'package:dahar/services/databases/favorit_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -24,16 +25,17 @@ class FavoritScreen extends StatelessWidget {
               child: BackAppBar(
                 title: 'Favorit',
               )),
-          body: FavoritBuilder(),
+          body: FavoritBuilder(
+            uid: user.uid,
+          ),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
 class FavoritBuilder extends StatelessWidget {
-  const FavoritBuilder({
-    Key? key,
-  }) : super(key: key);
+  final uid;
+  const FavoritBuilder({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +50,18 @@ class FavoritBuilder extends StatelessWidget {
           itemCount: favorit.length,
           itemBuilder: (context, index) {
             return FavoritItem(
-                key: ValueKey(favorit[index].id), favorit: favorit[index]);
+              key: ValueKey(favorit[index].id),
+              favorit: favorit[index],
+              uid: uid,
+            );
           }),
     );
   }
 }
 
 class FavoritItem extends StatefulWidget {
-  final favorit;
-  const FavoritItem({Key? key, this.favorit}) : super(key: key);
+  final favorit, uid;
+  const FavoritItem({Key? key, this.favorit, this.uid}) : super(key: key);
 
   @override
   State<FavoritItem> createState() => _FavoritItemState();
@@ -145,11 +150,13 @@ class _FavoritItemState extends State<FavoritItem> {
                                 InkWell(
                                   onTap: () {
                                     // CartDatabase().deleteCart(widget.cart.id);
+                                    CartDatabase(uid: widget.uid).addCart(
+                                        1, widget.favorit.id_produk.id);
                                   },
                                   child: Icon(
                                     Icons.shopping_cart,
                                     color: color1,
-                                    size: 20,
+                                    size: 30,
                                   ),
                                 ),
                                 Padding(
@@ -157,12 +164,16 @@ class _FavoritItemState extends State<FavoritItem> {
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: InkWell(
                                     onTap: () {
-                                      // CartDatabase().deleteCart(widget.cart.id);
+                                      FavoritDatabase(
+                                              uid: widget.uid,
+                                              id_produk:
+                                                  widget.favorit.id_produk.id)
+                                          .deleteFavorit();
                                     },
                                     child: Icon(
                                       Icons.delete,
                                       color: colorRedDelete,
-                                      size: 20,
+                                      size: 30,
                                     ),
                                   ),
                                 )
