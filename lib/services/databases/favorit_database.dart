@@ -34,6 +34,14 @@ class FavoritDatabase {
         .map(_favoritListFromSnapshot);
   }
 
+  Stream<List<Favorit>> get favorit {
+    return favoritCollection
+        .where('id_user',
+            isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!))
+        .snapshots()
+        .map(_favoritListFromSnapshot);
+  }
+
   Future<void> deleteFavorit() async {
     var favoritData = favoritCollection
         .where('id_user',

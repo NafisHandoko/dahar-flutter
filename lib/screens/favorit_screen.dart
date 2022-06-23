@@ -1,38 +1,92 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/models/favorit.dart';
+import 'package:dahar/models/produk.dart';
+import 'package:dahar/services/databases/favorit_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
+import 'package:provider/provider.dart';
 
 class FavoritScreen extends StatelessWidget {
   const FavoritScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: BackAppBar(
-              title: 'Favorit',
-            )),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          color: Colors.white,
-          child: ListView(
-            children: [FavoritItem(), FavoritItem(), FavoritItem()],
-          ),
-        ),
-        bottomNavigationBar: const NavBar());
+    AuthUser user = Provider.of<AuthUser>(context);
+    return StreamProvider<List<Favorit>>.value(
+      initialData: [],
+      value: FavoritDatabase(uid: user.uid).favorit,
+      child: Scaffold(
+          appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: BackAppBar(
+                title: 'Favorit',
+              )),
+          body: FavoritBuilder(),
+          bottomNavigationBar: const NavBar()),
+    );
+  }
+}
+
+class FavoritBuilder extends StatelessWidget {
+  const FavoritBuilder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final favorit = Provider.of<List<Favorit>>(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      color: Colors.white,
+      // child: ListView(
+      //   children: [FavoritItem(), FavoritItem(), FavoritItem()],
+      // ),
+      child: ListView.builder(
+          itemCount: favorit.length,
+          itemBuilder: (context, index) {
+            return FavoritItem(
+                key: ValueKey(favorit[index].id), favorit: favorit[index]);
+          }),
+    );
   }
 }
 
 class FavoritItem extends StatefulWidget {
-  const FavoritItem({Key? key}) : super(key: key);
+  final favorit;
+  const FavoritItem({Key? key, this.favorit}) : super(key: key);
 
   @override
   State<FavoritItem> createState() => _FavoritItemState();
 }
 
 class _FavoritItemState extends State<FavoritItem> {
+  String? foodName;
+  String? foodSeller;
+  int? harga;
+  String? foodImage;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.favorit.id_produk.get().then((doc) {
+      setState(() {
+        foodName = doc.get('nama');
+        harga = doc.get('harga');
+        foodImage = doc.get('gambar');
+      });
+      var tokoRef =
+          FirebaseFirestore.instance.doc('toko/' + doc.get('id_toko').id).get();
+      tokoRef.then((val) {
+        setState(() {
+          foodSeller = val.get('nama');
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +102,7 @@ class _FavoritItemState extends State<FavoritItem> {
                   borderRadius: borderRadius1,
                   image: DecorationImage(
                       image: NetworkImage(
-                        'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                        '$foodImage',
                       ),
                       fit: BoxFit.cover)),
             ),
@@ -60,11 +114,11 @@ class _FavoritItemState extends State<FavoritItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'sate madura',
+                    '$foodName',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    'diana',
+                    '$foodSeller',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -75,7 +129,7 @@ class _FavoritItemState extends State<FavoritItem> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Rp 12.000,00',
+                        Text('Rp $harga',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w700)),
                         Container(
