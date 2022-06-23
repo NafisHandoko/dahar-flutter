@@ -565,8 +565,8 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
         child: Text('Ubah Data Produk',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      content: ListView(
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 15),
@@ -738,7 +738,7 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
                   await ProdukDatabase(uid: widget.id_produk).updateProduk(
                       widget.id_produk,
                       int.parse(newHarga),
-                      newDeskripsi,
+                      newNama,
                       newDeskripsi);
                   Navigator.pop(context);
                 },
