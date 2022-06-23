@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/components/navbar.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class MenuToko extends StatelessWidget {
@@ -20,6 +21,7 @@ class MenuToko extends StatelessWidget {
       initialData: Toko(),
       value: TokoDatabase(uid: id_toko).myToko,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(100),
@@ -243,7 +245,14 @@ class MenuTokoItem extends StatelessWidget {
               left: 10,
               child: Row(children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => EditProdukDialog(
+                              id_produk: produk.id,
+                            ));
+                  },
                   child: Container(
                     margin: const EdgeInsets.only(right: 10),
                     padding: const EdgeInsets.all(5),
@@ -525,6 +534,212 @@ class _EditAlamatDialogState extends State<EditAlamatDialog> {
                   // Navigator.of(context).pop(_stars);
                   await TokoDatabase(uid: widget.id_toko)
                       .updateTokoAlamat(newAlamat);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class EditProdukDialog extends StatefulWidget {
+  final id_produk;
+  const EditProdukDialog({Key? key, this.id_produk}) : super(key: key);
+
+  @override
+  State<EditProdukDialog> createState() => _EditProdukDialogState();
+}
+
+class _EditProdukDialogState extends State<EditProdukDialog> {
+  String newNama = '';
+  String newHarga = '';
+  String newDeskripsi = '';
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
+      title: Center(
+        child: Text('Ubah Data Produk',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(90, 108, 234, 0.07),
+                  blurRadius: 50,
+                  spreadRadius: 0,
+                  offset: Offset(12, 26),
+                ),
+              ],
+            ),
+            child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: borderRadius1,
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Soto Ayam',
+                  labelText: 'Nama Makanan',
+                  // prefixIcon: Icon(
+                  //   Icons.person,
+                  //   color: color1,
+                  // ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    newNama = val;
+                  });
+                }),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(90, 108, 234, 0.07),
+                  blurRadius: 50,
+                  spreadRadius: 0,
+                  offset: Offset(12, 26),
+                ),
+              ],
+            ),
+            child: TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: borderRadius1,
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: '12000',
+                  labelText: 'Harga',
+                  // prefixIcon: Icon(
+                  //   Icons.person,
+                  //   color: color1,
+                  // ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    newHarga = val;
+                  });
+                }),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(90, 108, 234, 0.07),
+                  blurRadius: 50,
+                  spreadRadius: 0,
+                  offset: Offset(12, 26),
+                ),
+              ],
+            ),
+            child: TextField(
+                maxLines: 5,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: borderRadius1,
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Soto dengan daging ayam dan kuah yang gurih...',
+                  labelText: 'Deskripsi',
+                  // prefixIcon: Icon(
+                  //   Icons.person,
+                  //   color: color1,
+                  // ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    newDeskripsi = val;
+                  });
+                }),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: color1),
+                ),
+                onPressed: () {
+                  // Navigator.of(context).pop(_stars);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  border: Border.all(color: color1, width: 2),
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  // Navigator.of(context).pop(_stars);
+                  await ProdukDatabase(uid: widget.id_produk).updateProduk(
+                      widget.id_produk,
+                      int.parse(newHarga),
+                      newDeskripsi,
+                      newDeskripsi);
                   Navigator.pop(context);
                 },
               ),

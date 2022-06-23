@@ -57,4 +57,11 @@ class ProdukDatabase {
   Future<void> deleteProduk(String id_produk) async {
     await produkCollection.doc(id_produk).delete();
   }
+
+  Future<void> updateProduk(
+      String id_produk, int harga, String nama, String deskripsi) async {
+    return await produkCollection
+        .doc(id_produk)
+        .update({'nama': nama, 'harga': harga, 'deskripsi': deskripsi});
+  }
 }
