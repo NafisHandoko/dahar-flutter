@@ -34,4 +34,15 @@ class TokoDatabase {
   Stream<List<Toko>> get toko {
     return tokoCollection.snapshots().map(_tokoListFromSnapshot);
   }
+
+  Stream<Toko> get myToko {
+    // return userCollection.snapshots().map(_userListFromSnapshot);
+    return tokoCollection.doc(uid).snapshots().map((doc) => Toko(
+        id: doc.id,
+        nama: doc.get('nama') ?? '',
+        alamat: doc.get('alamat') ?? '',
+        lat: doc.get('lat') ?? 0,
+        long: doc.get('long') ?? 0,
+        foto: doc.get('foto')));
+  }
 }
