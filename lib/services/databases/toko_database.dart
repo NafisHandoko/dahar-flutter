@@ -8,14 +8,15 @@ class TokoDatabase {
   final CollectionReference tokoCollection =
       FirebaseFirestore.instance.collection('toko');
 
-  Future<void> updateToko(
-      String nama, String alamat, double lat, double long, String foto) async {
+  Future<void> updateToko(String nama, String alamat, double lat, double long,
+      String foto, String fotoRef) async {
     return await tokoCollection.doc(uid).set({
       'nama': nama,
       'alamat': alamat,
       'lat': lat,
       'long': long,
-      'foto': foto
+      'foto': foto,
+      'fotoRef': fotoRef
     });
   }
 
@@ -39,7 +40,8 @@ class TokoDatabase {
           alamat: doc.get('alamat') ?? '',
           lat: doc.get('lat') ?? 0,
           long: doc.get('long') ?? 0,
-          foto: doc.get('foto'));
+          foto: doc.get('foto'),
+          fotoRef: doc.get('fotoRef'));
     }).toList();
   }
 
@@ -55,6 +57,7 @@ class TokoDatabase {
         alamat: doc.get('alamat') ?? '',
         lat: doc.get('lat') ?? 0,
         long: doc.get('long') ?? 0,
-        foto: doc.get('foto')));
+        foto: doc.get('foto'),
+        fotoRef: doc.get('fotoRef')));
   }
 }

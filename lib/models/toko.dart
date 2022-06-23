@@ -5,6 +5,14 @@ class Toko {
   final double? lat;
   final double? long;
   final String? foto;
+  final String? fotoRef;
 
-  Toko({this.id, this.nama, this.alamat, this.lat, this.long, this.foto});
+  Toko(
+      {this.id,
+      this.nama,
+      this.alamat,
+      this.lat,
+      this.long,
+      this.foto,
+      this.fotoRef});
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/dahar_user.dart';
@@ -9,6 +10,7 @@ import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/services/auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class YourProfile extends StatefulWidget {
@@ -53,9 +55,9 @@ class ProfileBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final daharuser = Provider.of<DaharUser>(context);
-    log('logging user in your_profile');
+    // log('logging user in your_profile');
     // log("${daharuser.length > 0 ? daharuser.first.email : ''}");
-    log('${daharuser.email}');
+    // log('${daharuser.email}');
     // return Container();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -81,7 +83,15 @@ class ProfileBuilder extends StatelessWidget {
                   bottom: 10,
                   right: 0,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      ImagePicker picker = ImagePicker();
+                      XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        UserDatabase(uid: daharuser.id).updateUserFoto(
+                            daharuser.fotoRef ?? '', File(image.path));
+                      }
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(left: 10),
                       padding: const EdgeInsets.all(5),

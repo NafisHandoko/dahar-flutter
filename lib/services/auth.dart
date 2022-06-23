@@ -80,14 +80,18 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await UserDatabase(uid: user!.uid).updateUser(email.split('@')[0], email,
-          'https://images.unsplash.com/photo-1628258475456-0224b1e4225a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
+      await UserDatabase(uid: user!.uid).updateUser(
+          email.split('@')[0],
+          email,
+          'https://firebasestorage.googleapis.com/v0/b/dahar-flutter.appspot.com/o/images%2Fdefault_user_photo.png?alt=media&token=0f46f1f2-e3c8-486b-9cb5-381f7dab155e',
+          'images/default_user_photo.png');
       await TokoDatabase(uid: user.uid).updateToko(
           "Toko ${email.split('@')[0]}",
           'belum diset',
           position.latitude,
           position.longitude,
-          'https://images.unsplash.com/photo-1516876437184-593fda40c7ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80');
+          'https://firebasestorage.googleapis.com/v0/b/dahar-flutter.appspot.com/o/images%2Fdefault_toko_photo.png?alt=media&token=725972f0-2808-4050-9f09-6adf98bf4962',
+          'images/default_toko_photo.png');
       // await DatabaseService(uid: user.uid).addProduk(
       //     'Sate Kambing',
       //     7000,
