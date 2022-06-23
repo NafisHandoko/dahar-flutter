@@ -40,7 +40,9 @@ class NavBar extends StatelessWidget {
               Icons.favorite_border,
             ),
             color: color1,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/favorit');
+            },
           ),
           IconButton(
             alignment: Alignment.center,
