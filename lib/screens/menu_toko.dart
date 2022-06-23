@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/produk.dart';
 import 'package:dahar/models/toko.dart';
@@ -10,6 +12,7 @@ import 'package:dahar/components/back_appbar.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MenuToko extends StatelessWidget {
   final id_toko;
@@ -251,6 +254,7 @@ class MenuTokoItem extends StatelessWidget {
                         barrierDismissible: false,
                         builder: (_) => EditProdukDialog(
                               id_produk: produk.id,
+                              oldGambarRef: produk.gambarRef,
                             ));
                   },
                   child: Container(
@@ -546,8 +550,9 @@ class _EditAlamatDialogState extends State<EditAlamatDialog> {
 }
 
 class EditProdukDialog extends StatefulWidget {
-  final id_produk;
-  const EditProdukDialog({Key? key, this.id_produk}) : super(key: key);
+  final id_produk, oldGambarRef;
+  const EditProdukDialog({Key? key, this.id_produk, this.oldGambarRef})
+      : super(key: key);
 
   @override
   State<EditProdukDialog> createState() => _EditProdukDialogState();
@@ -557,6 +562,7 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
   String newNama = '';
   String newHarga = '';
   String newDeskripsi = '';
+  File? _image;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -680,6 +686,51 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
                   });
                 }),
           ),
+          Text(
+            'Gambar Makanan',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          InkWell(
+            onTap: () async {
+              // final cameras = await availableCameras();
+              // final result = await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => Camera(
+              //             cameras: cameras,
+              //           )),
+              // );
+              // if (result != null) {
+              //   setState(() {
+              //     capturedImages = result;
+              //   });
+              // }
+              ImagePicker picker = ImagePicker();
+              XFile? image =
+                  await picker.pickImage(source: ImageSource.gallery);
+              if (image != null) {
+                setState(() {
+                  _image = File(image.path);
+                });
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  image: _image != null
+                      ? DecorationImage(
+                          image: FileImage(_image!), fit: BoxFit.cover)
+                      : null,
+                  borderRadius: borderRadius1,
+                  border: Border.all(color: color1, width: 1)),
+              child: Icon(
+                Icons.camera_alt_rounded,
+                color: color1,
+              ),
+            ),
+          )
         ],
       ),
       actions: <Widget>[
@@ -739,7 +790,9 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
                       widget.id_produk,
                       int.parse(newHarga),
                       newNama,
-                      newDeskripsi);
+                      newDeskripsi,
+                      widget.oldGambarRef,
+                      _image!);
                   Navigator.pop(context);
                 },
               ),

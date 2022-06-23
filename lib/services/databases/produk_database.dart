@@ -71,10 +71,22 @@ class ProdukDatabase {
     await produkCollection.doc(id_produk).delete();
   }
 
-  Future<void> updateProduk(
-      String id_produk, int harga, String nama, String deskripsi) async {
-    return await produkCollection
-        .doc(id_produk)
-        .update({'nama': nama, 'harga': harga, 'deskripsi': deskripsi});
+  Future<void> updateProduk(String id_produk, int harga, String nama,
+      String deskripsi, String oldGambarRef, File gambar) async {
+    var imagesRef = storageRef.child(oldGambarRef);
+    await imagesRef.delete();
+
+    var uuid = Uuid();
+    String newGambarRef = 'images/${uuid.v4()}.jpg';
+    imagesRef = storageRef.child(newGambarRef);
+    await imagesRef.putFile(gambar);
+    String imageUrl = await imagesRef.getDownloadURL();
+    return await produkCollection.doc(id_produk).update({
+      'nama': nama,
+      'harga': harga,
+      'deskripsi': deskripsi,
+      'gambar': imageUrl,
+      'gambarRef': newGambarRef,
+    });
   }
 }

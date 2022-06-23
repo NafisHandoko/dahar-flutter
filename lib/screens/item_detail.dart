@@ -30,9 +30,11 @@ class _ItemDetailState extends State<ItemDetail> {
 
   getRating() async {
     var ratingData = await RatingDatabase().getRatingProduk(widget.produk.id);
-    setState(() {
-      rating = ratingData;
-    });
+    if (mounted) {
+      setState(() {
+        rating = ratingData;
+      });
+    }
   }
 
   getDistance() async {
