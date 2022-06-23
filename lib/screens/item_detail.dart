@@ -2,6 +2,7 @@ import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/favorit.dart';
 import 'package:dahar/services/databases/cart_database.dart';
 import 'package:dahar/services/databases/favorit_database.dart';
+import 'package:dahar/services/databases/rating_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -18,11 +19,20 @@ class ItemDetail extends StatefulWidget {
 class _ItemDetailState extends State<ItemDetail> {
   double? distance;
   int _cartCount = 1;
+  num rating = 0;
 
   @override
   void initState() {
+    getRating();
     getDistance();
     super.initState();
+  }
+
+  getRating() async {
+    var ratingData = await RatingDatabase().getRatingProduk(widget.produk.id);
+    setState(() {
+      rating = ratingData;
+    });
   }
 
   getDistance() async {
@@ -88,7 +98,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               color: colorStar,
                             ),
                             Text(
-                              '${widget.produk.rating}',
+                              '${rating}',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             )
                           ],

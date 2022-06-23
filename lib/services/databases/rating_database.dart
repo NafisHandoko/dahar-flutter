@@ -22,4 +22,16 @@ class RatingDatabase {
       'rating': rating,
     });
   }
+
+  Future<num> getRatingProduk(String id_produk) async {
+    num allRating = 0;
+    var ratingData = await ratingCollection
+        .where('id_produk',
+            isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk))
+        .get();
+    ratingData.docs.forEach((doc) {
+      allRating += doc.get('rating');
+    });
+    return allRating / ratingData.docs.length;
+  }
 }
