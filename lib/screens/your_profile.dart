@@ -28,6 +28,7 @@ class _YourProfileState extends State<YourProfile> {
       initialData: DaharUser(),
       value: UserDatabase(uid: user?.uid).user2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(100),
             child: BackAppBar(
@@ -105,7 +106,14 @@ class ProfileBuilder extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => EditDialog(
+                              id_user: daharuser.id,
+                            ));
+                  },
                   child: Container(
                     margin: const EdgeInsets.only(left: 10),
                     padding: const EdgeInsets.all(5),
@@ -213,6 +221,126 @@ class ProfileBuilder extends StatelessWidget {
           ],
         )
       ]),
+    );
+  }
+}
+
+class EditDialog extends StatefulWidget {
+  final id_user;
+  const EditDialog({Key? key, this.id_user}) : super(key: key);
+
+  @override
+  State<EditDialog> createState() => _EditDialogState();
+}
+
+class _EditDialogState extends State<EditDialog> {
+  String newName = '';
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
+      title: Center(
+        child: Text('Ubah Nama',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+      ),
+      content: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(90, 108, 234, 0.07),
+              blurRadius: 50,
+              spreadRadius: 0,
+              offset: Offset(12, 26),
+            ),
+          ],
+        ),
+        child: TextField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius1,
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: 'John Doe',
+              labelText: 'Nama Baru',
+              // prefixIcon: Icon(
+              //   Icons.person,
+              //   color: color1,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                newName = val;
+              });
+            }),
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: color1),
+                ),
+                onPressed: () {
+                  // Navigator.of(context).pop(_stars);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  border: Border.all(color: color1, width: 2),
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  // Navigator.of(context).pop(_stars);
+                  await UserDatabase(uid: widget.id_user)
+                      .updateUserNama(newName);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

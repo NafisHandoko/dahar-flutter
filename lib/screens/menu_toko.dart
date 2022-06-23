@@ -197,7 +197,10 @@ class MenuTokoBuilder extends StatelessWidget {
         //   MenuTokoItem(),
         //   MenuTokoItem(),
         // ],
-        children: <Widget>[for (var item in produk) MenuTokoItem(produk: item)],
+        children: <Widget>[
+          for (var item in produk)
+            MenuTokoItem(key: ValueKey(item.id), produk: item)
+        ],
       ),
     );
   }

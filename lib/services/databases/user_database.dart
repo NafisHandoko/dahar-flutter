@@ -14,6 +14,12 @@ class UserDatabase {
         .set({'nama': nama, 'email': email, 'foto': foto});
   }
 
+  Future<void> updateUserNama(String nama) async {
+    return await userCollection.doc(uid).update({
+      'nama': nama,
+    });
+  }
+
   List<DaharUser> _userListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return DaharUser(
