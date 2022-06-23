@@ -53,4 +53,8 @@ class ProdukDatabase {
         .snapshots()
         .map(_produkListFromSnapshot);
   }
+
+  Future<void> deleteProduk(String id_produk) async {
+    await produkCollection.doc(id_produk).delete();
+  }
 }
