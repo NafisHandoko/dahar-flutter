@@ -1,5 +1,7 @@
 import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/models/favorit.dart';
 import 'package:dahar/services/databases/cart_database.dart';
+import 'package:dahar/services/databases/favorit_database.dart';
 import 'package:dahar/services/toko_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -36,254 +38,264 @@ class _ItemDetailState extends State<ItemDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(alignment: Alignment.center, children: [
-        Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
-              height: 420,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(widget.produk.gambar),
-                      fit: BoxFit.cover)),
-              child: const NavButton(),
-            )),
-        Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.only(left: 25, right: 25, top: 35),
-              height: 460,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.produk.nama,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 24),
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: colorStar,
-                          ),
-                          Text(
-                            '${widget.produk.rating}',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: Row(
+    AuthUser user = Provider.of<AuthUser>(context);
+    return StreamProvider<List<Favorit>>.value(
+      initialData: [],
+      value:
+          FavoritDatabase(uid: user.uid, id_produk: widget.produk.id).isFavorit,
+      child: Scaffold(
+        body: Stack(alignment: Alignment.center, children: [
+          Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
+                height: 420,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(widget.produk.gambar),
+                        fit: BoxFit.cover)),
+                child: NavButton(id_produk: widget.produk.id, uid: user.uid),
+              )),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.only(left: 25, right: 25, top: 35),
+                height: 460,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: const EdgeInsets.only(right: 15),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(widget.toko.foto),
-                                  fit: BoxFit.cover),
-                              shape: BoxShape.circle,
-                              color: color1),
+                        Text(
+                          widget.produk.nama,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 24),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 3),
-                              child: Text(
-                                widget.toko.nama,
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w600),
-                              ),
+                            Icon(
+                              Icons.star,
+                              color: colorStar,
                             ),
-                            Text('${distance?.toStringAsFixed(1)} Km')
+                            Text(
+                              '${widget.produk.rating}',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            )
                           ],
                         )
                       ],
                     ),
-                  ),
-                  Container(
-                    height: 180,
-                    margin: const EdgeInsets.only(top: 15),
-                    child: ListView(padding: EdgeInsets.zero, children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 15),
-                        child: const Text(
-                          'Description',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Text(
-                        // '''Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?''',
-                        widget.produk.deskripsi,
-                        softWrap: true,
-                      )
-                    ]),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: borderRadius2,
-                        color: color1,
-                        boxShadow: [boxshadow1]),
-                    child: TextButton(
-                      child: const Text(
-                        'Add to Cart',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        AuthUser user =
-                            Provider.of<AuthUser>(context, listen: false);
-                        await CartDatabase(uid: user.uid)
-                            .addCart(_cartCount, widget.produk.id);
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: color1, width: 3),
-                      borderRadius: borderRadius2,
-                    ),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            width: 40,
+                            height: 40,
+                            margin: const EdgeInsets.only(right: 15),
                             decoration: BoxDecoration(
-                                borderRadius: borderRadius2,
-                                color: color1,
-                                boxShadow: [boxshadow1]),
-                            child: TextButton(
-                              child: const Text(
-                                'Buy',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onPressed: () {},
-                            ),
+                                image: DecorationImage(
+                                    image: NetworkImage(widget.toko.foto),
+                                    fit: BoxFit.cover),
+                                shape: BoxShape.circle,
+                                color: color1),
                           ),
-                          Text(
-                            'Rp ${widget.produk.harga}',
-                            style: TextStyle(
-                                color: color1,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 3),
+                                child: Text(
+                                  widget.toko.nama,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Text('${distance?.toStringAsFixed(1)} Km')
+                            ],
                           )
-                        ]),
-                  )
-                ],
-              ),
-            )),
-        Positioned(
-            top: 290,
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: borderRadius2,
-                  color: color1,
-                  boxShadow: [boxshadow1]),
-              child: Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _cartCount -= 1;
-                        });
-                      },
-                      child: const Text(
-                        '-',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  Text(
-                    '$_cartCount',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _cartCount += 1;
-                        });
-                      },
-                      child: const Text(
-                        '+',
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
-              ),
-            ))
-      ]),
-    );
-  }
-}
-
-class CartButton extends StatefulWidget {
-  const CartButton({Key? key}) : super(key: key);
-
-  @override
-  State<CartButton> createState() => _CartButtonState();
-}
-
-class _CartButtonState extends State<CartButton> {
-  int _cartCount = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: borderRadius2, color: color1, boxShadow: [boxshadow1]),
-      child: Row(
-        children: [
-          TextButton(
-              onPressed: () {
-                setState(() {
-                  _cartCount -= 1;
-                });
-              },
-              child: const Text(
-                '-',
-                style: TextStyle(color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 180,
+                      margin: const EdgeInsets.only(top: 15),
+                      child: ListView(padding: EdgeInsets.zero, children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          child: const Text(
+                            'Description',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Text(
+                          // '''Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?''',
+                          widget.produk.deskripsi,
+                          softWrap: true,
+                        )
+                      ]),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: borderRadius2,
+                          color: color1,
+                          boxShadow: [boxshadow1]),
+                      child: TextButton(
+                        child: const Text(
+                          'Add to Cart',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          AuthUser user =
+                              Provider.of<AuthUser>(context, listen: false);
+                          await CartDatabase(uid: user.uid)
+                              .addCart(_cartCount, widget.produk.id);
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: color1, width: 3),
+                        borderRadius: borderRadius2,
+                      ),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              decoration: BoxDecoration(
+                                  borderRadius: borderRadius2,
+                                  color: color1,
+                                  boxShadow: [boxshadow1]),
+                              child: TextButton(
+                                child: const Text(
+                                  'Buy',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                            Text(
+                              'Rp ${widget.produk.harga}',
+                              style: TextStyle(
+                                  color: color1,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ]),
+                    )
+                  ],
+                ),
               )),
-          Text(
-            '$_cartCount',
-            style: TextStyle(color: Colors.white),
-          ),
-          TextButton(
-              onPressed: () {
-                setState(() {
-                  _cartCount += 1;
-                });
-              },
-              child: const Text(
-                '+',
-                style: TextStyle(color: Colors.white),
+          Positioned(
+              top: 290,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: borderRadius2,
+                    color: color1,
+                    boxShadow: [boxshadow1]),
+                child: Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _cartCount -= 1;
+                          });
+                        },
+                        child: const Text(
+                          '-',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Text(
+                      '$_cartCount',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _cartCount += 1;
+                          });
+                        },
+                        child: const Text(
+                          '+',
+                          style: TextStyle(color: Colors.white),
+                        ))
+                  ],
+                ),
               ))
-        ],
+        ]),
       ),
     );
   }
 }
 
+// class CartButton extends StatefulWidget {
+//   const CartButton({Key? key}) : super(key: key);
+
+//   @override
+//   State<CartButton> createState() => _CartButtonState();
+// }
+
+// class _CartButtonState extends State<CartButton> {
+//   int _cartCount = 1;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//           borderRadius: borderRadius2, color: color1, boxShadow: [boxshadow1]),
+//       child: Row(
+//         children: [
+//           TextButton(
+//               onPressed: () {
+//                 setState(() {
+//                   _cartCount -= 1;
+//                 });
+//               },
+//               child: const Text(
+//                 '-',
+//                 style: TextStyle(color: Colors.white),
+//               )),
+//           Text(
+//             '$_cartCount',
+//             style: TextStyle(color: Colors.white),
+//           ),
+//           TextButton(
+//               onPressed: () {
+//                 setState(() {
+//                   _cartCount += 1;
+//                 });
+//               },
+//               child: const Text(
+//                 '+',
+//                 style: TextStyle(color: Colors.white),
+//               ))
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 class NavButton extends StatefulWidget {
-  const NavButton({Key? key}) : super(key: key);
+  final id_produk, uid;
+  const NavButton({Key? key, this.id_produk, this.uid}) : super(key: key);
 
   @override
   State<NavButton> createState() => _NavButtonState();
@@ -294,6 +306,7 @@ class _NavButtonState extends State<NavButton> {
 
   @override
   Widget build(BuildContext context) {
+    final favorit = Provider.of<List<Favorit>>(context);
     return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -319,11 +332,20 @@ class _NavButtonState extends State<NavButton> {
               color: color1,
               onPressed: () {
                 setState(() {
-                  _isFavorited = !_isFavorited;
+                  // _isFavorited = !_isFavorited;
+                  if (favorit.isEmpty) {
+                    FavoritDatabase(
+                            uid: widget.uid, id_produk: widget.id_produk)
+                        .addFavorit();
+                  } else if (favorit.isNotEmpty) {
+                    FavoritDatabase(
+                            uid: widget.uid, id_produk: widget.id_produk)
+                        .deleteFavorit();
+                  }
                 });
               },
               // icon: Icon(Icons.favorite_border_rounded)
-              icon: (_isFavorited
+              icon: (favorit.isNotEmpty
                   ? const Icon(Icons.favorite_rounded)
                   : const Icon(Icons.favorite_border_rounded)),
             ),
