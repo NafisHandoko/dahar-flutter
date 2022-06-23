@@ -50,7 +50,7 @@ class MenuTokoProvider extends StatelessWidget {
     AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<Produk>>.value(
       initialData: [],
-      value: ProdukDatabase(uid: user.uid).myProduks,
+      value: ProdukDatabase(uid: user.uid).produkOnToko,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         color: Colors.white,

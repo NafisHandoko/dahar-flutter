@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/produk.dart';
 import 'package:dahar/screens/maps/posisi_toko.dart';
+import 'package:dahar/services/databases/produk_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:math';
 import 'package:dahar/screens/maps/networking.dart';
+import 'package:provider/provider.dart';
 
 class DetailToko extends StatefulWidget {
   final toko;
@@ -123,7 +126,147 @@ class _DetailTokoState extends State<DetailToko> {
     }
   }
 
-  Widget _foodItem(String foodImage, String foodName, String foodPrice) {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<List<Produk>>.value(
+      initialData: [],
+      value: ProdukDatabase(uid: widget.toko.id).produkOnToko,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(100),
+            child: BackAppBar(
+              title: 'Detail Toko',
+            )),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          color: Colors.white,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Column(children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  // margin: const EdgeInsets.only(right: 15),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage('${widget.toko.foto}'),
+                          fit: BoxFit.cover),
+                      shape: BoxShape.circle,
+                      color: color1),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 2),
+                  child: Text(
+                    '${widget.toko.nama}',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    '${sellerName}',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    '${widget.toko.alamat}',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: color1, width: 2),
+                    borderRadius: borderRadius2,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          '${distance?.toStringAsFixed(1)} Km',
+                          style: TextStyle(color: color1),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                            borderRadius: borderRadius2,
+                            color: color1,
+                            boxShadow: [boxshadow1]),
+                        child: TextButton(
+                          child: Text('Posisi Toko',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => PosisiToko(
+                            //             tokoLong: tokoLong,
+                            //             tokoLat: tokoLat,
+                            //             userLong: userLong,
+                            //             userLat: userLat,
+                            //           )),
+                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PosisiToko(
+                                        startLat: userLat,
+                                        startLng: userLong,
+                                        toko: widget.toko,
+                                        distance: distance,
+                                      )),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ]),
+              DetailTokoBuilder()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailTokoBuilder extends StatelessWidget {
+  const DetailTokoBuilder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final produk = Provider.of<List<Produk>>(context);
+    return Center(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        // children: [FoodItem(), FoodItem(), FoodItem()],
+        children: <Widget>[for (var item in produk) FoodItem(produk: item)],
+      ),
+    );
+  }
+}
+
+class FoodItem extends StatelessWidget {
+  final produk;
+  const FoodItem({Key? key, this.produk}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,158 +276,21 @@ class _DetailTokoState extends State<DetailToko> {
           decoration: BoxDecoration(
               borderRadius: borderRadius1,
               image: DecorationImage(
-                  image: NetworkImage(foodImage), fit: BoxFit.cover)),
+                  image: NetworkImage('${produk.gambar}'), fit: BoxFit.cover)),
         ),
         Container(
           margin: const EdgeInsets.only(top: 5, bottom: 2),
           child: Text(
-            foodName,
+            '${produk.nama}',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
         Text(
-          foodPrice,
+          'Rp ${produk.harga}',
           style: TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500, color: color1),
         )
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(100),
-          child: BackAppBar(
-            title: 'Detail Toko',
-          )),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        color: Colors.white,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Column(children: [
-              Container(
-                width: 100,
-                height: 100,
-                margin: const EdgeInsets.only(bottom: 10),
-                // margin: const EdgeInsets.only(right: 15),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage('${widget.toko.foto}'),
-                        fit: BoxFit.cover),
-                    shape: BoxShape.circle,
-                    color: color1),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 2),
-                child: Text(
-                  '${widget.toko.nama}',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  '${sellerName}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  '${widget.toko.alamat}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  border: Border.all(color: color1, width: 2),
-                  borderRadius: borderRadius2,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        '${distance?.toStringAsFixed(1)} Km',
-                        style: TextStyle(color: color1),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: borderRadius2,
-                          color: color1,
-                          boxShadow: [boxshadow1]),
-                      child: TextButton(
-                        child: Text('Posisi Toko',
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => PosisiToko(
-                          //             tokoLong: tokoLong,
-                          //             tokoLat: tokoLat,
-                          //             userLong: userLong,
-                          //             userLat: userLat,
-                          //           )),
-                          // );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PosisiToko(
-                                      startLat: userLat,
-                                      startLng: userLong,
-                                      toko: widget.toko,
-                                      distance: distance,
-                                    )),
-                          );
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ]),
-            Center(
-              child: Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: [
-                  _foodItem(
-                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                      'Kari Spesial',
-                      'Rp 20000'),
-                  _foodItem(
-                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                      'Kari Spesial',
-                      'Rp 20000'),
-                  _foodItem(
-                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                      'Kari Spesial',
-                      'Rp 20000'),
-                  _foodItem(
-                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                      'Kari Spesial',
-                      'Rp 20000'),
-                  _foodItem(
-                      'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                      'Kari Spesial',
-                      'Rp 20000')
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

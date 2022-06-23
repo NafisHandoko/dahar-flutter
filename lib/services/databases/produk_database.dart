@@ -46,7 +46,7 @@ class ProdukDatabase {
     return produkCollection.snapshots().map(_produkListFromSnapshot);
   }
 
-  Stream<List<Produk>> get myProduks {
+  Stream<List<Produk>> get produkOnToko {
     return produkCollection
         .where('id_toko',
             isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!))
