@@ -26,7 +26,9 @@ class MenuToko extends StatelessWidget {
             child: BackAppBar(
               title: 'Menu Toko',
             )),
-        body: MenuTokoProvider(),
+        body: MenuTokoProvider(
+          id_toko: id_toko,
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -44,9 +46,8 @@ class MenuToko extends StatelessWidget {
 }
 
 class MenuTokoProvider extends StatelessWidget {
-  const MenuTokoProvider({
-    Key? key,
-  }) : super(key: key);
+  final id_toko;
+  const MenuTokoProvider({Key? key, this.id_toko}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,14 @@ class MenuTokoProvider extends StatelessWidget {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => EditNamaDialog(
+                                id_toko: id_toko,
+                              ));
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(left: 10),
                       padding: const EdgeInsets.all(5),
@@ -129,7 +137,14 @@ class MenuTokoProvider extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => EditAlamatDialog(
+                                id_toko: id_toko,
+                              ));
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(left: 10),
                       padding: const EdgeInsets.all(5),
@@ -275,6 +290,246 @@ class MenuTokoItem extends StatelessWidget {
           'Rp ${produk.harga}',
           style: TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500, color: color1),
+        )
+      ],
+    );
+  }
+}
+
+class EditNamaDialog extends StatefulWidget {
+  final id_toko;
+  const EditNamaDialog({Key? key, this.id_toko}) : super(key: key);
+
+  @override
+  State<EditNamaDialog> createState() => _EditNamaDialogState();
+}
+
+class _EditNamaDialogState extends State<EditNamaDialog> {
+  String newName = '';
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
+      title: Center(
+        child: Text('Ubah Nama Toko',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+      ),
+      content: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(90, 108, 234, 0.07),
+              blurRadius: 50,
+              spreadRadius: 0,
+              offset: Offset(12, 26),
+            ),
+          ],
+        ),
+        child: TextField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius1,
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: 'Toko Paijo',
+              labelText: 'Nama Toko Baru',
+              // prefixIcon: Icon(
+              //   Icons.person,
+              //   color: color1,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                newName = val;
+              });
+            }),
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: color1),
+                ),
+                onPressed: () {
+                  // Navigator.of(context).pop(_stars);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  border: Border.all(color: color1, width: 2),
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  // Navigator.of(context).pop(_stars);
+                  await TokoDatabase(uid: widget.id_toko)
+                      .updateTokoNama(newName);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class EditAlamatDialog extends StatefulWidget {
+  final id_toko;
+  const EditAlamatDialog({Key? key, this.id_toko}) : super(key: key);
+
+  @override
+  State<EditAlamatDialog> createState() => _EditAlamatDialogState();
+}
+
+class _EditAlamatDialogState extends State<EditAlamatDialog> {
+  String newAlamat = '';
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
+      title: Center(
+        child: Text('Ubah Alamat Toko',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+      ),
+      content: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(90, 108, 234, 0.07),
+              blurRadius: 50,
+              spreadRadius: 0,
+              offset: Offset(12, 26),
+            ),
+          ],
+        ),
+        child: TextField(
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius1,
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: 'Jl Merdeka no 80...',
+              labelText: 'Alamat Toko Baru',
+              // prefixIcon: Icon(
+              //   Icons.person,
+              //   color: color1,
+              // ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                newAlamat = val;
+              });
+            }),
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: color1),
+                ),
+                onPressed: () {
+                  // Navigator.of(context).pop(_stars);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  border: Border.all(color: color1, width: 2),
+                  boxShadow: [boxshadow1]),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  // Navigator.of(context).pop(_stars);
+                  await TokoDatabase(uid: widget.id_toko)
+                      .updateTokoAlamat(newAlamat);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
         )
       ],
     );

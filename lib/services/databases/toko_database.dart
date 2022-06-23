@@ -19,6 +19,18 @@ class TokoDatabase {
     });
   }
 
+  Future<void> updateTokoNama(String nama) async {
+    return await tokoCollection.doc(uid).update({
+      'nama': nama,
+    });
+  }
+
+  Future<void> updateTokoAlamat(String alamat) async {
+    return await tokoCollection.doc(uid).update({
+      'alamat': alamat,
+    });
+  }
+
   List<Toko> _tokoListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Toko(
