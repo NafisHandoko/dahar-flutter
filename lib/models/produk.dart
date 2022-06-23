@@ -6,6 +6,7 @@ class Produk {
   final int harga;
   final String deskripsi;
   final String gambar;
+  final String gambarRef;
   final double rating;
   final DocumentReference id_toko;
 
@@ -15,6 +16,7 @@ class Produk {
       required this.harga,
       required this.deskripsi,
       required this.gambar,
+      required this.gambarRef,
       required this.rating,
       required this.id_toko});
 }

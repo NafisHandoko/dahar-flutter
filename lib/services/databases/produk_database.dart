@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/produk.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class ProdukDatabase {
   final String? uid;
@@ -9,14 +12,21 @@ class ProdukDatabase {
 
   final CollectionReference produkCollection =
       FirebaseFirestore.instance.collection('produk');
+  final storageRef = FirebaseStorage.instance.ref();
 
-  Future<void> addProduk(String nama, int harga, String deskripsi,
-      String gambar, double rating) async {
+  Future<void> addProduk(String nama, int harga, String deskripsi, File gambar,
+      double rating) async {
+    var uuid = Uuid();
+    String gambarRef = 'images/${uuid.v4()}.jpg';
+    final imagesRef = storageRef.child(gambarRef);
+    await imagesRef.putFile(gambar);
+    String imageUrl = await imagesRef.getDownloadURL();
     await produkCollection.add({
       'nama': nama,
       'harga': harga,
       'deskripsi': deskripsi,
-      'gambar': gambar,
+      'gambar': imageUrl,
+      'gambarRef': gambarRef,
       'rating': rating,
       'id_toko': FirebaseFirestore.instance.doc('toko/' + uid!)
     });
@@ -37,6 +47,7 @@ class ProdukDatabase {
           harga: doc.get('harga') ?? 0,
           deskripsi: doc.get('deskripsi') ?? '',
           gambar: doc.get('gambar') ?? '',
+          gambarRef: doc.get('gambarRef') ?? '',
           rating: doc.get('rating') ?? 0,
           id_toko: doc.get('id_toko'));
     }).toList();
@@ -54,7 +65,9 @@ class ProdukDatabase {
         .map(_produkListFromSnapshot);
   }
 
-  Future<void> deleteProduk(String id_produk) async {
+  Future<void> deleteProduk(String id_produk, String gambarRef) async {
+    final imagesRef = storageRef.child(gambarRef);
+    await imagesRef.delete();
     await produkCollection.doc(id_produk).delete();
   }
 

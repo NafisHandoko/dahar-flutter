@@ -269,7 +269,7 @@ class MenuTokoItem extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    ProdukDatabase().deleteProduk(produk.id);
+                    ProdukDatabase().deleteProduk(produk.id, produk.gambarRef);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(5),

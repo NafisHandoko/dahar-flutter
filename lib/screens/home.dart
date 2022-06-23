@@ -124,9 +124,11 @@ class _PopularItemState extends State<PopularItem> {
 
   getRating() async {
     var ratingData = await RatingDatabase().getRatingProduk(widget.produk.id);
-    setState(() {
-      rating = ratingData;
-    });
+    if (mounted) {
+      setState(() {
+        rating = ratingData;
+      });
+    }
   }
 
   @override

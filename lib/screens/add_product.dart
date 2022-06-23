@@ -10,6 +10,8 @@ import 'package:dahar/components/navbar.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -211,12 +213,8 @@ class _AddProductState extends State<AddProduct> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    await ProdukDatabase(uid: user.uid).addProduk(
-                        foodName,
-                        int.parse(foodPrice),
-                        foodDesc,
-                        'https://images.unsplash.com/photo-1572656631137-7935297eff55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                        0);
+                    await ProdukDatabase(uid: user.uid).addProduk(foodName,
+                        int.parse(foodPrice), foodDesc, capturedImages.last, 0);
                     Navigator.pop(context);
                   },
                 ),
