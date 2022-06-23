@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/cart.dart';
 import 'package:dahar/models/auth_user.dart';
+import 'package:dahar/screens/checkout.dart';
+import 'package:dahar/screens/checkout2.dart';
 import 'package:dahar/services/databases/cart_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
@@ -25,16 +27,15 @@ class CartScreen extends StatelessWidget {
               child: BackAppBar(
                 title: 'Cart',
               )),
-          body: CartProvider(),
+          body: CartProvider(uid: user.uid),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
 class CartProvider extends StatelessWidget {
-  const CartProvider({
-    Key? key,
-  }) : super(key: key);
+  final uid;
+  const CartProvider({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +59,14 @@ class CartProvider extends StatelessWidget {
 
     return CartBuilder(
       cart: cart,
+      uid: uid,
     );
   }
 }
 
 class CartBuilder extends StatefulWidget {
-  final cart;
-  const CartBuilder({Key? key, this.cart}) : super(key: key);
+  final cart, uid;
+  const CartBuilder({Key? key, this.cart, this.uid}) : super(key: key);
 
   @override
   State<CartBuilder> createState() => _CartBuilderState();
@@ -72,23 +74,22 @@ class CartBuilder extends StatefulWidget {
 
 class _CartBuilderState extends State<CartBuilder> {
   num totalCart = 0;
-  var mylist = [];
+  var orderCartList = [];
 
-  @override
-  void initState() {
-    super.initState();
-    log('data cart ${widget.cart}');
-    // widget.cart.forEach((cartItem) {
-    //   log('di foreach: $cartItem');
-    //   // cartItem.id_produk.get().then((val) {
-    //   //   setState(() {
-    //   //     totalCart = val.get('harga');
-    //   //   });
-    //   // });
-    //   // log("data x: ${x.get('harga')}");
-    // });
-    // getTotalCart();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // widget.cart.forEach((cartItem) {
+  //   //   log('di foreach: $cartItem');
+  //   //   // cartItem.id_produk.get().then((val) {
+  //   //   //   setState(() {
+  //   //   //     totalCart = val.get('harga');
+  //   //   //   });
+  //   //   // });
+  //   //   // log("data x: ${x.get('harga')}");
+  //   // });
+  //   // getTotalCart();
+  // }
 
   getTotalCart() {
     setState(() {
@@ -96,26 +97,49 @@ class _CartBuilderState extends State<CartBuilder> {
     });
     // num sum = mylist.fold(0, (p, c) => p + c);
     // return sum;
-    for (var harga in mylist) {
-      if (harga != null) {
-        setState(() {
-          totalCart += harga;
-        });
-      }
+    // for (var harga in mylist) {
+    //   if (harga != null) {
+    //     setState(() {
+    //       totalCart += harga;
+    //     });
+    //   }
+    // }
+    for (var orderItem in orderCartList) {
+      // log('data orderItem: $orderItem');
+      setState(() {
+        totalCart += orderItem?['total'] ?? 0;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     setState(() {
-      mylist.length = widget.cart.length;
+      orderCartList.length = widget.cart.length;
     });
     widget.cart.asMap().forEach((index, cartItem) {
       // log('yukyuk $index ${cartItem.kuantitas}');
       cartItem.id_produk.get().then((val) {
         // log("harga: ${val.get('harga')}");
         setState(() {
-          mylist[index] = val.get('harga') * cartItem.kuantitas;
+          // mylist[index] = val.get('harga') * cartItem.kuantitas;
+
+          // mylist[index].id_cart = cartItem.id;
+          // mylist[index].id_produk = cartItem.id_produk;
+          // mylist[index].kuantitas = cartItem.kuantitas;
+          // mylist[index].total = val.get('harga') * cartItem.kuantitas;
+          // mylist[index].status = 0;
+          // mylist[index].id_seller = val.get('id_toko');
+          // mylist[index].id_buyer = widget.uid;
+          orderCartList[index] = {
+            // 'id_cart': cartItem.id,
+            'id_produk': cartItem.id_produk,
+            'kuantitas': cartItem.kuantitas,
+            'total': val.get('harga') * cartItem.kuantitas,
+            'status': 0,
+            'id_seller': val.get('id_toko'),
+            'id_buyer': widget.uid,
+          };
         });
       });
     });
@@ -163,7 +187,17 @@ class _CartBuilderState extends State<CartBuilder> {
                   'Checkout',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Checkout(
+                              orderCartList: orderCartList,
+                              totalPrice: totalCart,
+                              uid: widget.uid,
+                            )),
+                  );
+                },
               ),
             )
           ]),

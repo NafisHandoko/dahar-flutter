@@ -1,51 +1,52 @@
 import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/ordercart.dart';
 import 'package:dahar/services/databases/ordercart_database.dart';
-import 'package:dahar/services/databases/rating_database.dart';
 import 'package:flutter/material.dart';
 import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
 import 'package:provider/provider.dart';
 
-class OrderHistory extends StatelessWidget {
-  const OrderHistory({Key? key}) : super(key: key);
+class OrderList extends StatelessWidget {
+  const OrderList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<OrderCart>>.value(
       initialData: [],
-      value: OrderCartDatabase(uid: user.uid).orderCartBuyer,
+      value: OrderCartDatabase(uid: user.uid).orderCartSeller,
       child: Scaffold(
           appBar: const PreferredSize(
               preferredSize: Size.fromHeight(100),
               child: BackAppBar(
-                title: 'Riwayat Pemesanan',
+                title: 'Daftar Pesanan',
               )),
-          body: OrderHistoryProvider(uid: user.uid),
+          body: OrderListProvider(
+            uid: user.uid,
+          ),
           bottomNavigationBar: const NavBar()),
     );
   }
 }
 
-class OrderHistoryProvider extends StatelessWidget {
+class OrderListProvider extends StatelessWidget {
   final uid;
-  const OrderHistoryProvider({Key? key, this.uid}) : super(key: key);
+  const OrderListProvider({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final orderCart = Provider.of<List<OrderCart>>(context);
-    return OrderHistoryBuilder(
+    return OrderListBuilder(
       orderCart: orderCart,
       uid: uid,
     );
   }
 }
 
-class OrderHistoryBuilder extends StatelessWidget {
+class OrderListBuilder extends StatelessWidget {
   final orderCart, uid;
-  const OrderHistoryBuilder({Key? key, this.orderCart, this.uid})
+  const OrderListBuilder({Key? key, this.orderCart, this.uid})
       : super(key: key);
 
   @override
@@ -58,16 +59,16 @@ class OrderHistoryBuilder extends StatelessWidget {
           child: ListView.builder(
               itemCount: orderCart.length,
               itemBuilder: (context, index) {
-                return HistoryItem(
+                return OrderListItem(
                     key: ValueKey(orderCart[index].id),
                     orderCart: orderCart[index]);
               }),
           // child: ListView(children: const [
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem(),
-          //   HistoryItem()
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem(),
+          //   OrderListItem()
           // ]),
         ),
         Positioned(
@@ -87,7 +88,7 @@ class OrderHistoryBuilder extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  OrderCartDatabase(uid: uid).deleteAllOrderCartBuyer();
+                  OrderCartDatabase(uid: uid).deleteAllOrderCartSeller();
                 },
               ),
             ))
@@ -97,13 +98,13 @@ class OrderHistoryBuilder extends StatelessWidget {
     //   padding: const EdgeInsets.symmetric(horizontal: 25),
     //   color: Colors.white,
     //   child: ListView(children: const [
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     ),
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     ),
-    //     HistoryItem(
+    //     OrderListItem(
     //       isConfirmed: false,
     //     )
     //   ]),
@@ -111,21 +112,22 @@ class OrderHistoryBuilder extends StatelessWidget {
   }
 }
 
-class HistoryItem extends StatefulWidget {
+class OrderListItem extends StatefulWidget {
   final orderCart;
-  const HistoryItem({Key? key, this.orderCart}) : super(key: key);
+  const OrderListItem({Key? key, this.orderCart}) : super(key: key);
 
   @override
-  State<HistoryItem> createState() => _HistoryItemState();
+  State<OrderListItem> createState() => _OrderListItemState();
 }
 
-class _HistoryItemState extends State<HistoryItem> {
+class _OrderListItemState extends State<OrderListItem> {
   bool isConfirmed = false;
   // int ratingLevel = -1;
   String? foodName;
   int? foodPrice;
-  String? foodSeller;
+  String? foodBuyer;
   String? foodImage;
+  String? alamat;
   int rating = -1;
 
   @override
@@ -139,16 +141,16 @@ class _HistoryItemState extends State<HistoryItem> {
         foodImage = value.get('gambar');
       });
     });
-    widget.orderCart.id_seller.get().then((value) {
+    widget.orderCart.id_buyer.get().then((value) {
       setState(() {
-        foodSeller = value.get('nama');
+        foodBuyer = value.get('nama');
       });
     });
-    // widget.orderCart.id_rating.get().then((value) {
-    //   setState(() {
-    //     rating = value.get('rating');
-    //   });
-    // });
+    widget.orderCart.id_order.get().then((value) {
+      setState(() {
+        alamat = value.get('alamat');
+      });
+    });
   }
 
   Widget _buildStar(int starCount) {
@@ -158,12 +160,11 @@ class _HistoryItemState extends State<HistoryItem> {
         size: 20.0,
         color: rating >= starCount ? Colors.orange : Colors.grey,
       ),
-      onTap: () {
-        setState(() {
-          // rating = starCount;
-          RatingDatabase().updateRating(widget.orderCart.id_rating, starCount);
-        });
-      },
+      // onTap: () {
+      //   setState(() {
+      //     rating = starCount;
+      //   });
+      // },
     );
   }
 
@@ -196,18 +197,18 @@ class _HistoryItemState extends State<HistoryItem> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    '$foodName',
+                    '${widget.orderCart.kuantitas} porsi $foodName',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    '$foodSeller',
+                    '$foodBuyer',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: color1),
                   ),
                   Text(
-                    'Rp ${widget.orderCart.total / widget.orderCart.kuantitas} x ${widget.orderCart.kuantitas}',
+                    '$alamat',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -258,7 +259,7 @@ class _HistoryItemState extends State<HistoryItem> {
                                   _buildStar(5),
                                 ],
                               )
-                            : (widget.orderCart.status >= 2)
+                            : (widget.orderCart.status < 2)
                                 ? Container(
                                     decoration: BoxDecoration(
                                         borderRadius: borderRadius2,
@@ -274,35 +275,17 @@ class _HistoryItemState extends State<HistoryItem> {
                                         // alignment: Alignment.centerLeft
                                       ),
                                       child: Text(
-                                        (widget.orderCart.status == 2)
-                                            ? 'Diterima'
-                                            : 'Beri Rating',
+                                        (widget.orderCart.status == 0)
+                                            ? 'Proses'
+                                            : (widget.orderCart.status == 1)
+                                                ? 'Kirim'
+                                                : '',
                                         style: TextStyle(color: Colors.white),
                                       ),
-                                      onPressed: () async {
-                                        if (widget.orderCart.status >= 3) {
-                                          int stars = await showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (_) => RatingDialog(
-                                                    foodName: foodName,
-                                                    foodSeller: foodSeller,
-                                                  ));
-                                          print('Selected rate stars: $stars');
-                                          setState(() {
-                                            // rating = stars;
-                                            RatingDatabase().updateRating(
-                                                widget.orderCart.id_rating,
-                                                stars);
-                                          });
-                                        } else {
-                                          setState(() {
-                                            // isConfirmed = true;
-                                            OrderCartDatabase().updateOrderCart(
-                                                widget.orderCart.id,
-                                                widget.orderCart.status + 1);
-                                          });
-                                        }
+                                      onPressed: () {
+                                        OrderCartDatabase().updateOrderCart(
+                                            widget.orderCart.id,
+                                            widget.orderCart.status + 1);
                                       },
                                     ),
                                   )
@@ -319,9 +302,7 @@ class _HistoryItemState extends State<HistoryItem> {
 }
 
 class RatingDialog extends StatefulWidget {
-  final foodName, foodSeller;
-  const RatingDialog({Key? key, this.foodName, this.foodSeller})
-      : super(key: key);
+  const RatingDialog({Key? key}) : super(key: key);
 
   @override
   State<RatingDialog> createState() => _RatingDialogState();
@@ -352,9 +333,9 @@ class _RatingDialogState extends State<RatingDialog> {
       title: Center(
         child: Column(
           children: [
-            Text('${widget.foodName}',
+            Text('Kari Spesial',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-            Text('${widget.foodSeller}',
+            Text('Warung Bu Supiah',
                 style: TextStyle(
                     fontSize: 12, fontWeight: FontWeight.w400, color: color1))
           ],

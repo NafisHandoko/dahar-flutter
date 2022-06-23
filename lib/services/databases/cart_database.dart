@@ -26,6 +26,16 @@ class CartDatabase {
     await cartCollection.doc(id_cart).delete();
   }
 
+  Future<void> deleteAllCart() async {
+    var cartData = cartCollection.where('id_user',
+        isEqualTo: FirebaseFirestore.instance.doc('user/' + uid!));
+    cartData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+  }
+
   List<Cart> _cartListFromSnapshot(QuerySnapshot? snapshot) {
     return snapshot!.docs.map((doc) {
       return Cart(
