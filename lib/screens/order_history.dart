@@ -284,7 +284,10 @@ class _HistoryItemState extends State<HistoryItem> {
                                           int stars = await showDialog(
                                               context: context,
                                               barrierDismissible: false,
-                                              builder: (_) => RatingDialog());
+                                              builder: (_) => RatingDialog(
+                                                    foodName: foodName,
+                                                    foodSeller: foodSeller,
+                                                  ));
                                           print('Selected rate stars: $stars');
                                           setState(() {
                                             // rating = stars;
@@ -316,7 +319,9 @@ class _HistoryItemState extends State<HistoryItem> {
 }
 
 class RatingDialog extends StatefulWidget {
-  const RatingDialog({Key? key}) : super(key: key);
+  final foodName, foodSeller;
+  const RatingDialog({Key? key, this.foodName, this.foodSeller})
+      : super(key: key);
 
   @override
   State<RatingDialog> createState() => _RatingDialogState();
@@ -347,9 +352,9 @@ class _RatingDialogState extends State<RatingDialog> {
       title: Center(
         child: Column(
           children: [
-            Text('Kari Spesial',
+            Text('${widget.foodName}',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-            Text('Warung Bu Supiah',
+            Text('${widget.foodSeller}',
                 style: TextStyle(
                     fontSize: 12, fontWeight: FontWeight.w400, color: color1))
           ],
