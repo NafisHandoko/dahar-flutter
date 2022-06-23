@@ -1,7 +1,7 @@
 import 'package:dahar/screens/cart_screen.dart';
 import 'package:dahar/screens/checkout.dart';
 import 'package:dahar/screens/add_product.dart';
-import 'package:dahar/screens/favorit.dart';
+import 'package:dahar/screens/favorit_screen.dart';
 import 'package:dahar/screens/wrapper.dart';
 import 'package:dahar/screens/your_profile.dart';
 // import 'package:dahar/screens/camera.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           // '/login': (context) => const Login(),
           // '/camera': (context) => const Camera()
           '/cart_screen': (context) => const CartScreen(),
-          '/favorit': (context) => const Favorit(),
+          '/favorit': (context) => const FavoritScreen(),
         },
       ),
     );

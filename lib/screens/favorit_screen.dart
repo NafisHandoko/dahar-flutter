@@ -3,8 +3,8 @@ import 'package:dahar/global_styles.dart';
 import 'package:dahar/components/navbar.dart';
 import 'package:dahar/components/back_appbar.dart';
 
-class Favorit extends StatelessWidget {
-  const Favorit({Key? key}) : super(key: key);
+class FavoritScreen extends StatelessWidget {
+  const FavoritScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
