@@ -87,10 +87,16 @@ class TokoDatabase {
     // await tokoCollection.doc(uid).delete();
     tokoCollection.doc(uid).get().then((doc) {
       String fotoRef = doc.get('fotoRef');
-      final imagesRef = storageRef.child(fotoRef);
-      imagesRef.delete().then((value) {
-        tokoCollection.doc(uid).delete();
-      });
+      if (fotoRef != 'images/default_toko_photo.png') {
+        final imagesRef = storageRef.child(fotoRef);
+        imagesRef.delete();
+      }
+      tokoCollection.doc(uid).delete();
+      // String fotoRef = doc.get('fotoRef');
+      // final imagesRef = storageRef.child(fotoRef);
+      // imagesRef.delete().then((value) {
+      //   tokoCollection.doc(uid).delete();
+      // });
     });
   }
 }

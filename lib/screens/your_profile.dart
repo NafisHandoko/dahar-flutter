@@ -207,7 +207,11 @@ class ProfileBuilder extends StatelessWidget {
               child: TextButton(
                 onPressed: () async {
                   await _auth.signOut();
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Navigator.popUntil(
+                    context,
+                    ModalRoute.withName('/'),
+                  );
                 },
                 child: Text(
                   'Logout',
@@ -348,10 +352,9 @@ class _EditDialogState extends State<EditDialog> {
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () async {
+                onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  await UserDatabase(uid: widget.id_user)
-                      .updateUserNama(newName);
+                  UserDatabase(uid: widget.id_user).updateUserNama(newName);
                   Navigator.pop(context);
                 },
               ),
@@ -507,12 +510,17 @@ class _DeleteUserDialogState extends State<DeleteUserDialog> {
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                borderRadius: borderRadius2,
-                // color: color1,
-                border: Border.all(color: color1, width: 2),
-                // boxShadow: [boxshadow1]
-              ),
+                  borderRadius: borderRadius2,
+                  color: color1,
+                  border: Border.all(color: color1, width: 2),
+                  boxShadow: [boxshadow1]),
               child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    // maximumSize: Size(10, 10),
+                    // alignment: Alignment.centerLeft
+                  ),
                   child: const Text(
                     'Delete',
                     style: TextStyle(color: Colors.white),
@@ -528,7 +536,7 @@ class _DeleteUserDialogState extends State<DeleteUserDialog> {
                           loading = false;
                         });
                       } else {
-                        await UserDatabase(uid: result.uid).deleteUser();
+                        UserDatabase(uid: result.uid).deleteUser();
                         Navigator.popUntil(
                           context,
                           ModalRoute.withName('/'),

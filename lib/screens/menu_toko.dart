@@ -424,10 +424,9 @@ class _EditNamaDialogState extends State<EditNamaDialog> {
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () async {
+                onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  await TokoDatabase(uid: widget.id_toko)
-                      .updateTokoNama(newName);
+                  TokoDatabase(uid: widget.id_toko).updateTokoNama(newName);
                   Navigator.pop(context);
                 },
               ),
@@ -544,10 +543,9 @@ class _EditAlamatDialogState extends State<EditAlamatDialog> {
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () async {
+                onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  await TokoDatabase(uid: widget.id_toko)
-                      .updateTokoAlamat(newAlamat);
+                  TokoDatabase(uid: widget.id_toko).updateTokoAlamat(newAlamat);
                   Navigator.pop(context);
                 },
               ),
@@ -794,9 +792,9 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () async {
+                onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  await ProdukDatabase(uid: widget.id_produk).updateProduk(
+                  ProdukDatabase(uid: widget.id_produk).updateProduk(
                       widget.id_produk,
                       int.parse(newHarga),
                       newNama,

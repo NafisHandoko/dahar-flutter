@@ -212,8 +212,8 @@ class _AddProductState extends State<AddProduct> {
                     'Submit',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () async {
-                    await ProdukDatabase(uid: user.uid).addProduk(foodName,
+                  onPressed: () {
+                    ProdukDatabase(uid: user.uid).addProduk(foodName,
                         int.parse(foodPrice), foodDesc, capturedImages.last, 0);
                     Navigator.pop(context);
                   },

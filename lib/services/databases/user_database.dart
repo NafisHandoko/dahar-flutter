@@ -99,12 +99,19 @@ class UserDatabase {
 
     userCollection.doc(uid).get().then((doc) {
       String fotoRef = doc.get('fotoRef');
-      final imagesRef = storageRef.child(fotoRef);
-      imagesRef.delete().then((value) {
-        userCollection.doc(uid).delete().then((value) {
-          AuthService().deleteAuthUser();
-        });
+      if (fotoRef != 'images/default_user_photo.png') {
+        final imagesRef = storageRef.child(fotoRef);
+        imagesRef.delete();
+      }
+      userCollection.doc(uid).delete().then((value) {
+        AuthService().deleteAuthUser();
       });
+      // final imagesRef = storageRef.child(fotoRef);
+      // imagesRef.delete().then((value) {
+      //   userCollection.doc(uid).delete().then((value) {
+      //     AuthService().deleteAuthUser();
+      //   });
+      // });
     });
   }
 }
