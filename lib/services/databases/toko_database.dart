@@ -68,7 +68,10 @@ class TokoDatabase {
   }
 
   Stream<List<Toko>> get toko {
-    return tokoCollection.snapshots().map(_tokoListFromSnapshot);
+    return tokoCollection
+        .where(FieldPath.documentId, isNotEqualTo: uid)
+        .snapshots()
+        .map(_tokoListFromSnapshot);
   }
 
   Stream<Toko> get myToko {

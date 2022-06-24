@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dahar/models/auth_user.dart';
 import 'package:dahar/models/toko.dart';
 import 'package:dahar/screens/detail_toko.dart';
 import 'package:dahar/screens/item_detail.dart';
@@ -230,9 +231,10 @@ class Popular extends StatefulWidget {
 class _PopularState extends State<Popular> {
   @override
   Widget build(BuildContext context) {
+    AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<Produk>>.value(
       initialData: [],
-      value: ProdukDatabase().produk,
+      value: ProdukDatabase(uid: user.uid).produk,
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +242,7 @@ class _PopularState extends State<Popular> {
           Container(
             margin: const EdgeInsets.only(bottom: 10, left: 25),
             child: const Text(
-              'Popular',
+              'Produk',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
           ),
@@ -413,9 +415,10 @@ class Closest extends StatefulWidget {
 class _ClosestState extends State<Closest> {
   @override
   Widget build(BuildContext context) {
+    AuthUser user = Provider.of<AuthUser>(context);
     return StreamProvider<List<Toko>>.value(
       initialData: [],
-      value: TokoDatabase().toko,
+      value: TokoDatabase(uid: user.uid).toko,
       child: Container(
         margin: const EdgeInsets.only(left: 25, right: 25, top: 20),
         child: Column(
@@ -424,7 +427,7 @@ class _ClosestState extends State<Closest> {
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               child: const Text(
-                'Closest',
+                'Toko',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
             ),
