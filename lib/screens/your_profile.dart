@@ -87,6 +87,7 @@ class ProfileBuilder extends StatelessWidget {
                       ImagePicker picker = ImagePicker();
                       XFile? image = await picker.pickImage(
                           source: ImageSource.camera,
+                          imageQuality: 60,
                           preferredCameraDevice: CameraDevice.front);
                       if (image != null) {
                         UserDatabase(uid: daharuser.id).updateUserFoto(

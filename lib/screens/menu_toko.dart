@@ -86,8 +86,10 @@ class MenuTokoProvider extends StatelessWidget {
                     child: InkWell(
                       onTap: () async {
                         ImagePicker picker = ImagePicker();
-                        XFile? image =
-                            await picker.pickImage(source: ImageSource.gallery);
+                        XFile? image = await picker.pickImage(
+                            source: ImageSource.gallery,
+                            maxHeight: 400,
+                            maxWidth: 400);
                         if (image != null) {
                           TokoDatabase(uid: id_toko).updateTokoFoto(
                               toko.fotoRef ?? '', File(image.path));
@@ -714,8 +716,8 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
               //   });
               // }
               ImagePicker picker = ImagePicker();
-              XFile? image =
-                  await picker.pickImage(source: ImageSource.gallery);
+              XFile? image = await picker.pickImage(
+                  source: ImageSource.gallery, maxHeight: 600, maxWidth: 600);
               if (image != null) {
                 setState(() {
                   _image = File(image.path);
