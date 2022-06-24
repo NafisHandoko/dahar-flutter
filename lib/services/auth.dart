@@ -114,4 +114,13 @@ class AuthService {
       return null;
     }
   }
+
+  deleteAuthUser() {
+    // FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    // user.delete();
+    User? userToDelete = _auth.currentUser;
+    if (userToDelete != null) {
+      userToDelete.delete();
+    }
+  }
 }

@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/dahar_user.dart';
+import 'package:dahar/services/auth.dart';
+import 'package:dahar/services/databases/produk_database.dart';
+import 'package:dahar/services/databases/toko_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,5 +78,33 @@ class UserDatabase {
         email: event.get('email'),
         foto: event.get('foto'),
         fotoRef: event.get('fotoRef')));
+  }
+
+  Future<void> deleteUser() async {
+    final CollectionReference tokoCollection =
+        FirebaseFirestore.instance.collection('toko');
+    final CollectionReference produkCollection =
+        FirebaseFirestore.instance.collection('produk');
+
+    var produkData = produkCollection.where('id_toko',
+        isEqualTo: FirebaseFirestore.instance.doc('toko/' + uid!));
+    produkData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        // doc.reference.delete();
+        ProdukDatabase().deleteProduk(doc.id, doc.get('gambarRef'));
+      });
+    });
+
+    await TokoDatabase(uid: uid).deleteToko();
+
+    userCollection.doc(uid).get().then((doc) {
+      String fotoRef = doc.get('fotoRef');
+      final imagesRef = storageRef.child(fotoRef);
+      imagesRef.delete().then((value) {
+        userCollection.doc(uid).delete().then((value) {
+          AuthService().deleteAuthUser();
+        });
+      });
+    });
   }
 }

@@ -223,7 +223,13 @@ class ProfileBuilder extends StatelessWidget {
                   color: colorRedDelete,
                   boxShadow: [boxshadow1]),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // UserDatabase(uid: daharuser.id).deleteUser();
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => DeleteUserDialog());
+                },
                 child: Text(
                   'Delete Account',
                   style: TextStyle(color: Colors.white),
@@ -349,6 +355,187 @@ class _EditDialogState extends State<EditDialog> {
                   Navigator.pop(context);
                 },
               ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class DeleteUserDialog extends StatefulWidget {
+  final id_produk, oldGambarRef;
+  const DeleteUserDialog({Key? key, this.id_produk, this.oldGambarRef})
+      : super(key: key);
+
+  @override
+  State<DeleteUserDialog> createState() => _DeleteUserDialogState();
+}
+
+class _DeleteUserDialogState extends State<DeleteUserDialog> {
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
+  String error = '';
+  bool loading = false;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: borderRadius1),
+      title: Center(
+        child: Text('Ubah Data Produk',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+      ),
+      content: Container(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 15, bottom: 15),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(90, 108, 234, 0.07),
+                      blurRadius: 50,
+                      spreadRadius: 0,
+                      offset: Offset(12, 26))
+                ]),
+                child: TextFormField(
+                  validator: (value) =>
+                      // value != null ? (value.isEmpty ? 'Enter an email' : null):null,
+                      value!.isEmpty ? 'Enter an email' : null,
+                  onChanged: (val) {
+                    setState(() {
+                      email = val;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: borderRadius1,
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'example@gmail.com',
+                    labelText: 'Email',
+                    prefixIcon: Icon(
+                      Icons.mail,
+                      color: color1,
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 15, bottom: 15),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Color.fromRGBO(90, 108, 234, 0.07),
+                      blurRadius: 50,
+                      spreadRadius: 0,
+                      offset: Offset(12, 26))
+                ]),
+                child: TextFormField(
+                  validator: (value) =>
+                      value!.length < 6 ? 'Enter password 6+ chars long' : null,
+                  onChanged: (val) {
+                    setState(() => password = val);
+                  },
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: borderRadius1,
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'password123',
+                    labelText: 'Password',
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: color1,
+                    ),
+                    suffixIcon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        // TextButton(
+        //   child: Text('CANCEL'),
+        //   onPressed: Navigator.of(context).pop,
+        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  // maximumSize: Size(10, 10),
+                  // alignment: Alignment.centerLeft
+                ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: color1),
+                ),
+                onPressed: () {
+                  // Navigator.of(context).pop(_stars);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius2,
+                // color: color1,
+                border: Border.all(color: color1, width: 2),
+                // boxShadow: [boxshadow1]
+              ),
+              child: TextButton(
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      setState(() => loading = true);
+                      dynamic result = await _auth.signInWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() {
+                          error = "couldn't login with those credentials";
+                          loading = false;
+                        });
+                      } else {
+                        await UserDatabase(uid: result.uid).deleteUser();
+                        Navigator.popUntil(
+                          context,
+                          ModalRoute.withName('/'),
+                        );
+                      }
+                    }
+                  }),
             ),
           ],
         )

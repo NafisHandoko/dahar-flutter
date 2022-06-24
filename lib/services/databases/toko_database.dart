@@ -82,4 +82,15 @@ class TokoDatabase {
         foto: doc.get('foto'),
         fotoRef: doc.get('fotoRef')));
   }
+
+  Future<void> deleteToko() async {
+    // await tokoCollection.doc(uid).delete();
+    tokoCollection.doc(uid).get().then((doc) {
+      String fotoRef = doc.get('fotoRef');
+      final imagesRef = storageRef.child(fotoRef);
+      imagesRef.delete().then((value) {
+        tokoCollection.doc(uid).delete();
+      });
+    });
+  }
 }

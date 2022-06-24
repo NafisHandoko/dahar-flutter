@@ -66,6 +66,43 @@ class ProdukDatabase {
   }
 
   Future<void> deleteProduk(String id_produk, String gambarRef) async {
+    final CollectionReference cartCollection =
+        FirebaseFirestore.instance.collection('cart');
+    final CollectionReference favoritCollection =
+        FirebaseFirestore.instance.collection('favorit');
+    final CollectionReference orderCartCollection =
+        FirebaseFirestore.instance.collection('order_cart');
+    final CollectionReference ratingCollection =
+        FirebaseFirestore.instance.collection('rating');
+
+    var cartData = cartCollection.where('id_produk',
+        isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk));
+    cartData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+    var favoritData = favoritCollection.where('id_produk',
+        isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk));
+    favoritData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+    var orderCartData = orderCartCollection.where('id_produk',
+        isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk));
+    orderCartData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+    var ratingData = ratingCollection.where('id_produk',
+        isEqualTo: FirebaseFirestore.instance.doc('produk/' + id_produk));
+    ratingData.get().then((docs) {
+      docs.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
     final imagesRef = storageRef.child(gambarRef);
     await imagesRef.delete();
     await produkCollection.doc(id_produk).delete();
