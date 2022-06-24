@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dahar/models/toko.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class TokoDatabase {
   final String? uid;
@@ -7,6 +11,7 @@ class TokoDatabase {
 
   final CollectionReference tokoCollection =
       FirebaseFirestore.instance.collection('toko');
+  final storageRef = FirebaseStorage.instance.ref();
 
   Future<void> updateToko(String nama, String alamat, double lat, double long,
       String foto, String fotoRef) async {
@@ -30,6 +35,23 @@ class TokoDatabase {
     return await tokoCollection.doc(uid).update({
       'alamat': alamat,
     });
+  }
+
+  Future<void> updateTokoFoto(String oldFotoRef, File foto) async {
+    var imagesRef;
+    if (oldFotoRef != 'images/default_toko_photo.png') {
+      imagesRef = storageRef.child(oldFotoRef);
+      await imagesRef.delete();
+    }
+
+    var uuid = Uuid();
+    String newFotoRef = 'images/${uuid.v4()}.jpg';
+    imagesRef = storageRef.child(newFotoRef);
+    await imagesRef.putFile(foto);
+    String imageUrl = await imagesRef.getDownloadURL();
+    return await tokoCollection
+        .doc(uid)
+        .update({'foto': imageUrl, 'fotoRef': newFotoRef});
   }
 
   List<Toko> _tokoListFromSnapshot(QuerySnapshot? snapshot) {

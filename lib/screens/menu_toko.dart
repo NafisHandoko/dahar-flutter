@@ -84,7 +84,15 @@ class MenuTokoProvider extends StatelessWidget {
                     bottom: 10,
                     right: 0,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        ImagePicker picker = ImagePicker();
+                        XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (image != null) {
+                          TokoDatabase(uid: id_toko).updateTokoFoto(
+                              toko.fotoRef ?? '', File(image.path));
+                        }
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(left: 10),
                         padding: const EdgeInsets.all(5),

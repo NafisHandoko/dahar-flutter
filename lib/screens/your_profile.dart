@@ -85,8 +85,9 @@ class ProfileBuilder extends StatelessWidget {
                   child: InkWell(
                     onTap: () async {
                       ImagePicker picker = ImagePicker();
-                      XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
+                      XFile? image = await picker.pickImage(
+                          source: ImageSource.camera,
+                          preferredCameraDevice: CameraDevice.front);
                       if (image != null) {
                         UserDatabase(uid: daharuser.id).updateUserFoto(
                             daharuser.fotoRef ?? '', File(image.path));

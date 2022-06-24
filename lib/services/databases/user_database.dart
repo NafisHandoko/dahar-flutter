@@ -27,8 +27,11 @@ class UserDatabase {
   }
 
   Future<void> updateUserFoto(String oldFotoRef, File foto) async {
-    var imagesRef = storageRef.child(oldFotoRef);
-    await imagesRef.delete();
+    var imagesRef;
+    if (oldFotoRef != 'images/default_user_photo.png') {
+      imagesRef = storageRef.child(oldFotoRef);
+      await imagesRef.delete();
+    }
 
     var uuid = Uuid();
     String newFotoRef = 'images/${uuid.v4()}.jpg';
