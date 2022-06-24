@@ -3,6 +3,7 @@ import 'package:dahar/screens/checkout2.dart';
 import 'package:dahar/screens/add_product.dart';
 import 'package:dahar/screens/order_list.dart';
 import 'package:dahar/screens/favorit_screen.dart';
+import 'package:dahar/screens/splash.dart';
 import 'package:dahar/screens/wrapper.dart';
 import 'package:dahar/screens/your_profile.dart';
 // import 'package:dahar/screens/camera.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/',
+        initialRoute: '/splash',
         routes: {
           '/': (context) => const Wrapper(),
           '/home': (context) => const Home(),
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
           '/cart_screen': (context) => const CartScreen(),
           '/order_list': (context) => const OrderList(),
           '/favorit': (context) => const FavoritScreen(),
+          '/splash': (context) => Splash(),
         },
       ),
     );
