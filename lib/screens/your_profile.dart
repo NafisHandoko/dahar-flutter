@@ -147,20 +147,6 @@ class ProfileBuilder extends StatelessWidget {
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  'rika221',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: colorGrey),
-                  textAlign: TextAlign.center,
-                ),
-              ]),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
                   "${daharuser.email}",
                   style: TextStyle(
                       fontSize: 14,

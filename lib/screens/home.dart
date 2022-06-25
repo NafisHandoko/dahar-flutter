@@ -73,6 +73,15 @@ class _DaharAppBarState extends State<DaharAppBar> {
               style: TextStyle(
                   color: color1, fontSize: 32, fontWeight: FontWeight.bold),
             ),
+            IconButton(
+              // constraints: const BoxConstraints(),
+              alignment: Alignment.center,
+              icon: const Icon(
+                Icons.search_rounded,
+              ),
+              color: Colors.white,
+              onPressed: () {},
+            )
           ],
         ),
       ),
