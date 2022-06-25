@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://unej.ac.id">
-    <img src="http://protan.faperta.unej.ac.id/wp-content/uploads/sites/14/2020/05/logo-unej-300x296.png" alt="Logo" width="300">
+    <img src="assets/logo_circle.png" alt="Logo" width="300">
   </a>
 
   <h3 align="center">Dahar</h3>
