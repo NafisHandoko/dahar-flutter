@@ -79,7 +79,7 @@ class _DaharAppBarState extends State<DaharAppBar> {
               icon: const Icon(
                 Icons.search_rounded,
               ),
-              color: color1,
+              color: Colors.white,
               onPressed: () {},
             )
           ],

@@ -1,5 +1,6 @@
 import 'package:dahar/global_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionDone extends StatefulWidget {
   final totalPrice;
@@ -10,6 +11,16 @@ class TransactionDone extends StatefulWidget {
 }
 
 class _TransactionDoneState extends State<TransactionDone> {
+  String date = '';
+  String time = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    date = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    time = DateFormat("HH:mm:ss").format(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +54,7 @@ class _TransactionDoneState extends State<TransactionDone> {
                         style: TextStyle(fontSize: 18, height: 3),
                       ),
                       Text(
-                        '23-02-2022',
+                        '$date',
                         style: TextStyle(fontSize: 18, height: 3),
                       )
                     ],
@@ -56,7 +67,7 @@ class _TransactionDoneState extends State<TransactionDone> {
                         style: TextStyle(fontSize: 18, height: 3),
                       ),
                       Text(
-                        '12.35.45',
+                        '$time',
                         style: TextStyle(fontSize: 18, height: 3),
                       )
                     ],
