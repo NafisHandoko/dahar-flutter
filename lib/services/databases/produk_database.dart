@@ -69,7 +69,7 @@ class ProdukDatabase {
         .map(_produkListFromSnapshot);
   }
 
-  Future<void> deleteProduk(String id_produk, String gambarRef) async {
+  Future<String> deleteProduk(String id_produk, String gambarRef) async {
     final CollectionReference cartCollection =
         FirebaseFirestore.instance.collection('cart');
     final CollectionReference favoritCollection =
@@ -109,10 +109,14 @@ class ProdukDatabase {
     });
     final imagesRef = storageRef.child(gambarRef);
     await imagesRef.delete();
-    await produkCollection.doc(id_produk).delete();
+    return await produkCollection.doc(id_produk).delete().then((value) {
+      return "Data produk dihapus!";
+    }).onError((error, stackTrace) {
+      return error.toString();
+    });
   }
 
-  Future<void> updateProduk(String id_produk, int harga, String nama,
+  Future<String> updateProduk(String id_produk, int harga, String nama,
       String deskripsi, String oldGambarRef, File gambar) async {
     var imagesRef = storageRef.child(oldGambarRef);
     await imagesRef.delete();
@@ -128,6 +132,10 @@ class ProdukDatabase {
       'deskripsi': deskripsi,
       'gambar': imageUrl,
       'gambarRef': newGambarRef,
+    }).then((value) {
+      return "Perubahan produk telah disubmit!";
+    }).onError((error, stackTrace) {
+      return error.toString();
     });
   }
 }

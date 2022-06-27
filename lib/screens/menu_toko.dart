@@ -431,7 +431,15 @@ class _EditNamaDialogState extends State<EditNamaDialog> {
                 ),
                 onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  TokoDatabase(uid: widget.id_toko).updateTokoNama(newName);
+                  TokoDatabase(uid: widget.id_toko)
+                      .updateTokoNama(newName)
+                      .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(value),
+                      backgroundColor: color1,
+                    ));
+                  });
+
                   Navigator.pop(context);
                 },
               ),
@@ -550,7 +558,14 @@ class _EditAlamatDialogState extends State<EditAlamatDialog> {
                 ),
                 onPressed: () {
                   // Navigator.of(context).pop(_stars);
-                  TokoDatabase(uid: widget.id_toko).updateTokoAlamat(newAlamat);
+                  TokoDatabase(uid: widget.id_toko)
+                      .updateTokoAlamat(newAlamat)
+                      .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(value),
+                      backgroundColor: color1,
+                    ));
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -797,15 +812,15 @@ class _EditProdukDialogState extends State<EditProdukDialog> {
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   // Navigator.of(context).pop(_stars);
-                  ProdukDatabase(uid: widget.id_produk).updateProduk(
-                      widget.id_produk,
-                      int.parse(newHarga),
-                      newNama,
-                      newDeskripsi,
-                      widget.oldGambarRef,
-                      _image!);
+                  var res = await ProdukDatabase(uid: widget.id_produk)
+                      .updateProduk(widget.id_produk, int.parse(newHarga),
+                          newNama, newDeskripsi, widget.oldGambarRef, _image!);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(res),
+                    backgroundColor: color1,
+                  ));
                   Navigator.pop(context);
                 },
               ),

@@ -25,15 +25,23 @@ class TokoDatabase {
     });
   }
 
-  Future<void> updateTokoNama(String nama) async {
+  Future<String> updateTokoNama(String nama) async {
     return await tokoCollection.doc(uid).update({
       'nama': nama,
+    }).then((value) {
+      return "Perubahan nama telah disubmit!";
+    }).onError((error, stackTrace) {
+      return error.toString();
     });
   }
 
-  Future<void> updateTokoAlamat(String alamat) async {
+  Future<String> updateTokoAlamat(String alamat) async {
     return await tokoCollection.doc(uid).update({
       'alamat': alamat,
+    }).then((value) {
+      return "Perubahan alamat telah disubmit!";
+    }).onError((error, stackTrace) {
+      return error.toString();
     });
   }
 
