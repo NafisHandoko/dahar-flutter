@@ -37,7 +37,7 @@ class TokoDatabase {
     });
   }
 
-  Future<void> updateTokoFoto(String oldFotoRef, File foto) async {
+  Future<String> updateTokoFoto(String oldFotoRef, File foto) async {
     var imagesRef;
     if (oldFotoRef != 'images/default_toko_photo.png') {
       imagesRef = storageRef.child(oldFotoRef);
@@ -51,7 +51,11 @@ class TokoDatabase {
     String imageUrl = await imagesRef.getDownloadURL();
     return await tokoCollection
         .doc(uid)
-        .update({'foto': imageUrl, 'fotoRef': newFotoRef});
+        .update({'foto': imageUrl, 'fotoRef': newFotoRef}).then((value) {
+      return "Perubahan data telah disubmit!";
+    }).onError((error, stackTrace) {
+      return error.toString();
+    });
   }
 
   List<Toko> _tokoListFromSnapshot(QuerySnapshot? snapshot) {

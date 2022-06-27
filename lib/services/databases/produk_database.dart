@@ -14,14 +14,14 @@ class ProdukDatabase {
       FirebaseFirestore.instance.collection('produk');
   final storageRef = FirebaseStorage.instance.ref();
 
-  Future<void> addProduk(String nama, int harga, String deskripsi, File gambar,
-      double rating) async {
+  Future<DocumentReference<Object?>> addProduk(String nama, int harga,
+      String deskripsi, File gambar, double rating) async {
     var uuid = Uuid();
     String gambarRef = 'images/${uuid.v4()}.jpg';
     final imagesRef = storageRef.child(gambarRef);
     await imagesRef.putFile(gambar);
     String imageUrl = await imagesRef.getDownloadURL();
-    await produkCollection.add({
+    return await produkCollection.add({
       'nama': nama,
       'harga': harga,
       'deskripsi': deskripsi,

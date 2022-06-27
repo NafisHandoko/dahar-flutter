@@ -35,7 +35,7 @@ class MenuToko extends StatelessWidget {
           id_toko: id_toko,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddProduct()),
@@ -91,8 +91,13 @@ class MenuTokoProvider extends StatelessWidget {
                             maxHeight: 400,
                             maxWidth: 400);
                         if (image != null) {
-                          TokoDatabase(uid: id_toko).updateTokoFoto(
-                              toko.fotoRef ?? '', File(image.path));
+                          var res = await TokoDatabase(uid: id_toko)
+                              .updateTokoFoto(
+                                  toko.fotoRef ?? '', File(image.path));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(res),
+                            backgroundColor: color1,
+                          ));
                         }
                       },
                       child: Container(

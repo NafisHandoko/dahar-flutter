@@ -216,13 +216,25 @@ class _AddProductState extends State<AddProduct> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        ProdukDatabase(uid: user.uid).addProduk(
+                        var ref = ProdukDatabase(uid: user.uid).addProduk(
                             foodName,
                             int.parse(foodPrice),
                             foodDesc,
                             capturedImages.last,
                             0);
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        if (ref != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Data produk berhasil ditambahkan!'),
+                            backgroundColor: color1,
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Data produk tidak ditambahkan!'),
+                            backgroundColor: colorRedDelete,
+                          ));
+                        }
+                        Navigator.of(context).pop(ref);
                       },
                     ),
                   ),
